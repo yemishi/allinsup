@@ -1,0 +1,14 @@
+.test4:hover .testChild img {
+
+   
+}
+
+.test4:hover .testChild {
+    border-color: #fb923c;
+    /* Altera a cor da borda do filho quando o pai é hover */
+}
+
+.test4:hover p {
+    color: #fb923c;
+    /* Altera a cor do texto quando o pai é hover */
+}
