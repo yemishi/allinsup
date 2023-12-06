@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Playfair+Display:wght@700&family=Zilla+Slab+Highlight:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Zilla+Slab+Highlight:wght@700&display=swap');
+
+html,
+body {
+  height: 100vh;
+  background-color: #161616;
+}
+
+
+.test1 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  /* Limita o texto a duas linhas */
+  -webkit-line-clamp: 2;
+  /* Adiciona estilos opcionais */
+  /* Por exemplo: */
+}
+
+
+.search_input {
+  width: 75%;
+  background-color: transparent;
+  padding: 10px;
+  margin-left: 35px;
+  outline: none;
+}
+
+.search_input_container {
+  margin-top: 10px;
+  border-bottom: white 1px solid;
+  background-image: url('/svgs/magnifying-glass.svg');
+  background-repeat: no-repeat;
+  background-position: 5% 50%;
+  border-radius: 10px;
+}
+
+.logo_main {
+  @apply flex gap-1 items-center font-extrabold text-white text-[42px];
+  font-family: 'Playfair Display', serif;
+  line-height: 0;
+
+}
+
+.highlight-word {
+  display: inline-block;
+  position: relative;
+  font-size: 24px;
+  padding: 0 10px;
+  /* Espaçamento interno da palavra */
+}
+
+.highlight-word::before,
+.highlight-word::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 50%;
+  height: 2px;
+  /* Altura da linha */
+  background-color: #f00;
+  /* Cor da linha */
+}
+
+.highlight-word::before {
+  left: -10px;
+  /* Posiciona a linha à esquerda da palavra */
+}
+
+.highlight-word::after {
+  right: -10px;
+  /* Posiciona a linha à direita da palavra */
+}
