@@ -1,14 +1,13 @@
-import RoundedMenu from "./RoundedMenu";
+import RoundedSlider from "./RoundedSlider";
 
 interface ChildrenType {
     name: string,
-    color?: string,
     banner: string
 }
 
 interface PropsType {
     children: ChildrenType[]
 }
-export { RoundedMenu }
+export { RoundedSlider }
 
 export type { PropsType, ChildrenType }

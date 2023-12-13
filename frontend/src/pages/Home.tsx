@@ -1,8 +1,7 @@
-import Carousel from "../components/Carousel"
 
+import { HighlightProducts, Cart, CollectionRounded } from "../components";
 import { Alert } from "../components/Alert"
 import { useState } from "react";
-import CollectionRounded from "../components/RoundedMenu/CollectionRounded";
 
 
 export default function Home() {
@@ -15,10 +14,11 @@ export default function Home() {
 
   ]
   return (
-    <div className="gap-6 flex flex-col ">
-      <Carousel />
+    <div className="w-full h-full flex flex-col gap-4 z-0 justify-center items-center ">
+      <HighlightProducts />
  
       <CollectionRounded />
+
     </div>
   );
 }

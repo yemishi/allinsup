@@ -1,4 +1,4 @@
-import { RoundedMenu, ChildrenType } from "."
+import { RoundedSlider, ChildrenType } from "../Slider/index"
 
 export default function CollectionRounded() {
     const children: ChildrenType[] = [
@@ -22,7 +22,7 @@ export default function CollectionRounded() {
         }
 
     ]
-    return <RoundedMenu>
+    return <RoundedSlider>
         {children}
-    </RoundedMenu >
+    </RoundedSlider >
 }
