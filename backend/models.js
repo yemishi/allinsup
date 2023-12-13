@@ -10,24 +10,21 @@ const userSchema = new mongoose.Schema({
 })
 
 const productSchema = new mongoose.Schema({
-    title: String,
+    name: String,
     desc: String,
     mainPhoto: String,
     photos: Array,
     category: String,
-    amount: Number,
-    hightLight: Boolean,
-    price: Number,
-    promotion: Number,
-    options: Array,
-    brand: String
+    brand: String,
+    variants: Array,
+    highlight: Number
 })
 
 const soldSchema = new mongoose.Schema({
     buyer: Object,
     product: String,
     productId: String,
-    amount: Number,
+    stockSize: Number,
 
 })
 

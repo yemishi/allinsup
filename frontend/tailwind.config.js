@@ -8,9 +8,26 @@ export default {
         lato: ['Lato, sans-serif;'],
         montserrat: ['Montserrat, sans-serif'],
         anton: ['Anton, sans-serif']
+      },
+      colors: {
+        primary: "#ff7352"
       }
     },
+
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.truncate-2-lines': {
+          display: '-webkit-box',
+          overflow: 'hidden',
+          '-webkit-line-clamp': '2',
+          '-webkit-box-orient': 'vertical',
+        },
+      };
+      addUtilities(newUtilities, ['responsive', 'hover']);
+    },
+  ],
 }
 
