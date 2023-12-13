@@ -1,28 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Playfair+Display:wght@700&family=Zilla+Slab+Highlight:wght@700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Zilla+Slab+Highlight:wght@700&display=swap');
 
 html,
 body {
-  height: 100vh;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  width: 100%;
   background-color: #161616;
 }
-
-
-.test1 {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  /* Limita o texto a duas linhas */
-  -webkit-line-clamp: 2;
-  /* Adiciona estilos opcionais */
-  /* Por exemplo: */
-}
-
 
 .search_input {
   width: 75%;
@@ -30,6 +17,10 @@ body {
   padding: 10px;
   margin-left: 35px;
   outline: none;
+}
+
+::selection {
+  background: none;
 }
 
 .search_input_container {
@@ -41,39 +32,33 @@ body {
   border-radius: 10px;
 }
 
-.logo_main {
-  @apply flex gap-1 items-center font-extrabold text-white text-[42px];
-  font-family: 'Playfair Display', serif;
-  line-height: 0;
-
+.inative-btn {
+  @apply hover:bg-[#c18203] group-hover:bg-[#c18203] bg-[#996600]
 }
 
-.highlight-word {
-  display: inline-block;
-  position: relative;
-  font-size: 24px;
-  padding: 0 10px;
-  /* Espaçamento interno da palavra */
+svg {
+  -webkit-tap-highlight-color: blanchedalmond;
+  user-select: none;
+  outline: none;
 }
 
-.highlight-word::before,
-.highlight-word::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: 50%;
-  height: 2px;
-  /* Altura da linha */
-  background-color: #f00;
-  /* Cor da linha */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-.highlight-word::before {
-  left: -10px;
-  /* Posiciona a linha à esquerda da palavra */
+::-webkit-scrollbar {
+  width: 15px;
 }
 
-.highlight-word::after {
-  right: -10px;
-  /* Posiciona a linha à direita da palavra */
+::-webkit-scrollbar-track {
+  background: rgb(34, 32, 37);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(232 222 221 / 73%);
+  border-radius: 14px;
+  border: 3px solid rgb(34, 32, 37);
 }

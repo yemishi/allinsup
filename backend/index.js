@@ -78,12 +78,11 @@ app.get('/logout', (req, res) => {
 
 app.post('/newProduct', async (req, res) => {
     try {
-        const { title, desc, price, mainPhoto, hightLight, brand, amount, photos, category, promotion, options } = await req.body
-        console.log(req.body.title)
-        const findProduct = await Product.findOne({ title, category })
+        const { name, highlight, desc, mainPhoto, brand, photos, category, variants } = await req.body
+        console.log(name, highlight, desc, mainPhoto, brand, photos, category, variants)
+        const findProduct = await Product.findOne({ name, category })
         if (findProduct) return res.send("product already created!")
-
-        const newProduct = new Product({ title, desc, price, mainPhoto, hightLight, brand, amount, options, photos, price, category, promotion })
+        const newProduct = new Product({ name, desc, highlight, mainPhoto, brand, photos, category, variants })
         await newProduct.save()
 
         return res.status(200).send({ newProduct, msg: "product created with successfully" })
@@ -137,7 +136,7 @@ app.post('/new/nav/collection', async (req, res) => {
         console.log(findCollection)
         if (findCollection) return res.status(401).json("collection already created")
 
-        const collection =  new NavCollection({ banner, name, color })
+        const collection = new NavCollection({ banner, name, color })
         collection.save()
 
         return res.status(201).json("collection saved with successfully")
@@ -168,8 +167,7 @@ app.get('/products', async (req, res) => {
 
 app.get('/products/highlight', async (req, res) => {
     try {
-        const products = await Product.find({ hightLight: true })
-
+        const products = await Product.find({ highlight: 1 })
         return res.status(201).json(products)
     } catch (error) {
         console.log(error)

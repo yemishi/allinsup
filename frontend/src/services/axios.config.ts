@@ -1,18 +1,6 @@
 import axios, { AxiosInstance } from "axios";
+import { ProductType } from "../types";
 
-export interface ProductType {
-    title: string,
-    desc: string,
-    mainPhoto: string,
-    photos: string[],
-    category: string,
-    hightLight: boolean,
-    amount: number,
-    price: number,
-    options: object[]
-    promotion: number
-
-}
 
 
 interface ProductsType {
@@ -21,7 +9,6 @@ interface ProductsType {
 
 const axiosInstance: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
-    timeout: 1000,
     headers: {
         'Content-Type': 'application/json',
     }
