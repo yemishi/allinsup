@@ -1,7 +1,16 @@
-import { Slider, Slide, SliderProps } from "../.."
-import { PropsType } from "./index"
+import { Slider, Slide, SliderProps } from ".."
 
-export default function RoundedMenu({ children }: PropsType) {
+
+interface ChildrenType {
+    name: string,
+    banner: string
+}
+
+interface PropsType {
+    children: ChildrenType[]
+}
+
+export default function RoundedSlider({ children }: PropsType) {
 
     const settings: SliderProps = {
         spaceBetween: 40,

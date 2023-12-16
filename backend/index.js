@@ -78,11 +78,14 @@ app.get('/logout', (req, res) => {
 
 app.post('/newProduct', async (req, res) => {
     try {
-        const { name, highlight, desc, mainPhoto, brand, photos, category, variants } = await req.body
-        console.log(name, highlight, desc, mainPhoto, brand, photos, category, variants)
+
+        const { name, highlight, desc, brand, category, variants } = await req.body
+        console.log(name, highlight, desc, brand, category, variants)
         const findProduct = await Product.findOne({ name, category })
+
         if (findProduct) return res.send("product already created!")
-        const newProduct = new Product({ name, desc, highlight, mainPhoto, brand, photos, category, variants })
+
+        const newProduct = new Product({ name, desc, highlight, brand, category, variants })
         await newProduct.save()
 
         return res.status(200).send({ newProduct, msg: "product created with successfully" })
@@ -149,25 +152,25 @@ app.post('/new/nav/collection', async (req, res) => {
 
 app.get('/products', async (req, res) => {
     try {
-        const { category } = req.query
+        const { category = {}, page = 1, limit = 10 } = req.query;
+        const query = category;
+        const parsedPage = parseInt(page);
+        const parsedLimit = parseInt(limit);
+  
+        const skip = (parsedPage - 1) * parsedLimit;
 
-        if (!category) {
-            const products = await Product.find({});
-            return res.status(200).send(products)
-        }
-
-        const products = await Product.find({ category })
-
-        return res.status(200).send(products)
+        const products = await Product.find(query).skip(skip).limit(parsedLimit);
+        
+        return res.status(200).json(products);
     } catch (error) {
         console.log(error)
-        res.send(error)
+        res.status(500).json({ message: 'Internal server error.' });
     }
-})
+});
 
 app.get('/products/highlight', async (req, res) => {
     try {
-        const products = await Product.find({ highlight: 1 })
+        const products = await Product.find({ highlight: { $exists: true, $ne: null, $type: 'number' } })
         return res.status(201).json(products)
     } catch (error) {
         console.log(error)
