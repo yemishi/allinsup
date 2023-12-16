@@ -62,3 +62,27 @@ input::-webkit-inner-spin-button {
   border-radius: 14px;
   border: 3px solid rgb(34, 32, 37);
 }
+
+.pong::after {
+  animation: pong 0.8s ease-in-out forwards;
+}
+
+@keyframes pong {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.5;
+  }
+
+
+
+  50% {
+    top: -180%;
+    opacity: 1;
+  }
+
+  100% {
+    top: -200%;
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}

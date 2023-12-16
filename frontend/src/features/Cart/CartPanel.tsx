@@ -10,7 +10,7 @@ interface PropsType {
 }
 
 export default function CartPanel({ cartOpen, handleClose }: PropsType) {
-    const [directionDrag, setDirectionDrag] = useState<string>('-100%')
+    const [directionDrag, setDirectionDrag] = useState<string>('100%')
     const { cart } = useGlobalState()
 
     const [headerPosition, setHeaderPosition] = useState<boolean>(false)
@@ -23,14 +23,14 @@ export default function CartPanel({ cartOpen, handleClose }: PropsType) {
     const initialScrollValue = useRef<number>(0);
 
     const handleDragEnd = async (event: any, info: PanInfo) => {
-        if (info.offset.x < -180) handleClose();
-        if (info.offset.x > 180) {
-            setDirectionDrag('100%');
-            handleClose();
+        if (info.offset.x < -180) {
+            setDirectionDrag('-100%')
+            handleClose()
             setTimeout(() => {
-                setDirectionDrag('-100%');
+                setDirectionDrag('100%');
             }, 700);
         }
+        if (info.offset.x > 180) { handleClose(); }
     };
 
     const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -53,12 +53,12 @@ export default function CartPanel({ cartOpen, handleClose }: PropsType) {
     return (
         <motion.div onClick={(e) => e.stopPropagation()} onScroll={handleScroll} drag={isMobileDevice ? "x" : false} dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.8} onDragEnd={handleDragEnd} variants={variants} animate={cartOpen ? "open" : 'close'} initial={'close'} transition={{ type: "just" }}
-            className=" h-full scrollBar relative overflow-auto min-[450px]:w-[450px]  flex flex-col bg-[#161616] text-white font-lato ">
+            className=" h-full self-end scrollBar relative overflow-auto min-[450px]:w-[450px]  w-full flex flex-col bg-[#161616] text-white font-lato ">
 
             <motion.div
                 variants={headVariant} transition={{ type: "spring", damping: 10, stiffness: 100 }}
                 animate={headerPosition ? "sticky" : 'noSticky'} onClick={() => setHeaderPosition(!headerPosition)}
-                className="w-full flex top-0 justify-between  p-5 h-[83px] bg-primary rounded-b-xl">
+                className="w-full flex top-0 justify-between  p-5 h-[83px] bg-secondary rounded-b-xl">
                 <p className="mt-auto  font-bold text-xl">Carrinho de Compras</p>
 
                 <div onClick={handleClose} className="w-7 self-end">
@@ -68,7 +68,6 @@ export default function CartPanel({ cartOpen, handleClose }: PropsType) {
                         ></path> </g></svg>
                 </div>
             </motion.div>
-
             {cart.length > 0 ? <CartProducts /> : <div className="p-5"><p>O seu carrinho está vazio</p></div>}
 
         </motion.div>

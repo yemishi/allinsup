@@ -1,1 +1,0 @@
-export { default as CollectionRounded } from "./CollectionRounded/CollectionRounded";

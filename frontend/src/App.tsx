@@ -10,10 +10,7 @@ export const useGlobalState = () => {
   return useContext(GlobalContext)
 }
 function App() {
-  useEffect(() => {
-
-  })
-
+ 
   return (
 
 

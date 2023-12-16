@@ -8,25 +8,35 @@ interface SizesType {
 
 interface VariantType {
     flavor: string,
+    photos: string[],
     sizeDetails: SizesType[],
 }
 
+type ToCart = {
+    flavor: string,
+    _id: string,
+    coverPhoto: string,
+    promotion?: number,
+    name: string,
+    price: number,
+    sizeProduct: string,
+    stock: number
+}
 export interface ProductType {
     _id: string,
     name: string,
     updatedName?: string,
     desc: string,
-    mainPhoto: string,
-    photos: string[],
     highlight?: number,
     category: string,
     brand: string,
+    toCart: ToCart,
     variants: VariantType[]
 }
 
 export interface CartType {
     promotion?: number,
-    mainPhoto: string,
+    coverPhoto: string,
     name: string,
     price: number,
     stock: number,

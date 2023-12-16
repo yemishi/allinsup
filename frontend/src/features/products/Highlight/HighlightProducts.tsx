@@ -1,5 +1,5 @@
-import { SliderProps, axiosRequest, ProductType } from "..";
-
+import { SliderProps, axiosRequest } from "../../../components";
+import { ProductType } from "../../../types";
 import HighlightConfig from './HighlightConfig'
 import { UseQueryResult, useQuery } from "react-query";
 
@@ -15,8 +15,7 @@ export default function HighlightProducts() {
     }
     )
 
-    if (isLoading) return <div className={`relative bg-center w-full min-h-[450px] bg-cover 
-    bg-[url('https://wallpapers-hub.art/wallpaper-images/166012.jpg')]`} >
+    if (isLoading) return <div className={`relative bg-center w-full min-h-[450px] bg-cover bg-[url('https://wallpapers-hub.art/wallpaper-images/166012.jpg')]`} >
         <div className="flex flex-row absolute bottom-0 z-10 gap-5"> {boxes.map((_, index) => (
 
             <div key={index} className="h-[310px] flex flex-col justify-between items-center px-4 w-[200px] p-4 rounded-t-xl bg-[#282828]">
