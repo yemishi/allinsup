@@ -4,7 +4,7 @@ import CartPanel from "./CartPanel"
 import { motion } from "framer-motion"
 
 export default function Cart() {
-    const { cart, cartOpen, setCartOpen } = useGlobalState()
+    const { cartOpen, setCartOpen } = useGlobalState()
     const variantsParent = {
         open: { opacity: 1 },
         exit: { opacity: 0, transition: { delay: 0.3 } }
@@ -24,8 +24,8 @@ export default function Cart() {
         <>
             {cartOpen && <motion.div
                 onClick={handleCloseCart} variants={variantsParent} animate={isExiting ? 'open' : 'exit'}
- 
-                className="w-full  z-30  h-screen overflow-hidden absolute backdrop-brightness-50 flex flex-col">
+
+                className="w-full min-h-full z-30 h-screen overflow-hidden absolute backdrop-brightness-50 flex flex-col">
 
                 <CartPanel cartOpen={isExiting} handleClose={handleCloseCart} />
             </motion.div >}

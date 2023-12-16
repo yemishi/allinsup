@@ -1,7 +1,0 @@
-.container:hover img {
-    scale: 1.1;
-}
-
-.container img {
-    transition-duration: 200ms;
-}

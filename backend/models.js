@@ -12,8 +12,6 @@ const userSchema = new mongoose.Schema({
 const productSchema = new mongoose.Schema({
     name: String,
     desc: String,
-    mainPhoto: String,
-    photos: Array,
     category: String,
     brand: String,
     variants: Array,
