@@ -73,8 +73,6 @@ input::-webkit-inner-spin-button {
     opacity: 0.5;
   }
 
-
-
   50% {
     top: -180%;
     opacity: 1;
@@ -85,4 +83,13 @@ input::-webkit-inner-spin-button {
     transform: scale(1.6);
     opacity: 0;
   }
+}
+
+.swiper-button-prev {
+  color: red;
+  background-color: #000;
+}
+
+.swiper-button-next {
+  color: #000;
 }
