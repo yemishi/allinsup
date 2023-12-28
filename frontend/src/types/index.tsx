@@ -1,36 +1,33 @@
-interface SizesType {
+export interface SizesType {
     sizeProduct: string,
     price: number,
     stock: number,
     sizeHighlight: boolean
-    promotion?: number
+    promotion?: number,
+    isSelected: boolean
 }
 
-interface VariantType {
+export interface VariantType {
     flavor: string,
+    isSelected: boolean,
     photos: string[],
     sizeDetails: SizesType[],
 }
 
-type ToCart = {
-    flavor: string,
-    _id: string,
-    coverPhoto: string,
-    promotion?: number,
-    name: string,
-    price: number,
-    sizeProduct: string,
-    stock: number
+type descType = {
+    title: string,
+    text: string
 }
+
 export interface ProductType {
     _id: string,
     name: string,
     updatedName?: string,
-    desc: string,
+    desc: descType[],
     highlight?: number,
     category: string,
     brand: string,
-    toCart: ToCart,
+    toCart: CartType,
     variants: VariantType[]
 }
 
@@ -44,4 +41,22 @@ export interface CartType {
     amount: number,
     flavor: string,
     sizeProduct: string,
+    category: string,
+    updatedName: string
+}
+export type AddressType = {
+    name: string,
+    tel: string,
+    cep: string,
+    address: string,
+    complement?: string,
+    state: string,
+    city: string,
+    houseNumber: number | ''
+
+}
+export interface UserType {
+    tel: string,
+    _id: string,
+    address: AddressType
 }

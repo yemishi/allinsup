@@ -10,24 +10,21 @@ export default function Cart() {
         exit: { opacity: 0, transition: { delay: 0.3 } }
     }
 
-    const [isExiting, setIsExiting] = useState(true);
+    const [isExiting, setIsExisting] = useState<boolean>(true);
 
     const handleCloseCart = () => {
-        setIsExiting(false);
-
+        setIsExisting(false);
         setTimeout(() => {
             setCartOpen(false);
-            setIsExiting(true)
+            setIsExisting(true)
         }, 700);
     }
     return (
         <>
             {cartOpen && <motion.div
                 onClick={handleCloseCart} variants={variantsParent} animate={isExiting ? 'open' : 'exit'}
-
-                className="w-full min-h-full z-30 h-screen overflow-hidden absolute backdrop-brightness-50 flex flex-col">
-
-                <CartPanel cartOpen={isExiting} handleClose={handleCloseCart} />
+                className="w-full  z-30 h-screen overflow-hidden fixed backdrop-brightness-50 flex flex-col">
+                <CartPanel isExisting={isExiting} setIsExisting={setIsExisting} handleClose={handleCloseCart} />
             </motion.div >}
         </>
     )
