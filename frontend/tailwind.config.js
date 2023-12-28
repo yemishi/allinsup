@@ -31,6 +31,8 @@ export default {
       colors: {
         primary: { ...colorPrimary, DEFAULT: colorPrimary[700] },
         secondary: { ...colorSecondary, DEFAULT: colorSecondary[600] }
+      }, boxShadow: {
+        lightOn: 'rgb(196 186 0 / 27%) 0 44px 100px -27px, rgb(0 0 0 / 30%) 0px 30px 60px -30px, rgb(28 28 2 / 35%) 0px -2px 6px 0px inset'
       }
     },
 

@@ -1,6 +1,6 @@
 import { SliderProps, axiosRequest } from "../../../components";
 import { ProductType } from "../../../types";
-import HighlightConfig from './HighlightConfig'
+import { ProductSliderGrid } from "../..";
 import { UseQueryResult, useQuery } from "react-query";
 
 export default function HighlightProducts() {
@@ -15,7 +15,7 @@ export default function HighlightProducts() {
     }
     )
 
-    if (isLoading) return <div className={`relative bg-center w-full min-h-[450px] bg-cover bg-[url('https://wallpapers-hub.art/wallpaper-images/166012.jpg')]`} >
+    if (isLoading) return <div className={`relative bg-center  w-full min-h-[450px] bg-cover bg-[url('https://cdn.discordapp.com/attachments/914969778387570688/1181751820968800306/Design_sem_nome_5.png?ex=658b6da6&is=6578f8a6&hm=1ba88c0b7b5b5b81ebedfa12287be13c3354d5f7c082c657f75b13fa81fe8215&')]`} >
         <div className="flex flex-row absolute bottom-0 z-10 gap-5"> {boxes.map((_, index) => (
 
             <div key={index} className="h-[310px] flex flex-col justify-between items-center px-4 w-[200px] p-4 rounded-t-xl bg-[#282828]">
@@ -33,30 +33,19 @@ export default function HighlightProducts() {
         ))}</div>
     </div >
 
-    const settings: SliderProps = {
-        spaceBetween: 20,
-        freeMode: true,
-        slidesPerView: "auto",
-        grabCursor: true,
-        style: {
-            background: 'linear-gradient(transparent,#161616)',
-            position: 'absolute',
-            height: "310px",
-            cursor: 'grab',
-            width: '100%',
-            bottom: 0,
-            zIndex: 10
-        }
-    }
-
     return (
-        <div className={`relative bg-center w-full  min-h-[420px] bg-cover
-        bg-[url('https://wallpapers-hub.art/wallpaper-images/166012.jpg')]`} >
+        <div className={`bg-center w-full min-h-[420px] bg-cover flex items-end
+        bg-[url('https://cdn.discordapp.com/attachments/914969778387570688/1181751820968800306/Design_sem_nome_5.png?ex=658b6da6&is=6578f8a6&hm=1ba88c0b7b5b5b81ebedfa12287be13c3354d5f7c082c657f75b13fa81fe8215&')]`} >
             {highlight && (
-                <HighlightConfig settings={settings}>
+                <ProductSliderGrid>
                     {...highlight}
-                </HighlightConfig>
+                </ProductSliderGrid>
             )}
         </div >
     )
+
 }
+
+
+
+

@@ -1,1 +1,2 @@
-export { default as Cart } from './Cart'
+import Cart from "./Cart";
+export { Cart }

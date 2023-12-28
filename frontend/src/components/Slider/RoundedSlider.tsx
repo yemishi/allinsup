@@ -28,7 +28,7 @@ export default function RoundedSlider({ children }: PropsType) {
             {children?.map((e) => {
                 const { name, banner } = e
 
-                return <Slide key={name} className="w-[110px] group flex items-center flex-col gap-3 text-white hover:text-[#fb923c] duration-200 font-lato text-sm">
+                return <Slide key={name} className="max-w-[110px] group  !flex items-center flex-col gap-3 text-white hover:text-[#fb923c] duration-200 font-lato text-sm">
 
                     <div className="h-[110px] w-[110px] overflow-hidden duration-200 bg-[#161616] rounded-full border-2
                      border-[#4a4a4a] group-hover:border-[#fb923c] group-hover:border-[3px] ">
