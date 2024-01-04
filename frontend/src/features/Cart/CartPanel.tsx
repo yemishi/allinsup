@@ -1,22 +1,23 @@
 import { PanInfo, motion, Variants } from "framer-motion"
 import { useState, useRef, Dispatch } from "react"
 import CartProducts from "./CartProducts"
-import { DivDraggable } from "../../components"
+import { useNavigate } from "react-router-dom"
+import { DivDraggable, axiosRequest, toast } from "../../components"
 import { totalPrice, totalAmount, parseLocalCurrency, stickyVariant } from "../../utils/"
 
 import { useGlobalState } from "../../App"
+import loginRequest from "../User/services/axios.config"
 
 interface PropsType {
     isExisting: boolean;
     setIsExisting: Dispatch<React.SetStateAction<boolean>>;
     handleClose: () => void
-
 }
 
 export default function CartPanel({ isExisting, setIsExisting, handleClose }: PropsType) {
-
+    const navigate = useNavigate()
     const [directionDrag, setDirectionDrag] = useState<"100%" | "-100%">('100%')
-    const { cart, setCartOpen, setAddressOpen } = useGlobalState()
+    const { dispatch, state } = useGlobalState()
 
     const [headerPosition, setHeaderPosition] = useState<boolean>(false)
     const initialScrollValue = useRef<number>(0);
@@ -33,10 +34,30 @@ export default function CartPanel({ isExisting, setIsExisting, handleClose }: Pr
         }
         initialScrollValue.current = scrollTop;
     };
+
+    const sendOrder = async () => {
+        try {
+            const response = await loginRequest.checkAuth()
+
+            if (response.isAuthenticated) {
+                navigate("/checkout/address")
+                dispatch({type:"SET_CART_OPEN",payload:false})
+            }
+
+            if (!response.isAuthenticated) {
+                dispatch({ type: "SET_USER_OPEN", payload: true })
+                toast.warning("É preciso fazer login antes")
+            }
+        } catch (error) {
+            toast.error("Oops algo deu errado, tente novamente.")
+
+        }
+    }
+
     return (
 
         <DivDraggable onScroll={onScroll} directionDrag={directionDrag} state={isExisting} setState={setIsExisting} setDirectionDrag={setDirectionDrag}
-            initialDirection={"100%"} setParent={setCartOpen}>
+            initialDirection={"100%"} closeParent={() => dispatch({ type: "SET_CART_OPEN", payload: false })}>
             <motion.div
                 variants={stickyVariant} transition={{ type: "spring", damping: 10, stiffness: 100 }}
                 animate={headerPosition ? "sticky" : 'noSticky'} onClick={() => setHeaderPosition(!headerPosition)}
@@ -55,16 +76,17 @@ export default function CartPanel({ isExisting, setIsExisting, handleClose }: Pr
                 </div>
 
                 <div className="flex text-sm bg-primary-700 p-2 absolute left-0 rounded-r-lg -bottom-8 gap-2 items-center">
-                    <p>TOTAL ({totalAmount(cart)} items)</p>
-                    <p className="text-secondary-500 font-bold text-lg">{parseLocalCurrency(totalPrice(cart))}</p>
+                    <p>TOTAL ({totalAmount(state.cart)} items)</p>
+                    <p className="text-secondary-500 font-bold text-lg">{parseLocalCurrency(totalPrice(state.cart))}</p>
                 </div>
             </motion.div>
-            {cart.length > 0 ? <CartProducts /> : <div className="p-5 mt-3"><p>O seu carrinho está vazio</p></div>}
+            {state.cart.length > 0 ? <CartProducts /> : <div className="p-5 mt-3"><p>O seu carrinho está vazio</p></div>}
             <div className="sticky mt-auto  bg-primary bottom-0 w-full flex justify-center items-center py-4 px-2">
-                <button onClick={()=> setAddressOpen(true)} className="bg-secondary-600 cursor-pointer text-white font-lato py-4 px-6 text-sm font-semibold rounded-xl">FINALIZAR COMPRA</button>
+                <button onClick={() => sendOrder()} className="bg-secondary-600 cursor-pointer
+                 text-white font-lato py-4 px-6 text-sm font-semibold rounded-xl">FINALIZAR COMPRA</button>
 
             </div>
-        </DivDraggable>
+        </DivDraggable >
 
 
     )

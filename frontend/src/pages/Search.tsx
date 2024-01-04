@@ -2,6 +2,7 @@
 import { useSearchParams } from "react-router-dom"
 import { SearchProduct } from "../features"
 
+
 export default function Search() {
     const [searchParams] = useSearchParams()
     const query = searchParams.get('query') as string

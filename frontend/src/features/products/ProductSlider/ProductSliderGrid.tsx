@@ -5,7 +5,7 @@ import { useGlobalState } from '../../../App'
 import { Link } from 'react-router-dom'
 
 export default function ProductSliderGrid({ children }: { children: ProductType[] }) {
-    const { addProduct, cart } = useGlobalState()
+    const { dispatch, state } = useGlobalState()
     const parseLocalCurrency = (e: (number)) => e.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
     const settings: SliderProps = {
         spaceBetween: 20,
@@ -33,8 +33,9 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
                     return
                 }).find((highlighted) => highlighted !== null);
 
-                const { _id, category, coverPhoto, flavor, name, price, sizeProduct, stock, updatedName, amount, promotion, } = productDetails(e, cart, e.highlight, sizeIndex)
-                const handleStyle = amount && amount >= stock ? "group-hover:bg-[#c18203] bg-[#996600] pointer-events-none" : "bg-secondary hover:bg-secondary-800"
+                const { _id, category, coverPhoto, flavor, name, price, sizeProduct, stock, updatedName, amount, promotion, } = productDetails(e, state.cart, e.highlight, sizeIndex)
+                const soldOff = ((amount && amount >= stock) || !stock)
+                const handleStyle = soldOff ? "group-hover:bg-[#c18203] bg-[#996600] pointer-events-none" : "bg-secondary hover:bg-secondary-800"
 
                 return <Slide key={`${_id}_${updatedName}`} className='max-w-[200px] group !flex rounded-t-xl text-sm bg-primary-500 font-lato 
                     pb-4 text-white flex-col justify-between'>
@@ -52,11 +53,11 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
                         {promotion && <p>{parseLocalCurrency(promotion)}</p>}
                         <p className={`${promotion ? 'text-white text-xs line-through self-end' : ''} `}>{parseLocalCurrency(price)}</p>
                     </div>
-                    <button onClick={() => addProduct(e)}
+                    <button onClick={() => dispatch({ type: "ADD_PRODUCT", payload: e })}
                         className={`p-2 w-[80%] self-center ${handleStyle}  
                          duration-300 text-xs gap-1 rounded-xl font-sans font-semibold flex justify-center items-center`}>
                         <img src='/cartPlus.svg' className='w-4' />
-                        <p>{`${(amount && amount >= stock) ? 'ESGOTADO' : 'ADICIONAR'}`}</p>
+                        <p>{`${soldOff ? 'ESGOTADO' : 'ADICIONAR'}`}</p>
 
                     </button>
 

@@ -5,8 +5,8 @@ import { GlobalContext } from './context/GlobalContext'
 import { Cart, Header } from './features'
 const User = lazy(() => import('./features/User/User'))
 const AddressManager = lazy(() => import('./features/User/AddressManager'))
-
-import { SnackbarProvider } from 'notistack'
+import { ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -16,13 +16,12 @@ export const useGlobalState = () => {
 function App() {
   const location = useLocation()
 
-  const isCheckoutRoute = location.pathname.toLowerCase().includes("/checkout")
+  const isCheckoutRoute = location.pathname.toLowerCase().includes("/checkout") || location.pathname.toLowerCase().includes("/dashboard-admin")
 
   return (
 
-
     <div className='h-full item-center p-0 m-0 w-full flex flex-col relative '>
-      <SnackbarProvider autoHideDuration={3000} anchorOrigin={{ vertical: 'top', horizontal: 'right' }} />
+      <ToastContainer theme='dark' />
       <GlobalContextProvider>
         {!isCheckoutRoute && <Header />}
         <Cart />

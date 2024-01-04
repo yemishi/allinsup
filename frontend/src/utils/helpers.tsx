@@ -25,6 +25,7 @@ interface productDetailsType {
 }
 
 export const findInArray = (array: SizesType[] | VariantType[], state?: number) => {
+
     if (state !== undefined && array[state]) return array[state]
     else return array.find((variant) => (variant.isSelected === true)) || array[0]
 
@@ -49,7 +50,7 @@ export const productDetails = (product: ProductType, cart: CartType[], variantIn
     }
 }
 
-export const logoCloseEvent = (fnc: () => void, classAdditional?: string): JSX.Element => {
+export const logoCloseEvent = (fnc?: () => void, classAdditional?: string): JSX.Element => {
     return <div onClick={fnc} className="text-white text-center cursor-pointer  flex flex-col items-center duration-300 gap-1">
         <p onClick={fnc} style={{ borderImage: 'linear-gradient(to right, transparent, rgb(255 144 70),transparent) 1' }}
             className={`${classAdditional ? classAdditional : ""} cursor-pointer font-montserrat text-2xl leading-6 py-1 
@@ -57,4 +58,5 @@ export const logoCloseEvent = (fnc: () => void, classAdditional?: string): JSX.E
         <p className="text-orange-400 text-sm leading-3 font-mono font-semibold">SUPLEMENTOS</p>
     </div>
 }
+
 

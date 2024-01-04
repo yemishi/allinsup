@@ -18,7 +18,7 @@ export default function ProductPanel() {
     const flavor = nameArr[1]
     const size = nameArr[2]
 
-    const { data: product, isLoading } = useQuery(['product', flavor, size, _id], () => fetchProduct(flavor, size, _id || ""), {
+    const { data: product } = useQuery(['product', flavor, size, _id], () => fetchProduct(flavor, size, _id || ""), {
         retry: 5
     });
     const { data: similarProducts, } = useQuery(['similarProduct'], () => fetchSimilarProducts(decodeURIComponent(String(category)) || ""), {

@@ -3,25 +3,36 @@ import { ProductType } from "../../../types";
 import { useInfiniteQuery } from "react-query";
 import { axiosRequest, ProductGrid } from "../../../components";
 import { waitingProduct } from "../../../utils";
+import { useGlobalState } from "../../../App";
 
 
-async function fetchProducts({ pageParam = 1 }) {
-    const response = await axiosRequest.products(pageParam, 2);
+async function fetchProducts({ brand = "", pageParam = 1 }) {
+    const response = await axiosRequest.productBrand(brand === "Diversas" ? "" : brand, pageParam);
+    console.log(brand)
+    console.log(response)
     return response.data;
 }
 
 export default function ProductProvider() {
     const observer = useRef<IntersectionObserver | null>(null);
+
     const ref = useRef<HTMLDivElement>(null)
-    const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
-        ['products'],
-        ({ pageParam }) => fetchProducts({ pageParam }),
+    const { state } = useGlobalState()
+    const { data, refetch, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
+        ['products', state.brandHome],
+        ({ pageParam }) => {
+            return fetchProducts({ brand: state.brandHome, pageParam })
+        },
         {
             getNextPageParam: (lastPage, allPages) => {
                 return lastPage.length ? allPages.length + 1 : undefined;
             },
         }
     );
+
+    useEffect(() => {
+        refetch();
+    }, [state.brandHome, refetch]);
 
     useEffect(() => {
         if (!isLoading && hasNextPage) {

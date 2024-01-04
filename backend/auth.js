@@ -1,69 +1,39 @@
-const passport = require('passport')
-const GoogleStrategy = require('passport-google-oauth2').Strategy;
+const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const { User } = require('./models');
 
-const bcrypt = require('bcrypt')
-const { User } = require("./models")
+passport.serializeUser((user, done) => {
+    done(null, user._id);
+});
 
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/google/callback",
-    passReqToCallback: true
-}, async (request, accessToken, refreshToken, profile, done) => {
-
+passport.deserializeUser(async (_id, done) => {
     try {
-        const { displayName, email, picture } = profile
-        const loadUser = await User.findOne({ name: displayName, email })
-
-        if (!loadUser) {
-            const newUser = await new User({ name: displayName, email, picture })
-            await newUser.save()
-            return done(null, newUser)
+        const user = await User.findById(_id);
+        if (user) {
+            done(null, user);
+        } else {
+            done(new Error('Usuário não encontrado'));
         }
-
-        done(null, profile)
     } catch (error) {
-        console.log(error)
+        console.error(error);
+        done("aaaaa");
     }
-
-    return done(null, profile);
-}
-));
-
-
+});
 
 passport.use(new LocalStrategy(
     {
-        usernameField: 'email',
-        passwordField: 'password'
+        usernameField: 'tel',
     },
-    async (email, password, done) => {
-
+    async (tel, done) => {
         try {
-            const loadUser = await User.findOne({ name: displayName, email })
-
-            if (!loadUser) {
-                const newUser = await new User({ name: displayName, email, picture })
-                await newUser.save()
-                return done(null, newUser)
-            }
-
-            done(null, profile)
+            const user = await User.findOne({ tel });
+            
+            return done(null, user);
         } catch (error) {
-            console.log(error)
+            console.error(error);
+            return done("a");
         }
-        return done(null, { user: "siuuuu" });
     }
 ));
 
-passport.serializeUser((user, done) => {
-
-    done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-
-    done(null, user);
-
-});
+module.exports = passport;
