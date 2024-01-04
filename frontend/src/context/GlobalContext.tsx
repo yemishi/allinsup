@@ -1,132 +1,217 @@
-import React, { createContext, useEffect, useState, Dispatch } from 'react'
-import { ProductType, CartType } from '../types'
-import { alert } from '../components';
-
-interface Categories {
-    whey: ProductType[],
-    creatine: ProductType[],
-    preWorkout: ProductType[],
-    combo: ProductType[],
+import React, { createContext, useReducer, Dispatch, ReactNode, useEffect } from 'react';
+import { ProductType, CartType } from '../types';
+import { toast } from "react-toastify"
+interface PaymentInfoType {
+    wppMsg: string,
+    extra: { paymentMethod: string, change: string | boolean },
+    isPix?: boolean
 }
-
-
-type GlobalState = {
+interface GlobalState {
     cart: CartType[];
+    paymentInfo: PaymentInfoType,
+    brandHome: string;
     cartOpen: boolean;
     userOpen: boolean;
     addressOpen: boolean;
-    setCartOpen: Dispatch<React.SetStateAction<boolean>>;
-    setUserOpen: Dispatch<React.SetStateAction<boolean>>;
-    setAddressOpen: Dispatch<React.SetStateAction<boolean>>;
-    addProduct: (product: ProductType) => void;
-    removeProduct: (product: CartType) => void;
-    incrementAmount: (product: CartType, payload: number) => void;
-    decrementAmount: (product: CartType, payload: number) => void;
-    updateProductAmount: (product: CartType, payload: number) => void;
+    paymentMethod: string;
 }
 
-export const GlobalContext = createContext<GlobalState>({
+type Action =
+    | { type: 'SET_CART_OPEN'; payload: boolean }
+    | { type: 'SET_USER_OPEN'; payload: boolean }
+    | { type: 'SET_ADDRESS_OPEN'; payload: boolean }
+    | { type: 'ADD_PRODUCT'; payload: ProductType }
+    | { type: 'REMOVE_PRODUCT'; payload: CartType }
+    | { type: 'INCREMENT_AMOUNT' | 'DECREMENT_AMOUNT' | 'UPDATE_PRODUCT_AMOUNT'; payload: { product: CartType; amount: number } }
+    | { type: 'FIND_IN_CART'; payload: { cart: CartType[]; product: ProductType | CartType } }
+    | { type: 'UPDATE_CART'; payload: CartType[] }
+    | { type: 'SET_PAYMENT_METHOD'; payload: "Dinheiro" | "Cartão de Crédito" | "Cartão de Débito" | "Pix" }
+    | { type: 'RESET_CART'; }
+    | { type: 'SET_BRAND_HOME'; payload: "Diversas" | "Max Titanium" | "Growth" | "Probiotica" | "Integral médica" | "Black Skull" }
+    | { type: 'SET_PAYMENT_INFO'; payload: PaymentInfoType }
+
+const initialState: GlobalState = {
     cart: [],
+    paymentInfo: { extra: { paymentMethod: "", change: "" }, isPix: false, wppMsg: "" },
+    brandHome: "Diversas",
     cartOpen: false,
     userOpen: false,
     addressOpen: false,
-    setCartOpen: () => { },
-    setUserOpen: () => { },
-    setAddressOpen: () => { },
-    addProduct: () => { },
-    removeProduct: () => { },
-    incrementAmount: () => { },
-    decrementAmount: () => { },
-    updateProductAmount: () => { },
+    paymentMethod: ""
+};
+
+const reducer = (state: GlobalState, action: Action): GlobalState => {
+    switch (action.type) {
+        case 'SET_CART_OPEN':
+            return { ...state, cartOpen: action.payload };
+        case 'SET_USER_OPEN':
+            return { ...state, userOpen: action.payload };
+        case 'SET_ADDRESS_OPEN':
+            return { ...state, addressOpen: action.payload };
+        case "SET_BRAND_HOME":
+            return { ...state, brandHome: action.payload }
+
+        case "SET_PAYMENT_INFO":
+            return { ...state, paymentInfo: action.payload }
+        case 'FIND_IN_CART':
+            const foundCartItem = state.cart.find(
+                (detail) =>
+                    detail._id === action.payload.product._id && detail.updatedName === action.payload.product.updatedName
+            );
+
+            return {
+                ...state,
+                cart: foundCartItem ? [foundCartItem] : [],
+            };
+
+        case 'UPDATE_CART':
+            localStorage.setItem('cart', JSON.stringify(action.payload));
+            return {
+                ...state,
+                cart: action.payload
+            };
+
+        case 'ADD_PRODUCT':
+            const { _id, name, coverPhoto, flavor, price, sizeProduct, stock, promotion, category, updatedName } = action.payload.toCart;
+
+            if (!stock) return { ...state }
+
+            const findProduct = state.cart.find((detail) => detail._id === _id && detail.updatedName === updatedName);
+            const updatedCartAdd = findProduct
+                ? state.cart.map((e) => (e._id === _id && e.updatedName === updatedName && e.stock >= e.amount + 1 ? { ...e, amount: e.amount + 1 } : e))
+                : [...state.cart, { _id, name, amount: 1, coverPhoto, flavor, price, sizeProduct, stock, promotion, category, updatedName }];
+
+            if (!findProduct) toast.success("Produto adicionado ao carrinho",)
+
+            localStorage.setItem('cart', JSON.stringify(updatedCartAdd));
+            return {
+                ...state,
+                cart: updatedCartAdd
+            };
+
+        case 'INCREMENT_AMOUNT':
+            const { product, amount } = action.payload;
+
+            const foundProduct = state.cart.find(
+                (detail) => detail._id === product._id && detail.updatedName === product.updatedName
+            );
+
+            if (!foundProduct) {
+                const updatedCartInc = [
+                    ...state.cart,
+                    { ...product, amount: amount > product.stock ? product.stock : amount }
+                ];
+                localStorage.setItem('cart', JSON.stringify(updatedCartInc));
+                return {
+                    ...state,
+                    cart: updatedCartInc
+                };
+            } else {
+                const updatedCartInc = state.cart.map((e) =>
+                    e.updatedName === product.updatedName && e._id === product._id && e.amount + amount <= e.stock
+                        ? { ...e, amount: e.amount + amount }
+                        : e
+                );
+                localStorage.setItem('cart', JSON.stringify(updatedCartInc));
+                return {
+                    ...state,
+                    cart: updatedCartInc
+                };
+            };
+        case 'DECREMENT_AMOUNT':
+            const { product: decrementProduct, amount: decrementAmount } = action.payload;
+            const updatedCartDec = state.cart.map((e) =>
+                e.updatedName === decrementProduct.updatedName && e._id === decrementProduct._id && e.amount - decrementAmount >= 1
+                    ? { ...e, amount: e.amount - decrementAmount }
+                    : e
+            );
+            localStorage.setItem('cart', JSON.stringify(updatedCartDec));
+            return {
+                ...state,
+                cart: updatedCartDec
+            };
+        case 'UPDATE_PRODUCT_AMOUNT':
+            const { product: updateProduct, amount: target } = action.payload;
+            const productInCart = state.cart.find((e) => e.updatedName === updateProduct.updatedName && e._id === updateProduct._id)
+
+            const updatedCart = () => {
+                if (!productInCart) {
+                    const updatedProduct = {
+                        ...updateProduct,
+                        amount: target > updateProduct.stock ? updateProduct.stock : target
+                    };
+                    toast.success("Produto adicionado ao carrinho")
+                    return [...state.cart, updatedProduct];
+                }
+
+                return state.cart.map((e) =>
+                    e._id === updateProduct._id && e.updatedName === updateProduct.updatedName
+                        ? { ...e, amount: target > e.stock ? e.stock : target }
+                        : e
+                );
+            };
+
+
+            localStorage.setItem('cart', JSON.stringify(updatedCart()));
+            return {
+                ...state,
+                cart: updatedCart()
+            };
+        case 'REMOVE_PRODUCT':
+            const updatedCartRem = state.cart.filter((e) => e !== action.payload);
+            localStorage.setItem('cart', JSON.stringify(updatedCartRem));
+            return {
+                ...state,
+                cart: updatedCartRem
+            };
+        case 'RESET_CART':
+            localStorage.removeItem('cart');
+            return {
+                ...state,
+                cart: []
+            };
+
+        case 'SET_PAYMENT_METHOD':
+            const method = action.payload
+            return {
+                ...state,
+                paymentMethod: method
+            };
+
+        default: return state;
+    }
+};
+
+export const GlobalContext = createContext<{ state: GlobalState; dispatch: Dispatch<Action> }>({
+    state: initialState,
+    dispatch: () => null,
 });
 
-export default function GlobalContextProvider({ children }: { children: React.ReactNode }) {
+interface GlobalContextProviderProps {
+    children: ReactNode;
+}
 
-    const [cartOpen, setCartOpen] = useState<boolean>(false)
-    const [userOpen, setUserOpen] = useState<boolean>(false)
-    const [addressOpen, setAddressOpen] = useState<boolean>(false)
-    const [cart, setCart] = useState<CartType[]>([])
-
+const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({ children }) => {
+    const [state, dispatch] = useReducer(reducer, initialState);
     useEffect(() => {
-        document.body.style.overflow = cartOpen || userOpen || addressOpen ? 'hidden' : 'auto';
+        document.body.style.overflow = state.cartOpen || state.userOpen || state.addressOpen ? 'hidden' : 'auto';
 
-    }, [cartOpen, userOpen, addressOpen]);
+    }, [state.cartOpen, state.userOpen, state.addressOpen]);
 
     useEffect(() => {
         const savedCart = localStorage.getItem('cart');
         if (savedCart) {
-            setCart(JSON.parse(savedCart));
+            dispatch({ type: "UPDATE_CART", payload: JSON.parse(savedCart) })
         }
     }, []);
-    const findInCart = (cart: CartType[], product: ProductType | CartType) => cart.find((detail) => detail._id === product._id && detail.updatedName === product.updatedName);
-    const updateCart = (updatedCart: CartType[]) => {
-        setCart(updatedCart);
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
-    }
 
-    const addProduct = (product: ProductType) => {
-        const { _id, name, coverPhoto, flavor, price, sizeProduct, stock, promotion, category, updatedName } = product.toCart;
-        const findProduct = findInCart(cart, product.toCart)
-        const updatedCart = findProduct
-            ? cart.map((e: CartType) => (e._id === _id && e.updatedName === updatedName ? { ...e, amount: e.amount + 1 } : e))
-            : [...cart, { _id, name, amount: 1, coverPhoto, flavor, price, sizeProduct, stock, promotion, category, updatedName }];
 
-        if (!findProduct) alert('Produto adicionado ao carrinho', { variant: "success" });
+    return (
+        <GlobalContext.Provider value={{ state, dispatch }}>
+            {children}
+        </GlobalContext.Provider>
+    );
+};
 
-        updateCart(updatedCart)
-    };
 
-    const incrementAmount = (product: (CartType), payload: (number)) => {
-        const { name, _id, updatedName, stock } = product
-        const findProduct = findInCart(cart, product)
-
-        if (!findProduct) {
-
-            const updatedCart = [...cart, { ...product, amount: payload > stock ? stock : payload }];
-
-            updateCart(updatedCart)
-        } else {
-            const updatedCart = cart.map((e) => e.updatedName === updatedName && e._id == _id && e.amount + payload <= e.stock ? { ...e, amount: e.amount + payload } : e)
-            updateCart(updatedCart)
-        }
-
-    }
-    const decrementAmount = (product: (CartType), payload: (number)) => {
-
-        const { updatedName, _id } = product
-        const updatedCart = cart.map((e) => e.updatedName === updatedName && e._id == _id && (e.amount - payload) >= 1 ? { ...e, amount: e.amount - payload } : e)
-        updateCart(updatedCart)
-    }
-
-    const updateProductAmount = (product: (CartType), target: (number)) => {
-        const { _id, updatedName } = product
-
-        const updatedCart: CartType[] = cart.map((e: CartType): CartType => {
-            if (e._id === _id && e.updatedName === updatedName) {
-                if (target > e.stock) {
-                    target = e.stock
-                    return { ...e, amount: e.stock }
-                } if (target < 1) {
-                    target = 1
-                    return { ...e, amount: 1 }
-                } else {
-                    return { ...e, amount: target }
-                }
-            } else return e
-        })
-        updateCart(updatedCart)
-
-    }
-    const removeProduct = (product: (CartType)) => {
-        const findProduct = findInCart(cart, product) as CartType
-        const filterCart = cart.filter((e) => e !== findProduct)
-
-        updateCart(filterCart)
-    };
-    return <GlobalContext.Provider value={{
-        cart, addressOpen, setAddressOpen, userOpen, setUserOpen, cartOpen, setCartOpen, addProduct,
-        removeProduct, incrementAmount, decrementAmount, updateProductAmount
-    }}>
-        {children}
-    </GlobalContext.Provider >
-}
+export default GlobalContextProvider;

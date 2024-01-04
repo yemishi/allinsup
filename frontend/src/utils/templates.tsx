@@ -1,7 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
 import { Slide, Slider, SliderProps } from "../components"
-import { ProductType, SizesType, VariantType } from "../types"
-import { motion } from 'framer-motion'
 
 interface SelectedState {
     selected: "flavor" | "sizeProduct";
@@ -47,3 +45,9 @@ export const slideOptions = (array: OptionsArrayType[], selectedState: SelectedS
 };
 
 
+export const divList = (dt: string, dd: string, additional?: string) => {
+    return <div className={`flex gap-1 ${additional ? additional : ""}`}>
+        <dt className="font-thin">{dt}</dt>
+        <dd className="font-bold text-secondary-500">{dd}</dd>
+    </div>
+}

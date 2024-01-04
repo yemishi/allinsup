@@ -7,3 +7,5 @@ export const totalPrice = (cart: CartType[]) => cart.reduce((total, currentPrice
 export const totalAmount = (cart: CartType[]) => cart.reduce((total, currentItem) => {
     return total + currentItem.amount;
 }, 0);
+
+export const totalPriceSingle = (cart: CartType) => (cart.promotion ? cart.promotion : cart.price) * cart.amount

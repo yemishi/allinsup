@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from 'framer-motion'
 import { useGlobalState } from "../../App";
-import { alert, DivDraggable } from "../../components";
+import { toast, DivDraggable } from "../../components";
 import { logoCloseEvent } from "../../utils/helpers";
 import loginRequest from "./services/axios.config";
 
@@ -10,7 +10,7 @@ export default function Login() {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [directionDrag, setDirectionDrag] = useState<'100%' | "-100%">('-100%')
     const [isExiting, setIsExiting] = useState(true);
-    const { setUserOpen } = useGlobalState()
+    const { dispatch } = useGlobalState()
 
     const handlePhoneInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -38,7 +38,7 @@ export default function Login() {
     const handleClose = () => {
         setIsExiting(false);
         setTimeout(() => {
-            setUserOpen(false);
+            dispatch({ type: "SET_USER_OPEN", payload: false })
             setIsExiting(true)
         }, 700);
     }
@@ -47,14 +47,21 @@ export default function Login() {
     const submitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const response = await loginRequest.login(phoneNumber).then((res) => res)
-        alert(response, { variant: "success" })
+        toast.success(response)
         handleClose()
     }
 
-    return (<motion.div animate={isExiting ? { opacity: 1 } : { opacity: 0, transition: { delay: 0.3 } }} className="w-full z-30 h-screen overflow-hidden absolute backdrop-brightness-50 backdrop-blur-sm" >
+    const isAdmin = phoneNumber === import.meta.env.VITE_ADMIN_NUMBER
+
+    const phoneNumberPattern = isAdmin ? "\\(75\\) 8 \\d{4}-\\d{4}" : "\\(\\d{2}\\) 9 \\d{4}-\\d{4}";
 
 
-        <DivDraggable classAddition="py-3 gap-7" initialDirection="-100%" directionDrag={directionDrag} setState={setIsExiting} state={isExiting} setDirectionDrag={setDirectionDrag} setParent={setUserOpen}>
+
+    return (<motion.div animate={isExiting ? { opacity: 1 } : { opacity: 0, transition: { delay: 0.3 } }} className="w-full z-30 h-screen
+     overflow-hidden fixed top-0 backdrop-brightness-50 backdrop-blur-sm" >
+
+        <DivDraggable classAddition="py-3 gap-7" initialDirection="-100%" directionDrag={directionDrag} setState={setIsExiting} state={isExiting}
+            setDirectionDrag={setDirectionDrag} closeParent={() => dispatch({ type: "SET_USER_OPEN", payload: false })}>
 
             {logoCloseEvent(handleClose)}
 
@@ -73,14 +80,15 @@ export default function Login() {
 
                         <input value={phoneNumber} onChange={handlePhoneInputChange} type="text" className="block py-2.5 ps-6 pe-0 w-full text-sm text-white
                      bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:focus:border-secondary-500 focus:outline-none
-                      focus:ring-0 focus:border-secondary-600 peer" pattern="\(\d{2}\) 9 \d{4}-\d{4}" placeholder=" " required title="O formato deve ser (XX) X XXXX-XXXX" />
+                      focus:ring-0 focus:border-secondary-600 peer" pattern={phoneNumberPattern} placeholder=" " required title="O formato deve ser (XX) X XXXX-XXXX" />
+
                         <label className="absolute text-sm text-white text-opacity-50 duration-300 transform -translate-y-6 scale-75 top-3 pointer-events-none origin-[0] 
                         peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-secondary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
                         peer-focus:scale-75
                          peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Insira seu número aqui</label>
 
                     </div>
-                    <button type="submit" className="bg-secondary-700 w-4/6   mt-auto font-anton p-1 font-bold text-base rounded-md">Confirmar</button>
+                    <button type="submit" className="bg-secondary-700 w-4/6 mt-auto font-anton p-1 font-bold text-base rounded-md">Confirmar</button>
                 </form>
             </div>
         </DivDraggable>

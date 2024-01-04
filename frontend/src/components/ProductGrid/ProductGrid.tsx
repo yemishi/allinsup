@@ -7,13 +7,15 @@ interface PropsType {
     products: ProductType[]
 }
 export default function ProductGrid({ products }: PropsType) {
-    const { cart, addProduct } = useGlobalState()
+    const { dispatch, state } = useGlobalState()
     return <div className="w-full h-full !flex flex-wrap justify-between px-1 gap-4 py-3 font-lato text-sm">
 
         {products && products.map((product) => {
 
-            const { _id, coverPhoto, category, price, stock, promotion, updatedName, amount, flavor, sizeProduct } = productDetails(product, cart)
-            
+            const { _id, coverPhoto, category, price, stock, promotion, updatedName, amount, flavor, sizeProduct, name } = productDetails(product, state.cart)
+         
+            const soldOff = (amount && amount >= stock) || !stock
+
             return <div key={`/${category}${_id}_${product.name}`} className="!flex cursor-pointer hover:shadow-lightOn duration-300  flex-col h-[290px]
              max-[385px]:w-[165px] w-[180px] text-white bg-primary-500 p-1 gap-2 rounded-lg">
 
@@ -33,10 +35,11 @@ export default function ProductGrid({ products }: PropsType) {
                             font-bold duration-300 `}>{parseLocalCurrency(price)}</p>
                         </div>
 
-                        <button onClick={(e) => { e.preventDefault(), addProduct(product) }} className={`border py-1 duration-300 px-3 rounded-lg relative ${!amount && 'border-white'} 
-                    
-                    ${amount && amount >= stock ? "pointer-events-none grayscale" : "cursor-pointer border-secondary-500 "} group`}>
-                            <svg style={{ strokeWidth: 1.4 }} className={`w-5 ${amount ? "stroke-secondary-500" : 'stroke-white'} group-hover:scale-110 duration-300`}
+                        <button onClick={(e) => { e.preventDefault(), dispatch({ type: "ADD_PRODUCT", payload: product }) }} className={`border py-1 duration-300 px-3 
+                        rounded-lg relative ${!amount && !soldOff ? 'border-white ' : "border-secondary-500 "}
+                         ${soldOff ? "pointer-events-none grayscale" : "cursor-pointer"} group `}>
+
+                            <svg style={{ strokeWidth: 1.4 }} className={`w-5 ${!amount && !soldOff ? "stroke-white" : 'stroke-secondary-500 '} group-hover:scale-110 duration-300`}
                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
 
                                 <g id="SVGRepo_bgCarrier" />

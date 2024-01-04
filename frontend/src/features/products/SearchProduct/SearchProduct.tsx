@@ -12,7 +12,7 @@ export default function SearchProduct({ query }: { query: string }) {
     const observer = useRef<IntersectionObserver | null>(null);
     const ref = useRef<HTMLDivElement>(null)
     const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
-        ['productsSearch'],
+        ['productsSearch', query],
         ({ pageParam }) => fetchProducts({ query, pageParam })
         ,
         {
