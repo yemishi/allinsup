@@ -4,7 +4,7 @@ import { DivDraggable } from "../../components"
 import { logoCloseEvent } from "../../utils/helpers"
 import { AddressType } from "../../types"
 import loginRequest from "./services/axios.config"
-import { alert } from "../../components"
+import { toast } from "../../components"
 
 export default function AddressManager() {
 
@@ -12,7 +12,7 @@ export default function AddressManager() {
         cep?: string,
     }
 
-    const { addressOpen, setAddressOpen, userOpen } = useGlobalState()
+    const { dispatch, state } = useGlobalState()
 
     const [form, setForm] = useState<AddressType>({ tel: '', name: '', cep: '', address: '', state: '', city: '', houseNumber: '' });
     const [errors, setErrors] = useState<ErrorsType>({})
@@ -23,15 +23,15 @@ export default function AddressManager() {
     useEffect(() => {
         const fetchData = async () => {
             const response = await loginRequest.checkAuth()
-            if (response.data.tel) setForm({ ...form, tel: response.data.tel })
+            if (response.isAuthenticated && response.user.tel) setForm({ ...form, tel: response.user.tel })
         }
         fetchData()
-    }, [userOpen])
+    }, [state.userOpen])
 
     const handleClose = () => {
         setIsExisting(false);
         setTimeout(() => {
-            setAddressOpen(false);
+            dispatch({ type: "SET_ADDRESS_OPEN", payload: false })
             setIsExisting(true)
         }, 700);
     }
@@ -94,7 +94,12 @@ export default function AddressManager() {
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const response = await loginRequest.updateUser(form)
-        alert(response, { variant: "info" })
+
+        toast.promise(Promise.resolve(response), {
+            pending: "Atualizando informações",
+            success: "Informações atualizadas com sucesso!",
+            error: "Algo deu errado ao tentar atualizar suas informações.",
+        });
         handleClose()
     }
 
@@ -107,9 +112,9 @@ export default function AddressManager() {
 
     return (
         <>
-            {addressOpen && <div className="h-screen items-center absolute w-full backdrop-brightness-50 flex flex-col z-30 ">
+            {state.addressOpen && <div className="h-screen items-center absolute w-full backdrop-brightness-50 flex flex-col z-30 ">
 
-                <DivDraggable setState={setIsExisting} initialDirection="100%" setDirectionDrag={setDirectionDrag} setParent={setAddressOpen}
+                <DivDraggable setState={setIsExisting} initialDirection="100%" setDirectionDrag={setDirectionDrag} closeParent={() => dispatch({ type: "SET_ADDRESS_OPEN", payload: false })}
                     directionDrag={directionDrag} state={isExisting} >
 
                     <div className="flex flex-col items-center gap-4 px-4 text-gray-200 py-3">
@@ -118,14 +123,14 @@ export default function AddressManager() {
                         <form onSubmit={handleSubmit} className="bg-primary-600 gap-8 w-full flex flex-col items-center p-3 pt-5 rounded-lg">
                             <p className="font-anton text-xl font-semibold">Endereço de entrega</p>
 
-                            {errors.cep && <p className="  text-red-400  font-anton font-bold ">{errors.cep}</p>}
+                            {errors.cep && <p className="text-red-400  font-anton font-bold ">{errors.cep}</p>}
 
                             <div className="relative w-4/6">
 
                                 <span className="absolute start-0 bottom-3 text-white ]">
                                     <svg className="w-6 h-6" fill="#ffffff" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"><path d="M 28.0117 27.3672 C 33.0508 27.3672 37.3867 22.8672 37.3867 17.0078 C 37.3867 11.2187 33.0274 6.9297 28.0117 6.9297 C 22.9961 6.9297 18.6367 11.3125 18.6367 17.0547 C 18.6367 22.8672 22.9961 27.3672 28.0117 27.3672 Z M 13.2930 49.0703 L 42.7305 49.0703 C 46.4101 49.0703 47.7226 48.0156 47.7226 45.9531 C 47.7226 39.9062 40.1523 31.5625 28.0117 31.5625 C 15.8477 31.5625 8.2774 39.9062 8.2774 45.9531 C 8.2774 48.0156 9.5898 49.0703 13.2930 49.0703 Z"></path></g></svg>
                                 </span>
-                                <input type="text" name="name" className={inputClass} placeholder=" " required />
+                                <input type="text" name="name" className={inputClass} value={form.name} onChange={handleFormValue} placeholder=" " required />
                                 <label className={labelClass}>Nome Completo</label>
 
                             </div>

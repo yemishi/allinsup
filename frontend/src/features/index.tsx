@@ -12,5 +12,15 @@ import Payment from "./Checkout/Payment";
 import Review from "./Checkout/Review";
 import Address from "./Checkout/Adress";
 import Steps from "./Checkout/Steps";
+import MoneyMethod from "./Checkout/MoneyMethod";
+import PurchaseSummary from "./Checkout/PurchaseSummary";
+import DashboardOrders from "./Dashboard/Orders/DashboardOrders";
+import DashboardProducts from "./Dashboard/Products/DashboardProducts";
+import RemoveProduct from "./Dashboard/Products/RemoveProduct";
+import EditProduct from "./Dashboard/Products/EditProduct";
+import CreateProduct from "./Dashboard/Products/CreateProduct";
 
-export { CollectionRounded, Steps, Payment, Address, Review, Cart, Header, User, HighlightProducts, ProductSliderGrid, Products, SearchProduct, ProductInfo }
+export {
+    CollectionRounded, PurchaseSummary, MoneyMethod, Steps, Payment, Address, Review, Cart, Header, User, HighlightProducts,
+    ProductSliderGrid, DashboardOrders, DashboardProducts, Products, SearchProduct, ProductInfo, RemoveProduct, CreateProduct, EditProduct
+}

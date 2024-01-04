@@ -1,16 +1,75 @@
 import { logoCloseEvent } from "../utils/helpers"
-import { useNavigate, Outlet } from "react-router-dom"
+import { useNavigate, useLocation, Outlet, Link } from "react-router-dom"
 import { Steps } from "../features"
+import { parseLocalCurrency, totalPrice } from "../utils"
+import { useGlobalState } from "../App"
+import { MoneyMethod, PurchaseSummary } from "../features"
+import { useEffect, useState } from "react"
+import { axiosRequest, toast } from "../components"
+
+
 export default function Checkout() {
+    const { state, dispatch } = useGlobalState()
+    const [moneyState, setMoneyState] = useState<boolean>(false)
+    const [purchaseOpen, setPurchaseOpen] = useState<boolean>(false)
     const navigate = useNavigate()
     const toHome = () => navigate('/')
     const toBack = () => navigate(-1)
+    const location = useLocation()
 
-    const paths = ["address", "review", "payment"]
+    useEffect(() => {
+
+
+    }, [])
+
+    const handleNext = () => {
+        if (location.pathname.includes("address")) {
+            return "/checkout/review";
+        } else if (location.pathname.includes("review")) {
+            return "/checkout/payment";
+        } else {
+            return "";
+        }
+    }
+    const handleFinishCheckout = async () => {
+        try {
+            const response = await axiosRequest.getUser();
+
+            if (!response.data.address) {
+                toast.error('É preciso colocar um endereço antes.');
+                return navigate("/checkout/address");
+            }
+
+            if (state.cart.length === 0) {
+                toast.error('Você ainda não tem nada em seu carrinho');
+                return navigate('/');
+            }
+
+            if (state.paymentMethod === "Dinheiro") {
+                setMoneyState(true);
+            } else if (state.paymentMethod === "Pix") {
+                dispatch({ type: "SET_PAYMENT_INFO", payload: { isPix: true, wppMsg: "Olá eu acabei de fazer uma compra com pix!", extra: { change: false, paymentMethod: "Pix" } } });
+                setPurchaseOpen(true);
+            } else if (state.paymentMethod === "Cartão de Crédito") {
+                dispatch({ type: "SET_PAYMENT_INFO", payload: { wppMsg: "Olá eu acabei de fazer uma compra!", extra: { change: false, paymentMethod: "Cartão de Crédito" } } });
+
+                setPurchaseOpen(true);
+            } else if (state.paymentMethod === "Cartão de Débito") {
+                dispatch({ type: "SET_PAYMENT_INFO", payload: { wppMsg: "Olá eu acabei de fazer uma compra!", extra: { change: false, paymentMethod: "Cartão de Débito" } } });
+                setPurchaseOpen(true);
+            }
+        } catch (error: any) {
+            if (!error.response.data.isAuthenticated) {
+                toast.error("É preciso fazer login antes.")
+                navigate('/')
+            }
+        }
+    };
+
     return (
-        <div className="w-full h-full flex flex-col">
+        <div className="w-full h-screen flex gap-2 flex-col ">
 
-            <header className="flex justify-between items-center text-white bg-primary-600 p-4">
+            <header className="flex justify-between items-center text-white bg-primary-600 p-4 ">
 
                 <button onClick={toBack} className="flex-1">
                     <span >
@@ -27,11 +86,16 @@ export default function Checkout() {
                 </span>
             </header>
             <Steps />
-            
-            <div>
-                <Outlet />
+            <Outlet />
+            <div className="sticky bottom-0  mt-auto grid border-primary-500 border-t grid-cols-2 w-full font-anton">
+                <span className="p-4 text-secondary-600 bg-primary font-bold">{parseLocalCurrency(totalPrice(state.cart))}</span>
+                {!location.pathname.includes('payment') ? <Link className="bg-secondary-600 p-4 text-center text-white" to={handleNext()}>Continuar</Link> :
+                    <button onClick={handleFinishCheckout} className={`${!state.paymentMethod && "pointer-events-none"} bg-secondary-600 p-4 text-center text-white`}>
+                        Continuar
+                    </button>}
             </div>
-            
+            {moneyState && <MoneyMethod setPurchaseOpen={setPurchaseOpen} setMoneyState={setMoneyState} />}
+            {purchaseOpen && <PurchaseSummary />}
         </div >
     )
 }

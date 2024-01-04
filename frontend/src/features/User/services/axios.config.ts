@@ -18,7 +18,7 @@ const loginRequest = {
     login: async (tel: string): Promise<any> => {
         try {
             const response = await axiosInstance.post('/login', { tel }, { withCredentials: true });
-            return response.data;
+            return Promise.resolve(response.data);
         } catch (error) {
             console.error("Ocorreu um erro ao fazer login");
         }
@@ -26,7 +26,7 @@ const loginRequest = {
     checkAuth: async (): Promise<UserData | { isAuthenticated: false }> => {
         try {
             const response = await axiosInstance.get('/check-auth', { withCredentials: true });
-            return response.data
+            return Promise.resolve(response.data);
         } catch (error) {
             return { isAuthenticated: false }
         }
@@ -35,15 +35,16 @@ const loginRequest = {
     logout: async (): Promise<any> => {
         try {
             const response = await axiosInstance.get('/logout', { withCredentials: true });
-            return response.data
+            return response.data;
         } catch (error) {
-
+            throw error;
         }
     },
+    
     deleteUser: async (): Promise<any> => {
         try {
             const response = await axiosInstance.delete('/delete-user', { withCredentials: true })
-            return response.data
+            return Promise.resolve(response.data);
         } catch (error) {
             console.error("Ocorreu algum erro ao deletar sua conta");
         }
@@ -51,7 +52,7 @@ const loginRequest = {
     fetchAddressInfo: async (cep: string): Promise<FetchAddressType | { error: true }> => {
         try {
             const response = await axios.get(`${import.meta.env.VITE_CEP_API_URL}/${cep}/json`)
-            return response.data
+            return Promise.resolve(response.data);
         } catch (error) {
             console.log(error)
             return { error: true }
@@ -60,7 +61,7 @@ const loginRequest = {
     updateUser: async (address: AddressType): Promise<any> => {
         try {
             const response = await axiosInstance.patch('/update-user', { address }, { withCredentials: true })
-            return response.data
+            return Promise.resolve(response.data);
         } catch (error) {
             return "algo deu errado"
         }

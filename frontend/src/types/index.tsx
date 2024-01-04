@@ -4,12 +4,12 @@ export interface SizesType {
     stock: number,
     sizeHighlight: boolean
     promotion?: number,
-    isSelected: boolean
+    isSelected?: boolean
 }
 
 export interface VariantType {
     flavor: string,
-    isSelected: boolean,
+    isSelected?: boolean,
     photos: string[],
     sizeDetails: SizesType[],
 }
@@ -59,4 +59,26 @@ export interface UserType {
     tel: string,
     _id: string,
     address: AddressType
+}
+
+export interface OrderType {
+    extra: { change?: string, paymentMethod: "Dinheiro" | "Cartão de Crédito" | "Cartão de Débito" | "Pix" }
+    products: [{ productId: string, productQtd: number, coverPhoto: string, name: string ,productPrice:string}]
+    userId: string,
+    orderId: string,
+    productsIds: string[],
+    status: string,
+    price: string,
+    purchaseDate: string,
+    receivedDate: string,
+    address: { tel: number, name: string, cep: string, address: string, state: string, city: string, houseNumber: number, complement: string }
+}
+
+export interface UpdateOrderType {
+    userId?: string,
+    orderId?: string,
+    status?: string,
+    price?: string,
+    purchaseDate?: string,
+    receivedDate?: string
 }

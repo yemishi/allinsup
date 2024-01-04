@@ -3,7 +3,7 @@ import { Dispatch } from 'react';
 
 interface PropsType {
     children: React.ReactNode;
-    setParent: Dispatch<React.SetStateAction<boolean>>;
+    closeParent: () => void;
     setState: Dispatch<React.SetStateAction<boolean>>;
     state: boolean;
     setDirectionDrag: Dispatch<React.SetStateAction<"100%" | "-100%">>;
@@ -13,7 +13,7 @@ interface PropsType {
     classAddition?: string
 
 }
-export default function DivDraggable({ children, setParent, onScroll, setState, state, setDirectionDrag, directionDrag, initialDirection, classAddition }: PropsType) {
+export default function DivDraggable({ children, closeParent, onScroll, setState, state, setDirectionDrag, directionDrag, initialDirection, classAddition }: PropsType) {
 
     const variants: Variants = {
         open: { x: 0 },
@@ -22,7 +22,7 @@ export default function DivDraggable({ children, setParent, onScroll, setState, 
     const handleClose = () => {
         setState(false);
         setTimeout(() => {
-            setParent(false);
+            closeParent()
             setState(true)
         }, 700);
     }
@@ -38,8 +38,9 @@ export default function DivDraggable({ children, setParent, onScroll, setState, 
 
     };
     return <>
-        <motion.div onScroll={onScroll} onClick={(e) => e.stopPropagation()} initial={{ x: initialDirection }} dragElastic={0.8} variants={variants} onDragEnd={handleDragEnd} animate={state ? "open" : 'close'} drag="x"
-            className={`h-full ${classAddition||""} self-end scrollBar relative overflow-auto min-[450px]:w-[450px] w-full flex flex-col bg-primary-700 text-white font-lato`}
+        <motion.div onScroll={onScroll} onClick={(e) => e.stopPropagation()} initial={{ x: initialDirection }} dragElastic={0.8} variants={variants}
+            onDragEnd={handleDragEnd} animate={state ? "open" : 'close'} drag="x"
+            className={`h-full ${classAddition || ""} self-end scrollBar relative overflow-auto min-[450px]:w-[450px] w-full flex flex-col bg-primary-700 text-white font-lato`}
             transition={{ type: "just" }} dragConstraints={{ left: 0, right: 0 }} >
             {children}
         </motion.div>

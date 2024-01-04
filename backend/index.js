@@ -1,10 +1,14 @@
 const express = require("express")
-
 const session = require("express-session")
-const passport = require('passport')
-const bcrypt = require('bcrypt')
+const mongoose = require('mongoose')
+
+const MongoDBStore = require('connect-mongodb-session')(session);
 const cors = require('cors');
+const { search, productInfo, updateStock, generateOrderNumber, searchOrders } = require('./utils/index')
+const { User, Product, NavCollection, Order } = require('./models');
 require('dotenv').config();
+
+
 
 const app = express();
 
@@ -12,75 +16,203 @@ app.use(express.json());
 
 const corsOptions = {
     origin: 'http://localhost:5173',
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'DELETE', 'PATCH', "PUT"],
     credentials: true,
 };
 
 app.use(cors(corsOptions));
-require('./auth');
 
-require('./connectMongoDB')()
 
-const { User, Product, NavCollection } = require('./models')
+mongoose.connect(process.env.MONGODB_CONNECT_URL);
 
-app.use(session({
+
+const store = new MongoDBStore({
+    uri: process.env.MONGODB_CONNECT_URL,
+    collection: 'sessions',
+    expires: 1000,
+});
+
+store.on('error', (error) => {
+    console.error('Erro ao inicializar o MongoDBStore:', error);
+});
+const sessionMiddleware = session({
     secret: process.env.SECRET_KEY,
     resave: false,
-    saveUninitialized: false
-}));
+    saveUninitialized: true,
+    cookie: { secure: false },
 
-app.use(passport.initialize());
-app.use(passport.session());
+});
 
-
-
-function isLoggedIn(req, res, next) {
-    req.user ? next() : res.redirect('/')
-}
-
-app.get('/', (req, res) => {
-    res.send(`<div>
-    <a href='/auth/google'>Authenticate with Google</a>
-   
-    </div>`);
-})
-
-app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }))
+app.use(sessionMiddleware)
+require('./connectMongoDB')()
 
 
 
-app.get('/google/callback',
-    passport.authenticate('google', {
-        failureRedirect: "/auth/failure"
-    }),
-    (req, res) => {
+app.post('/login', async (req, res) => {
+    const { tel } = req.body;
+    try {
+        let user = await User.findOne({ tel });
 
-        res.redirect('http://localhost:5173/rota-no-frontend')
+        if (!user) {
+            const newUser = new User({ tel });
+            user = await newUser.save();
+        }
+        req.session.user = user;
+
+        return res.json('Autenticação bem-sucedida');
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json('Erro ao processar a requisição');
     }
-);
+});
 
-app.get('/test', (req, res) => {
-    res.send({ ...req.user })
-})
-app.get('/auth/failure', (req, res) => {
-    res.send('something went wrong :(')
-})
+app.get('/check-auth', (req, res) => {
+    if (req.session.user) {
+        return res.json({ isAuthenticated: true, user: req.session.user });
+    } else {
+        return res.status(400).json({ isAuthenticated: false });
+    }
+});
 
-app.get('/protect', isLoggedIn, (req, res) => {
 
-    res.send(`HEYOO!! ${req.user.name} <a href="/test">spread out</a>`)
+app.get('/user', async (req, res) => {
+    try {
+        const user = await User.findOne({ _id: req.session.user._id })
+
+        return res.status(200).json(user)
+    } catch (error) {
+        return res.status(400).json({ isAuthenticated: false });
+    }
 })
+app.patch('/update-user', async (req, res) => {
+    try {
+        const user = await req.session.user
+        const { address } = req.body;
+
+        await User.findOneAndUpdate({ _id: user._id }, { $set: { address } }, { new: true });
+
+        return res.status(200).json("Usuario atualizado com sucesso.")
+    } catch (error) {
+        return res.status(400).json("algo deu errado.")
+    }
+
+});
 
 app.get('/logout', (req, res) => {
-    req.logout();
-    res.send('Dattebayo!!');
+    if (req.session.user) {
+        req.session.destroy()
+        return res.status(200).json("Usuario desconectado com sucesso!")
+    }
+
+})
+
+app.delete('/delete-user', async (req, res) => {
+    try {
+        const { user } = req.session
+        const foundUser = User.findOne({ _id: user._id })
+        if (!foundUser) return res.status(404).json("Usuario nao encontrado.")
+
+        req.session.destroy()
+        await foundUser.deleteOne()
+
+        return res.status(200).json("Sua conta foi deletada com sucesso.")
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json("ocorreu algum erro ao deletar sua conta.")
+    }
+})
+app.get('/products', async (req, res) => {
+    try {
+        const { q, page = 1, limit } = req.query;
+        const parsedPage = parseInt(page);
+        const parsedLimit = parseInt(limit);
+
+        const skip = (parsedPage - 1) * (parsedLimit ? parsedLimit : 10);
+
+
+        const products = await Product.find().skip(skip).limit(parsedLimit || 10);
+
+        return res.status(200).json(q ? search(products, q) : products);
+    }
+
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal server error.' });
+    }
+});
+
+app.get("/productBrand", async (req, res) => {
+    try {
+
+        const { brand, page = 1, limit } = req.query
+
+        const parsedPage = parseInt(page);
+        const parsedLimit = parseInt(limit);
+
+        const skip = (parsedPage - 1) * (parsedLimit ? parsedLimit : 10);
+
+        const products = await Product.find({ brand: brand.toLocaleLowerCase() }).skip(skip).limit(parsedLimit || 10)
+
+        if (products.length === 0) {
+            const products = await Product.find().skip(skip).limit(parsedLimit || 10)
+            return res.status(201).json(products)
+        }
+
+        return res.status(201).json(products)
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json("algmo de errado")
+    }
+})
+
+
+app.get('/ordersSearch', async (req, res) => {
+    try {
+        const { q, page = 1, limit } = req.query;
+        const parsedPage = parseInt(page)
+        const parsedLimit = parseInt(limit)
+
+        const skip = (parsedPage - 1) * (parsedLimit ? parsedLimit : 10)
+
+        const orders = await Order.find().skip(skip).limit(parsedLimit || 10)
+        return res.status(200).json(q ? searchOrders(orders, q) : orders)
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json("algo deu errado")
+    }
+})
+
+app.get('/products/highlight', async (req, res) => {
+    try {
+        const products = await Product.find({ highlight: { $exists: true, $ne: null, $type: 'number' } })
+        return res.status(201).json(products)
+    } catch (error) {
+        console.log(error)
+        return res.status(400)
+    }
+})
+
+app.get('/productInfo', async (req, res) => {
+    try {
+        const { size, flavor, _id } = req.query
+        const id = _id.replace(/,/g, '')
+        const product = await Product.findOne({ _id: id });
+
+        if (!product) return res.status(404).send("product not found")
+
+        return res.status(200).send(productInfo(product, flavor, size))
+    } catch (error) {
+        console.log(error)
+        return res.status(401).send("aaaaaaa")
+    }
 })
 
 app.post('/newProduct', async (req, res) => {
     try {
 
-        const { name, highlight, desc, brand, category, variants } = await req.body
-        console.log(name, highlight, desc, brand, category, variants)
+        const { name, highlight, desc, brand, category, variants } = req.body
+
         const findProduct = await Product.findOne({ name, category })
 
         if (findProduct) return res.send("product already created!")
@@ -94,132 +226,146 @@ app.post('/newProduct', async (req, res) => {
         res.send(error)
     }
 })
-app.post('/login', passport.authenticate('local', {
-    successRedirect: '/logged',
-    failureRedirect: "/failedLogin"
-}))
-app.get('/logged', (req, res) => {
-    console.log(req.user)
-    return res.send({ ...req.user })
-})
-
-app.get('/failedLogin', (req, res) => {
-    return res.send("error baby")
-})
 
 
-app.post('/updateProduct', async (req, res) => {
+
+const currentDay = () => {
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+
+    return `${day}/${month}/${year}`;
+};
+
+app.post('/newOrder', async (req, res) => {
     try {
-        const product = await Product.findByIdAndUpdate({ _id: req.body._id }, { $set: req.body.updateData }, { new: true });
-        return res.status(200).send({ message: "product updated with successfully!", product })
-    } catch (error) {
-        console.log(error)
-        res.send(error)
-    }
-})
+        const user = await User.findOne({ _id: req.session.user._id });
+        const { price, products, extra } = req.body;
 
-app.get('/nav/collections', async (req, res) => {
-    try {
-        const collections = await NavCollection.find({})
-        return res.status(201).json(collections)
+        if (!user) {
+            console.log(user, 'aaaa')
+            return res.status(404).json("Usuário não encontrado.");
+        }
+        const { address } = user
 
-    } catch (error) {
-        console.log(error)
-        return res.status(401)
-    }
-})
+        if (!address) return res.status(401).json("Endereço de entrega não encontrado")
 
-app.post('/new/nav/collection', async (req, res) => {
-    try {
-        const { banner, name, color } = await req.body
+        let orderId = generateOrderNumber()
+        const foundOrder = await Order.findOne({ orderId })
+        if (foundOrder) orderId = generateOrderNumber()
+        console.log(user)
+        const newOrder = new Order({ userId: user._id, address, products, status: "Encomendado", price, extra, purchaseDate: currentDay(), orderId });
 
-        if (!(banner, name)) return res.status(401)
-        const findCollection = await NavCollection.findOne({ name, banner })
-
-        console.log(findCollection)
-        if (findCollection) return res.status(401).json("collection already created")
-
-        const collection = new NavCollection({ banner, name, color })
-        collection.save()
-
-        return res.status(201).json("collection saved with successfully")
+        await newOrder.save();
+        updateStock(products, currentDay(), req.session.user._id)
+        return res.status(200).json({ msg: "Sua encomenda foi aceita com sucesso.", orderId: newOrder.orderId });
 
     } catch (error) {
-        console.log(error)
-        return res.status(401)
-    }
-})
-
-app.get('/products', async (req, res) => {
-    try {
-        const { category = {}, page = 1, limit = 10 } = req.query;
-        const query = category;
-        const parsedPage = parseInt(page);
-        const parsedLimit = parseInt(limit);
-  
-        const skip = (parsedPage - 1) * parsedLimit;
-
-        const products = await Product.find(query).skip(skip).limit(parsedLimit);
-        
-        return res.status(200).json(products);
-    } catch (error) {
-        console.log(error)
-        res.status(500).json({ message: 'Internal server error.' });
+        console.log(error);
+        return res.status(400).json("Algo deu errado");
     }
 });
 
-app.get('/products/highlight', async (req, res) => {
+app.put('/updateProduct/:productId', async (req, res) => {
+    const productId = req.params.productId;
+    const updatedProduct = req.body.product;
+
     try {
-        const products = await Product.find({ highlight: { $exists: true, $ne: null, $type: 'number' } })
-        return res.status(201).json(products)
-    } catch (error) {
-        console.log(error)
-        return res.status(400)
-    }
-})
-
-app.get('/product/:productName/:productId', async (req, res) => {
-    try {
-        const { productId, productName } = req.params
-        const product = await Product.findOne({ _id: productId, name: productName })
-
-        if (!product) return res.status(404).send("product not found")
-
-        return res.status(200).send(product)
-    } catch (error) {
-        console.log(error)
-        return res.status(401).send("aaaaaaa")
-    }
-})
-
-app.patch('/products/buy', async (req, res) => {
-    try {
-        const { products } = await req.body;
-
-
-        if (!Array.isArray(products) || products.length === 0) {
-            return res.status(400).json({ error: 'Invalid product information' });
+        const existingProduct = await Product.findById(productId);
+        if (!existingProduct) {
+            return res.status(404).json('Produto não encontrado');
         }
 
-        for (const { productId, quantity } of products) {
+        const updated = await Product.findByIdAndUpdate(productId, updatedProduct, { new: true });
 
-            const product = await Product.findById({ _id: productId });
 
-            if (!product) {
-                console.error(`Product with ID ${productId} not found`);
-                continue;
-            }
-            console.log(product, quantity)
-            product.amount -= quantity;
-            await product.save();
-        }
-
-        return res.status(200).json({ message: 'Products updated after purchase' });
+        return res.status(200).json(updated);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
+
+        return res.status(500).json('Erro ao atualizar o produto');
     }
 });
+app.delete("/productDelete/:productId", async (req, res) => {
+    try {
+        const productId = req.params.productId
+        const product = await Product.findOneAndDelete({ _id: productId })
+        if (!product) return res.status(404).json("produto não encontrado")
+        return res.status(200).json("produto deletado com sucesso!")
+
+    } catch (error) {
+        res.status(400).json("Algo deu errado :(")
+    }
+})
+
+
+app.get('/orders', async (req, res) => {
+    try {
+        if (!req.session.user) return res.status(404).json()
+        const user = await User.findOne({ _id: req.session.user._id })
+
+        const orders = await Order.find({ userId: user._id })
+
+        return res.status(200).json(orders)
+
+    } catch (error) {
+        return res.status(404).json("Algo deu errado")
+    }
+})
+app.get('/admin-orders', async (req, res) => {
+    try {
+        const orders = await Order.find()
+        return res.status(200).json(orders)
+
+    } catch (error) {
+        return res.status(400).json("houve algum error")
+    }
+})
+
+app.get('/admin-orderInfo', async (req, res) => {
+    try {
+        const { orderId } = req.query
+        const order = await Order.findOne({ orderId })
+
+        if (!order) return res.status(404).json("Pedido nao encontrado.")
+
+        return res.status(200).json(order)
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json("Algo deu errado")
+    }
+})
+
+
+app.get('/orderInfo', async (req, res) => {
+    try {
+        const { orderId } = req.query
+        const order = await Order.findOne({ orderId, userId: req.session.user._id })
+
+        if (!order) return res.status(404).json("Pedido nao encontrado.")
+
+        return res.status(200).json(order)
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json("Algo deu errado")
+    }
+})
+
+app.patch('/updateOrder', async (req, res) => {
+    try {
+        const { orderId, updatedOrder } = req.body
+        console.log(updatedOrder)
+        await Order.findOneAndUpdate({ orderId }, { $set: updatedOrder }, { new: true });
+        return res.status(200).json("Encomenda atualizada com sucesso")
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json("Algo deu errado")
+    }
+})
+
 
 
 app.listen(3000, () => console.log("listening at port 3000"))

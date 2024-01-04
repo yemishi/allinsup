@@ -6,21 +6,23 @@ import Login from "./Login";
 export default function User() {
     const [isAuth, setIsAuth] = useState<boolean>(false);
     const [tel, setTel] = useState<string>('');
-    const { userOpen } = useGlobalState()
+    const { state } = useGlobalState()
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await loginRequest.checkAuth()
-            setTel(response.user.tel)
-            setIsAuth(response.isAuthenticated)
+            if (response.isAuthenticated) {
+                setTel(response.user.tel)
+                setIsAuth(response.isAuthenticated)
+            }
         }
         fetchData()
 
-    }, [userOpen])
+    }, [state.userOpen])
 
     return (
         <>
-            {userOpen ? (isAuth ? <Logout setIsAuth={setIsAuth} tel={tel} /> : <Login />) : null}
+            {state.userOpen ? (isAuth ? <Logout setIsAuth={setIsAuth} tel={tel} /> : <Login />) : null}
         </>
     );
 }
