@@ -1,13 +1,11 @@
-const express = require("express")
-const session = require("express-session")
-const mongoose = require('mongoose')
-
+const express = require("express");
+const session = require("express-session");
+const mongoose = require('mongoose');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const cors = require('cors');
-const { search, productInfo, updateStock, generateOrderNumber, searchOrders } = require('./utils/index')
+const { search, productInfo, updateStock, generateOrderNumber, searchOrders } = require('./utils/index');
 const { User, Product, Order } = require('./models');
 require('dotenv').config();
-
 
 
 const app = express();
@@ -286,6 +284,7 @@ app.put('/updateProduct/:productId', async (req, res) => {
         return res.status(500).json('Erro ao atualizar o produto');
     }
 });
+
 app.delete("/productDelete/:productId", async (req, res) => {
     try {
         const productId = req.params.productId
@@ -312,6 +311,7 @@ app.get('/orders', async (req, res) => {
         return res.status(404).json("Algo deu errado")
     }
 })
+
 app.get('/admin-orders', async (req, res) => {
     try {
         const orders = await Order.find()
@@ -366,6 +366,9 @@ app.patch('/updateOrder', async (req, res) => {
     }
 })
 
-
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Algo deu errado!');
+});
 
 app.listen(3000, () => console.log("listening at port 3000"))
