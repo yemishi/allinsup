@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const MongoDBStore = require('connect-mongodb-session')(session);
 const cors = require('cors');
 const { search, productInfo, updateStock, generateOrderNumber, searchOrders } = require('./utils/index')
-const { User, Product, NavCollection, Order } = require('./models');
+const { User, Product, Order } = require('./models');
 require('dotenv').config();
 
 
