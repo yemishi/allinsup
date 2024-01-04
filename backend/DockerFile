@@ -1,20 +1,13 @@
-# Use uma imagem Node.js como base
 FROM node:latest
 
-# Crie e defina o diretório de trabalho no contêiner
 WORKDIR /usr/src/app
 
-# Copie o arquivo package.json e package-lock.json (se existirem)
 COPY package*.json ./
 
-# Instale as dependências
 RUN npm install
 
-# Copie todo o código fonte para o contêiner
 COPY . .
 
-# Exponha a porta em que o aplicativo está executando
 EXPOSE 3000
 
-# Comando para executar o aplicativo
 CMD ["npm", "start"]
