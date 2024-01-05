@@ -1,5 +1,4 @@
 
-import axios from "axios";
 import { CollectionRounded, Products, HighlightProducts } from "../features";
 import { Link, Outlet, } from "react-router-dom";
 

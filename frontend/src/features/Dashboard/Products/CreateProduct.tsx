@@ -27,7 +27,7 @@ export default function CreateProduct() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        form.variants.map((e, i) => {
+        form.variants.map((e) => {
             if (e.photos.length === 0) {
                 e.photos.push("https://smithcodistributing.com/wp-content/themes/hello-elementor/assets/default_product.png")
             }

@@ -1,4 +1,3 @@
-import loginRequest from "./services/axios.config"
 import { toast } from "../../components"
 import { motion } from 'framer-motion'
 import DeleteUser from "./DeleteUser"

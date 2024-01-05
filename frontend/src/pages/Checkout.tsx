@@ -33,7 +33,8 @@ export default function Checkout() {
     }
     const handleFinishCheckout = async () => {
         try {
-            const response = await axiosRequest.getUser();
+            const tel = localStorage.getItem("tel") as string
+            const response = await axiosRequest.getUser(tel);
 
             if (!response.data.address) {
                 toast.error('É preciso colocar um endereço antes.');

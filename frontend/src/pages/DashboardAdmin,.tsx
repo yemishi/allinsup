@@ -11,7 +11,7 @@ export default function DashboardAdmin() {
         const fetchAdmin = async () => {
             const tel = localStorage.getItem("tel")
             const adminNumber = import.meta.env.VITE_ADMIN_NUMBER
-
+            console.log(adminNumber !== adminNumber)
             if (tel !== adminNumber) return navigate('/404')
         }
         fetchAdmin()

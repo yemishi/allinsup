@@ -1,4 +1,4 @@
-import { SliderProps, axiosRequest } from "../../../components";
+import { axiosRequest } from "../../../components";
 import { ProductType } from "../../../types";
 import { ProductSliderGrid } from "../..";
 import { UseQueryResult, useQuery } from "react-query";

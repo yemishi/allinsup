@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef } from "react";
 import { useInfiniteQuery } from "react-query"
 import { axiosRequest, toast } from "../../../../components";
 import { ProductType } from "../../../../types";

@@ -1,13 +1,11 @@
 import { useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { motion } from 'framer-motion'
 import { axiosRequest } from '../components'
-import { divList, parseAlt, parseLocalCurrency, parseToNumber, productDetails, urlReplace } from '../utils';
-import { useGlobalState } from '../App';
+import { divList, parseAlt, parseLocalCurrency, parseToNumber } from '../utils';
 
 export default function OrderInfo() {
-    const { state } = useGlobalState()
     const navigate = useNavigate()
     const [allowProduct, setAllowProduct] = useState<boolean>(false)
     const { orderId } = useParams();
@@ -31,7 +29,7 @@ export default function OrderInfo() {
 
     if (!data) return <p className='text-center text-white font-bold'>Onde estou ?</p>
 
-    const { price, products, purchaseDate, address, productsIds, receivedDate, userId, status, extra } = data
+    const { price, products, purchaseDate, status, extra } = data
     const { paymentMethod } = extra
     const statusIcon = {
         Encomendado: <svg viewBox="0 0 24 24" className='fill-orange-200 stroke-slate-900 w-9 h-9' xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"> <defs>  </defs> <g id="reciept"> <line x1="8.18" y1="9.16" x2="12.95" y2="9.16"></line> <line x1="8.18" y1="12.98" x2="12.95" y2="12.98"></line> <line x1="8.18" y1="16.8" x2="12.95" y2="16.8"></line> <path d="M19.64,22.52H4.36A2.86,2.86,0,0,1,1.5,19.66V2.48L4,4.39,6.59,2.48,9.13,4.39l2.55-1.91,2.54,1.91,2.55-1.91V19.66a2.87,2.87,0,0,0,2.87,2.86Z"></path> <line x1="4.36" y1="9.16" x2="6.27" y2="9.16"></line> <line x1="4.36" y1="12.98" x2="6.27" y2="12.98"></line> <line x1="4.36" y1="16.8" x2="6.27" y2="16.8"></line> <path d="M18.68,10.11H22.5v9.55a2.87,2.87,0,0,1-5.73,0V10.11h1.91Z"></path> </g> </g>
