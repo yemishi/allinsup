@@ -1,8 +1,7 @@
 
 import axios from "axios";
 import { CollectionRounded, Products, HighlightProducts } from "../features";
-import { Outlet, } from "react-router-dom";
-
+import { Link, Outlet, } from "react-router-dom";
 
 export default function Home() {
   const checkTest = async () => {
@@ -18,10 +17,7 @@ export default function Home() {
       <HighlightProducts />
       <CollectionRounded />
       <Products />
-      <p onClick={fetchTest}>MakeLogin</p>
-      <p onClick={checkTest}>
-        check
-      </p>
+      <Link to={"/dashboard-admin/products"}>DashBoard</Link>
       <div className="bg-primary-550 h-full w-full top-0 z-30  ">
         <Outlet />
       </div>

@@ -37,11 +37,13 @@ export default function CartPanel({ isExisting, setIsExisting, handleClose }: Pr
 
     const sendOrder = async () => {
         try {
-            const response = await loginRequest.checkAuth()
+            const tel = localStorage.getItem("tel") as string
+            const response = await loginRequest.checkAuth(tel)
 
             if (response.isAuthenticated) {
+                console.log(response)
                 navigate("/checkout/address")
-                dispatch({type:"SET_CART_OPEN",payload:false})
+                dispatch({ type: "SET_CART_OPEN", payload: false })
             }
 
             if (!response.isAuthenticated) {
