@@ -8,8 +8,6 @@ import { useGlobalState } from "../../../App";
 
 async function fetchProducts({ brand = "", pageParam = 1 }) {
     const response = await axiosRequest.productBrand(brand === "Diversas" ? "" : brand, pageParam);
-    console.log(brand)
-    console.log(response)
     return response.data;
 }
 
