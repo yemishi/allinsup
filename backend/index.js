@@ -1,7 +1,5 @@
 const express = require("express");
-const session = require("express-session");
 const mongoose = require('mongoose');
-const MongoStore = require('connect-mongo');
 
 const cors = require('cors');
 const { search, productInfo, updateStock, generateOrderNumber, searchOrders } = require('./utils/index');
@@ -14,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-    origin: 'https://allinsuplementos.vercel.app',
+    origin: 'https://www.allinsuplementos.com',
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     credentials: true,
 };
@@ -43,10 +41,6 @@ app.post('/login', async (req, res) => {
         return res.status(500).json('Erro ao processar a requisição');
     }
 });
-
-
-
-
 
 app.post('/user', async (req, res) => {
     const { tel } = req.body
@@ -84,7 +78,6 @@ app.delete('/delete-user', async (req, res) => {
 
         return res.status(200).json("Sua conta foi deletada com sucesso.")
     } catch (error) {
-        console.log(error)
         return res.status(400).json("ocorreu algum erro ao deletar sua conta.")
     }
 })
@@ -102,8 +95,7 @@ app.get('/products', async (req, res) => {
         return res.status(200).json(q ? search(products, q) : products);
     }
 
-    catch (error) {
-        console.log(error);
+    catch (error) {;
         res.status(500).json({ message: 'Internal server error.' });
     }
 });
@@ -127,7 +119,6 @@ app.get("/productBrand", async (req, res) => {
 
         return res.status(201).json(products)
     } catch (error) {
-        console.log(error)
         return res.status(400).json("algmo de errado")
     }
 })
@@ -145,7 +136,6 @@ app.get('/ordersSearch', async (req, res) => {
         return res.status(200).json(q ? searchOrders(orders, q) : orders)
 
     } catch (error) {
-        console.log(error)
         return res.status(400).json("algo deu errado")
     }
 })
@@ -155,7 +145,6 @@ app.get('/products/highlight', async (req, res) => {
         const products = await Product.find({ highlight: { $exists: true, $ne: null, $type: 'number' } })
         return res.status(201).json(products)
     } catch (error) {
-        console.log(error)
         return res.status(400)
     }
 })
@@ -170,7 +159,6 @@ app.get('/productInfo', async (req, res) => {
 
         return res.status(200).send(productInfo(product, flavor, size))
     } catch (error) {
-        console.log(error)
         return res.status(401).send("aaaaaaa")
     }
 })
@@ -189,7 +177,6 @@ app.post('/newProduct', async (req, res) => {
 
         return res.status(200).send({ newProduct, msg: "product created with successfully" })
     } catch (error) {
-        console.log(error)
         res.send(error)
     }
 })
@@ -229,8 +216,7 @@ app.post('/newOrder', async (req, res) => {
         updateStock(products)
         return res.status(200).json({ msg: "Sua encomenda foi aceita com sucesso.", orderId: newOrder.orderId });
 
-    } catch (error) {
-        console.log(error);
+    } catch (error) {;
         return res.status(400).json("Algo deu errado");
     }
 });
@@ -303,7 +289,6 @@ app.get('/admin-orderInfo', async (req, res) => {
         return res.status(200).json(order)
 
     } catch (error) {
-        console.log(error)
         return res.status(400).json("Algo deu errado")
     }
 })
@@ -323,7 +308,6 @@ app.get('/orderInfo', async (req, res) => {
         return res.status(200).json(order)
 
     } catch (error) {
-        console.log(error)
         return res.status(400).json("Algo deu errado")
     }
 })
@@ -336,7 +320,6 @@ app.patch('/updateOrder', async (req, res) => {
         return res.status(200).json("Encomenda atualizada com sucesso")
 
     } catch (error) {
-        console.log(error)
         return res.status(400).json("Algo deu errado")
     }
 })

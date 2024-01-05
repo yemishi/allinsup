@@ -9,7 +9,7 @@ export default function CollectionRounded() {
     const children: ChildrenType[] = [
         {
             name: "Diversas",
-            banner: "https://cdn.discordapp.com/attachments/914969778387570688/1185324544358109274/image.png?ex=658f3281&is=657cbd81&hm=4b7c545c521d4e7836933177ff671110a36b4bee0d6dbb01dfa47e9880d8f03c&"
+            banner: "https://cdn.discordapp.com/attachments/914969778387570688/1192932066417983639/image.png?ex=65aadf90&is=65986a90&hm=cfb29419b7632b14062b830fe7e1132bf609aebd4975dfedecbeb3e272a0874f&"
         }
         , {
             name: 'Max Titanium',
