@@ -59,8 +59,9 @@ const apiEndPoints = {
     adminGetOrders: () => '/admin-orders',
     adminOrderInfo: (orderId: string) => `/admin-orderInfo?orderId=${orderId}`,
 
-
 }
+
+const tel = localStorage.getItem('tel')
 
 const axiosRequest = {
     highlightProducts: (): Promise<ProductsType> => axiosInstance.get(apiEndPoints.hightLightProducts),
@@ -74,13 +75,13 @@ const axiosRequest = {
     removeProduct: (productId: string): Promise<any> => axiosInstance.delete(apiEndPoints.removeProduct(productId)),
 
 
-    getUser: (): Promise<DataUserType> => axiosInstance.get(apiEndPoints.getUser()),
+    getUser: (tel: string): Promise<DataUserType> => axiosInstance.post(apiEndPoints.getUser(), { tel }),
 
-    newOrder: (price: string, products: OrderProducts[], extra: { paymentMethod: string, change: string | boolean }): Promise<newOrderType> => axiosInstance.post(apiEndPoints.newOrder(), { price, products, extra }),
-    getOrders: (): Promise<DataOrders> => axiosInstance.get(apiEndPoints.getOrders()),
+    newOrder: (price: string, products: OrderProducts[], extra: { paymentMethod: string, change: string | boolean }): Promise<newOrderType> => axiosInstance.post(apiEndPoints.newOrder(), { price, products, extra, tel }),
+    getOrders: (): Promise<DataOrders> => axiosInstance.post(apiEndPoints.getOrders(), { tel }),
     adminGetOrders: (): Promise<DataOrders> => axiosInstance.get(apiEndPoints.adminGetOrders()),
     updateOrder: (orderId: string, updatedOrder: UpdateOrderType): Promise<string> => axiosInstance.patch(apiEndPoints.updateOrder(), { orderId, updatedOrder }),
-    orderInfo: (orderId: string): Promise<DataOrder> => axiosInstance.get(apiEndPoints.orderInfo(orderId)),
+    orderInfo: (orderId: string): Promise<DataOrder> => axiosInstance.post(apiEndPoints.orderInfo(orderId), { tel }),
     adminOrderInfo: (orderInfo: string): Promise<DataOrder> => axiosInstance.get(apiEndPoints.adminOrderInfo(orderInfo)),
     searchOrder: (query?: string, page?: number, limit?: number): Promise<OrderData> => axiosInstance.get(apiEndPoints.searchOrder(query, page, limit))
 

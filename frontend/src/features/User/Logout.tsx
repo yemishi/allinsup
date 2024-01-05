@@ -5,12 +5,12 @@ import DeleteUser from "./DeleteUser"
 import { Dispatch, useState } from "react"
 import { Link } from "react-router-dom"
 import { useGlobalState } from "../../App"
+
 export default function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dispatch<React.SetStateAction<boolean>> }) {
     const { dispatch } = useGlobalState()
     const handleLogout = async () => {
         try {
-            const response = await loginRequest.logout();
-            toast.success(response)
+            localStorage.removeItem("tel")
             setIsAuth(false);
         } catch (error) {
             toast.error("Algo deu errado, tente novamente");
