@@ -23,15 +23,6 @@ const loginRequest = {
             console.error("Ocorreu um erro ao fazer login");
         }
     },
-    checkAuth: async (tel: string): Promise<UserData | { isAuthenticated: false }> => {
-        try {
-            const response = await axiosInstance.post('/check-auth', { tel }, { withCredentials: true });
-            return Promise.resolve(response.data);
-        } catch (error) {
-            return { isAuthenticated: false }
-        }
-    },
-
 
     deleteUser: async (): Promise<any> => {
         const tel = localStorage.getItem("tel")

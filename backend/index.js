@@ -44,14 +44,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.post('/check-auth', (req, res) => {
-    const { tel } = req.body
-    if (tel) {
-        return res.json({ isAuthenticated: true });
-    } else {
-        return res.status(400).json({ isAuthenticated: false });
-    }
-});
+
 
 
 
