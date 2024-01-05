@@ -63,6 +63,7 @@ app.post('/login', async (req, res) => {
 });
 
 app.get('/check-auth', (req, res) => {
+    console.log({ user: req.session.user })
     if (req.session.user) {
         return res.json({ isAuthenticated: true, user: req.session.user });
     } else {
