@@ -22,8 +22,8 @@ export default function AddressManager() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await loginRequest.checkAuth()
-            if (response.isAuthenticated && response.user.tel) setForm({ ...form, tel: response.user.tel })
+            const tel = localStorage.getItem("tel")
+            if (tel) setForm({ ...form, tel })
         }
         fetchData()
     }, [state.userOpen])

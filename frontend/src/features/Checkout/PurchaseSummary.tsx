@@ -38,7 +38,7 @@ export default function PurchaseSummary() {
             .then(() => {
                 toast.info('Chave copiada para a área de transferência!')
             })
-            .catch(err => {
+            .catch(() => {
                 toast.error('Não foi possível copiar a chave.');
             });
     };

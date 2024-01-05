@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 
 export default function ProductSliderGrid({ children }: { children: ProductType[] }) {
     const { dispatch, state } = useGlobalState()
+
     const parseLocalCurrency = (e: (number)) => e.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
     const settings: SliderProps = {
         spaceBetween: 20,
@@ -26,7 +27,7 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
         <Slider settings={settings}>
 
             {children?.map((e) => {
-                const sizeIndex = e.variants.map((ele, y) => {
+                const sizeIndex = e.variants.map((ele) => {
                     const { sizeDetails } = ele;
                     const highlightedIndex = sizeDetails.findIndex((x) => x.sizeHighlight);
                     if (highlightedIndex) return highlightedIndex

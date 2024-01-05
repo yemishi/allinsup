@@ -75,7 +75,7 @@ const axiosRequest = {
     removeProduct: (productId: string): Promise<any> => axiosInstance.delete(apiEndPoints.removeProduct(productId)),
 
 
-    getUser: (tel: string): Promise<DataUserType> => axiosInstance.post(apiEndPoints.getUser(), { tel }),
+    getUser: (tel: string = ""): Promise<DataUserType> => axiosInstance.post(apiEndPoints.getUser(), { tel }),
 
     newOrder: (price: string, products: OrderProducts[], extra: { paymentMethod: string, change: string | boolean }): Promise<newOrderType> => axiosInstance.post(apiEndPoints.newOrder(), { price, products, extra, tel }),
     getOrders: (): Promise<DataOrders> => axiosInstance.post(apiEndPoints.getOrders(), { tel }),

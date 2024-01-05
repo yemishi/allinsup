@@ -12,7 +12,7 @@ export default function ProductInfo({ product, similarProducts }: { product: Pro
     const { dispatch, state } = useGlobalState()
     const [variantIndex, setVariantIndex] = useState<number>(0)
     const [sizeIndex, setSizeIndex] = useState<number>(0)
-    const { _id, sizeDetails, variants, flavor, name, photos, price, sizeProduct, desc, amount: amountInCart, stock, updatedName, promotion } = productDetails(product, state.cart, variantIndex, sizeIndex)
+    const { _id, sizeDetails, variants, flavor, name, photos, price, sizeProduct, desc, stock, updatedName, promotion } = productDetails(product, state.cart, variantIndex, sizeIndex)
     const [amount, setAmount] = useState<number>(1)
     const settings: SliderProps = {
         spaceBetween: 40,

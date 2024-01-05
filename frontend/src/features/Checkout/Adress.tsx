@@ -1,11 +1,8 @@
 
 import { useGlobalState } from "../../App"
-import { lazy, useEffect, useState } from "react"
-import loginRequest from "../User/services/axios.config"
+import { useEffect, useState } from "react"
 import { axiosRequest } from "../../components"
-import { parseLocalCurrency, totalAmount } from "../../utils"
 import { AddressType } from "../../types"
-import { Link } from "react-router-dom"
 
 
 export default function Address() {
@@ -14,7 +11,8 @@ export default function Address() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axiosRequest.getUser()
+            const tel = localStorage.getItem("tel") as string
+            const response = await axiosRequest.getUser(tel)
             const { address } = response.data
             setCurrentAddress(address)
         }

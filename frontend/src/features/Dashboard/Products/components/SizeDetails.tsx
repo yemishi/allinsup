@@ -1,7 +1,6 @@
 import { SetStateAction } from "react";
 import { NewProductType } from "../types";
 import { parseLocalCurrency } from "../../../../utils";
-import { inputField } from "../utils/templates";
 
 interface PropsType {
     form: NewProductType
