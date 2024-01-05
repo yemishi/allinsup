@@ -17,7 +17,7 @@ const loginRequest = {
 
     login: async (tel: string): Promise<any> => {
         try {
-            const response = await axiosInstance.post('/login', { tel }, { withCredentials: true });
+            const response = await axiosInstance.post('/login', { tel });
             return Promise.resolve(response.data);
         } catch (error) {
             console.error("Ocorreu um erro ao fazer login");
@@ -25,7 +25,7 @@ const loginRequest = {
     },
     checkAuth: async (): Promise<UserData | { isAuthenticated: false }> => {
         try {
-            const response = await axiosInstance.get('/check-auth', { withCredentials: true });
+            const response = await axiosInstance.get('/check-auth');
             return Promise.resolve(response.data);
         } catch (error) {
             return { isAuthenticated: false }
@@ -34,16 +34,16 @@ const loginRequest = {
 
     logout: async (): Promise<any> => {
         try {
-            const response = await axiosInstance.get('/logout', { withCredentials: true });
+            const response = await axiosInstance.get('/logout');
             return response.data;
         } catch (error) {
             throw error;
         }
     },
-    
+
     deleteUser: async (): Promise<any> => {
         try {
-            const response = await axiosInstance.delete('/delete-user', { withCredentials: true })
+            const response = await axiosInstance.delete('/delete-user')
             return Promise.resolve(response.data);
         } catch (error) {
             console.error("Ocorreu algum erro ao deletar sua conta");
@@ -60,7 +60,7 @@ const loginRequest = {
     },
     updateUser: async (address: AddressType): Promise<any> => {
         try {
-            const response = await axiosInstance.patch('/update-user', { address }, { withCredentials: true })
+            const response = await axiosInstance.patch('/update-user', { address })
             return Promise.resolve(response.data);
         } catch (error) {
             return "algo deu errado"

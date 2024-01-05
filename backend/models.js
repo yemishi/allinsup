@@ -6,15 +6,6 @@ const userSchema = new mongoose.Schema({
 
 })
 
-const soldSchema = new mongoose.Schema({
-    userId: String,
-    productId: String,
-    flavor: String,
-    sizeProduct: String,
-    qtd: Number,
-    purchaseDate: String,
-})
-
 const order = new mongoose.Schema({
     userId: String,
     orderId: String,
@@ -27,11 +18,6 @@ const order = new mongoose.Schema({
     address: { tel: String, address: String, name: String, cep: String, state: String, city: String, houseNumber: Number, complement: String }
 })
 
-const navCollections = new mongoose.Schema({
-    name: String,
-    banner: String,
-    color: String
-})
 
 const sizeTypeSchema = new mongoose.Schema({
     sizeProduct: String,
@@ -65,10 +51,9 @@ const productSchema = new mongoose.Schema({
 
 
 const Sold = mongoose.model('Sold', soldSchema, 'sold')
-const NavCollection = mongoose.model('NavCollection', navCollections, 'navCollection')
 const User = mongoose.model('User', userSchema, 'users');
 const Product = mongoose.model('Product', productSchema, 'products');
 const Order = mongoose.model("Order", order, "order")
 module.exports = {
-    User, Product, NavCollection, Order, Sold
+    User, Product, Order
 };
