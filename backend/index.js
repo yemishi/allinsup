@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-    origin: 'https://allinsuplementos.vercel.app',
+    origin: '*',
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     credentials: true,
 };
@@ -29,27 +29,37 @@ mongoose.connect(process.env.MONGODB_CONNECT_URL);
 
 app.set('trust proxy', 1);
 
-app.use(
-    session({
-        secret: process.env.SECRET_KEY,
-        resave: false,
-        saveUninitialized: true,
-        cookie: {
-            maxAge: 1000 * 60 * 60 * 24 * 7,
-            secure: true,
-            httpOnly: true,
-        },
-        store: MongoStore.create({
-            mongoUrl: process.env.MONGODB_CONNECT_URL,
-            ttl: 7 * 24 * 60 * 60, 
-        }),
+
+app.use(session({
+    name: 'example.sid',
+    secret: process.env.SECRET_KEY,
+    httpOnly: true,
+    secure: true,
+    maxAge: 1000 * 60 * 60 * 7,
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_CONNECT_URL,
     })
-);
+}));
 
 require('./connectMongoDB')()
 
 
+app.get('test-makelogin', async (req, res) => {
+    try {
+     req.session.user = {
+        name:"test baby"
+     }
+    
+    } catch (error) {
+        return res.status(400).json(error)
+    }
+})
 
+app.get('/test-login', (req, res) => {
+    return res.status(200).json({ test: true, user: req.session })
+})
 app.post('/login', async (req, res) => {
     const { tel } = req.body;
     try {
