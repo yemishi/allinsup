@@ -49,8 +49,6 @@ const productSchema = new mongoose.Schema({
     highlight: Number
 });
 
-
-const Sold = mongoose.model('Sold', soldSchema, 'sold')
 const User = mongoose.model('User', userSchema, 'users');
 const Product = mongoose.model('Product', productSchema, 'products');
 const Order = mongoose.model("Order", order, "order")
