@@ -6,13 +6,7 @@ import { Route, Routes, Outlet, Link } from "react-router-dom";
 import axios from "axios";
 
 export default function Home() {
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get("https://allinsupback.onrender.com/test")
-      console.log(response)
-    }
-    fetchData()
-  }, [])
+
   return (
     <div className="w-full h-full flex flex-col gap-4 overflow-hidden justify-center items-center ">
       <HighlightProducts />
