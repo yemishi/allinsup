@@ -1,5 +1,5 @@
 import { useGlobalState } from "../../App"
-import loginRequest from "./services/axios.config";
+
 import { useState, useEffect } from "react"
 import Logout from "./Logout";
 import Login from "./Login";
@@ -10,12 +10,12 @@ export default function User() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const tel = localStorage.getItem("tel") as string
-            const response = await loginRequest.checkAuth(tel)
-            if (response.isAuthenticated) {
-                setTel(response.user.tel)
-                setIsAuth(response.isAuthenticated)
-            }
+            const telStorage = localStorage.getItem("tel") as string
+
+            if (telStorage) {
+                setTel(telStorage)
+                setIsAuth(true)
+            } else setIsAuth(false)
         }
         fetchData()
 

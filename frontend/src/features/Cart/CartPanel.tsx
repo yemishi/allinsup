@@ -38,15 +38,11 @@ export default function CartPanel({ isExisting, setIsExisting, handleClose }: Pr
     const sendOrder = async () => {
         try {
             const tel = localStorage.getItem("tel") as string
-            const response = await loginRequest.checkAuth(tel)
 
-            if (response.isAuthenticated) {
-                console.log(response)
+            if (tel) {
                 navigate("/checkout/address")
                 dispatch({ type: "SET_CART_OPEN", payload: false })
-            }
-
-            if (!response.isAuthenticated) {
+            } else {
                 dispatch({ type: "SET_USER_OPEN", payload: true })
                 toast.warning("É preciso fazer login antes")
             }
