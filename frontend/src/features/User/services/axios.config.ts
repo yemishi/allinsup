@@ -6,9 +6,9 @@ const axiosInstance: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     headers: {
         'Content-Type': 'application/json',
-    },
-    withCredentials: true
-});
+        withCredentials: true
+    }
+})
 
 type FetchAddressType = { localidade: string, uf: string; } | { error: true };
 type UserData = { user: UserType, isAuthenticated: boolean }
@@ -17,7 +17,7 @@ const loginRequest = {
 
     login: async (tel: string): Promise<any> => {
         try {
-            const response = await axiosInstance.post('/login', { tel });
+            const response = await axiosInstance.post('/login', { tel }, { withCredentials: true });
             return Promise.resolve(response.data);
         } catch (error) {
             console.error("Ocorreu um erro ao fazer login");
@@ -25,7 +25,7 @@ const loginRequest = {
     },
     checkAuth: async (): Promise<UserData | { isAuthenticated: false }> => {
         try {
-            const response = await axiosInstance.get('/check-auth');
+            const response = await axiosInstance.get('/check-auth', { withCredentials: true });
             return Promise.resolve(response.data);
         } catch (error) {
             return { isAuthenticated: false }
@@ -34,16 +34,16 @@ const loginRequest = {
 
     logout: async (): Promise<any> => {
         try {
-            const response = await axiosInstance.get('/logout');
+            const response = await axiosInstance.get('/logout', { withCredentials: true });
             return response.data;
         } catch (error) {
             throw error;
         }
     },
-
+    
     deleteUser: async (): Promise<any> => {
         try {
-            const response = await axiosInstance.delete('/delete-user')
+            const response = await axiosInstance.delete('/delete-user', { withCredentials: true })
             return Promise.resolve(response.data);
         } catch (error) {
             console.error("Ocorreu algum erro ao deletar sua conta");
@@ -60,7 +60,7 @@ const loginRequest = {
     },
     updateUser: async (address: AddressType): Promise<any> => {
         try {
-            const response = await axiosInstance.patch('/update-user', { address })
+            const response = await axiosInstance.patch('/update-user', { address }, { withCredentials: true })
             return Promise.resolve(response.data);
         } catch (error) {
             return "algo deu errado"
