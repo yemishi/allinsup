@@ -23,23 +23,19 @@ app.use(cors(corsOptions));
 mongoose.connect(process.env.MONGODB_CONNECT_URL);
 
 
-const store = new MongoDBStore({
-    uri: process.env.MONGODB_CONNECT_URL,
-    collection: 'sessions',
-    expires: 1000 * 60 * 60 * 24 * 7,
-});
+
 
 store.on('error', (error) => {
     console.error('Erro ao inicializar o MongoDBStore:', error);
 });
 
 app.set('trust proxy', 1);
+
 app.use(
     session({
         secret: process.env.SECRET_KEY,
         resave: false,
         saveUninitialized: true,
-        store: store,
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 7,
             secure: false,
@@ -61,7 +57,7 @@ app.post('/login', async (req, res) => {
             user = await newUser.save();
         }
         req.session.user = user;
-
+        console.log('Session created:', req.session.user);
         return res.json('Autenticação bem-sucedida');
     } catch (error) {
         console.error(error);
