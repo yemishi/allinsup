@@ -1,8 +1,6 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { logoCloseEvent } from "../utils/helpers";
 import { useEffect } from "react";
-import { axiosRequest } from "../components";
-import loginRequest from "../features/User/services/axios.config";
 
 export default function DashboardAdmin() {
     const location = useLocation()
@@ -11,14 +9,10 @@ export default function DashboardAdmin() {
     const orderPath = location.pathname.toLowerCase().includes('/orders')
     useEffect(() => {
         const fetchAdmin = async () => {
-            const response = await loginRequest.checkAuth()
+            const tel = localStorage.getItem("tel")
             const adminNumber = import.meta.env.VITE_ADMIN_NUMBER
 
-            if (!response.isAuthenticated) return navigate('/404')
-
-            const { tel } = response.user
-
-            if (adminNumber !== tel) return navigate('/404')
+            if (tel !== adminNumber) return navigate('/404')
         }
         fetchAdmin()
     }, [])
