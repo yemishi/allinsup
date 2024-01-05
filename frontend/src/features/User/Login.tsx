@@ -48,15 +48,15 @@ export default function Login() {
         event.preventDefault()
         try {
             localStorage.setItem("tel", phoneNumber)
-
             const response = await loginRequest.login(phoneNumber).then((res) => res)
             toast.success(response)
+            handleClose() 
         } catch (error) {
-            console.log(error)
-            toast.error("error ao tentar iniciar sessão")
+            toast.error("Erro ao tentar iniciar sessão")
+            handleClose() 
         }
-        handleClose()
     }
+    
 
     const isAdmin = phoneNumber === import.meta.env.VITE_ADMIN_NUMBER
 
