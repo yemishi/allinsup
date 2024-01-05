@@ -46,8 +46,13 @@ export default function Login() {
 
     const submitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        const response = await loginRequest.login(phoneNumber).then((res) => res)
-        toast.success(response)
+        try {
+            const response = await loginRequest.login(phoneNumber).then((res) => res)
+            toast.success(response)
+        } catch (error) {
+            console.log(error)
+            toast.error("error ao tentar iniciar sessão")
+        }
         handleClose()
     }
 
