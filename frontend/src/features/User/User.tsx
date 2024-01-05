@@ -15,6 +15,7 @@ export default function User() {
                 setTel(response.user.tel)
                 setIsAuth(response.isAuthenticated)
             }
+            console.log(response, "aaa")
         }
         fetchData()
 
