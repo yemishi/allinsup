@@ -32,7 +32,7 @@ export default function Orders() {
             setOrders(data);
         }
     }, [data]);
-    
+
     return (
         <div className="flex flex-col items-center p-4 text-white gap-5">
             <h1 className="text-xl mt-4 self-baseline font-anton font-semibold">Meus pedidos</h1>
@@ -51,7 +51,8 @@ export default function Orders() {
                 </div>
             })}
             {!orders && <div>
-                siuuuuu</div>}
+                siuuuuu
+            </div>}
         </div>
     )
 }
