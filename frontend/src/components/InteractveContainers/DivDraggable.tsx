@@ -27,7 +27,7 @@ export default function DivDraggable({ children, closeParent, onScroll, setState
         }, 700);
     }
 
-    const handleDragEnd = async (event: any, info: PanInfo) => {
+    const handleDragEnd = async (_: any, info: PanInfo) => {
         if (info.offset.x < -180) {
             setDirectionDrag("-100%")
             handleClose()

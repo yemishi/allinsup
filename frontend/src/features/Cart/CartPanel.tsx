@@ -1,12 +1,11 @@
-import { PanInfo, motion, Variants } from "framer-motion"
+import { motion, } from "framer-motion"
 import { useState, useRef, Dispatch } from "react"
 import CartProducts from "./CartProducts"
 import { useNavigate } from "react-router-dom"
-import { DivDraggable, axiosRequest, toast } from "../../components"
+import { DivDraggable, toast } from "../../components"
 import { totalPrice, totalAmount, parseLocalCurrency, stickyVariant } from "../../utils/"
 
 import { useGlobalState } from "../../App"
-import loginRequest from "../User/services/axios.config"
 
 interface PropsType {
     isExisting: boolean;

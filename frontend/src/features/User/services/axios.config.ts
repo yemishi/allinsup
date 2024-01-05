@@ -1,6 +1,5 @@
 import axios, { AxiosInstance } from "axios";
 import { AddressType } from "../../../types";
-import { UserType } from "../../../types";
 
 const axiosInstance: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
@@ -11,7 +10,6 @@ const axiosInstance: AxiosInstance = axios.create({
 })
 
 type FetchAddressType = { localidade: string, uf: string; } | { error: true };
-type UserData = { user: UserType, isAuthenticated: boolean }
 
 const loginRequest = {
 

@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import AllProducts from "./components/AllProducts"
 import { ProductType } from "../../../types"
 import { axiosRequest, toast } from "../../../components"

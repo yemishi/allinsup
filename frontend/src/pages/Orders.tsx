@@ -1,6 +1,6 @@
 import { useEffect, useState, } from "react"
 import { OrderType } from "../types"
-import { axiosRequest, toast } from "../components"
+import { axiosRequest } from "../components"
 import { divList } from "../utils"
 import { useNavigate } from "react-router-dom"
 import { useGlobalState } from "../App"

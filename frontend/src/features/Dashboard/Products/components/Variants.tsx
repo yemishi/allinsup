@@ -1,7 +1,7 @@
 import { SetStateAction, useState } from "react";
 import { Slide, Slider, SliderProps } from "../../../../components"
 import { parseAlt, parseLocalCurrency } from "../../../../utils"
-import { NewProductType, NewVariantType } from "../types"
+import { NewProductType } from "../types"
 
 interface PropsType {
     form: NewProductType
