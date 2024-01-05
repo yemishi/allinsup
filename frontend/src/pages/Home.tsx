@@ -9,7 +9,7 @@ export default function Home() {
       <HighlightProducts />
       <CollectionRounded />
       <Products />
-      <Link to={"/dashboard-admin/products"}>DashBoard</Link>
+      <Link to={"/dashboard-admin"}>DashBoard</Link>
       <div className="bg-primary-550 h-full w-full top-0 z-30  ">
         <Outlet />
       </div>
