@@ -6,11 +6,11 @@ import { Outlet, } from "react-router-dom";
 
 export default function Home() {
   const checkTest = async () => {
-    const response = await axios.get("https://allinsupback.onrender.com/test-login")
+    const response = await axios.get("https://allinsupback.onrender.com/test-login", { withCredentials: true })
     console.log(response.data)
   }
   const fetchTest = async () => {
-    const response = await axios.get("https://allinsupback.onrender.com/test-makelogin")
+    const response = await axios.get("https://allinsupback.onrender.com/test-makelogin", { withCredentials: true })
     console.log(response.data)
   }
   return (
@@ -18,7 +18,7 @@ export default function Home() {
       <HighlightProducts />
       <CollectionRounded />
       <Products />
-        <p onClick={fetchTest}>MakeLogin</p>
+      <p onClick={fetchTest}>MakeLogin</p>
       <p onClick={checkTest}>
         check
       </p>

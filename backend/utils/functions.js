@@ -1,4 +1,4 @@
-const updateStock = async (products, purchaseDate, userId) => {
+const updateStock = async (products) => {
     const { Product} = require('../models');
 
     try {

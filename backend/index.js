@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-    origin: '*',
+    origin: 'https://allinsuplementos.vercel.app',
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     credentials: true,
 };
@@ -23,44 +23,10 @@ app.use(cors(corsOptions));
 
 mongoose.connect(process.env.MONGODB_CONNECT_URL);
 
-
-
-
-
 app.set('trust proxy', 1);
-
-
-app.use(session({
-    name: 'example.sid',
-    secret: process.env.SECRET_KEY,
-    httpOnly: true,
-    secure: true,
-    maxAge: 1000 * 60 * 60 * 7,
-    resave: false,
-    saveUninitialized: true,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_CONNECT_URL,
-    })
-}));
 
 require('./connectMongoDB')()
 
-
-app.get('/test-makelogin', async (req, res) => {
-    try {
-     req.session.user = {
-        name:"test baby"
-     }
-     return res.status(200).json("sucesso")
-    
-    } catch (error) {
-        return res.status(400).json(error)
-    }
-})
-
-app.get('/test-login', (req, res) => {
-    return res.status(200).json({ test: true, user: req.session })
-})
 app.post('/login', async (req, res) => {
     const { tel } = req.body;
     try {
@@ -70,8 +36,7 @@ app.post('/login', async (req, res) => {
             const newUser = new User({ tel });
             user = await newUser.save();
         }
-        req.session.user = user;
-        console.log('Session created:', req.session.user);
+
         return res.json('Autenticação bem-sucedida');
     } catch (error) {
         console.error(error);
@@ -79,31 +44,32 @@ app.post('/login', async (req, res) => {
     }
 });
 
-app.get('/check-auth', (req, res) => {
-    console.log({ user: req.session.user })
-    if (req.session.user) {
-        return res.json({ isAuthenticated: true, user: req.session.user });
+app.post('/check-auth', (req, res) => {
+    const { tel } = req.body
+    if (tel === process.env.ADMIN_NUMBER) {
+        return res.json({ isAuthenticated: true });
     } else {
-        return res.status(400).json({ isAuthenticated: false, test: req.session });
+        return res.status(400).json({ isAuthenticated: false });
     }
 });
 
 
-app.get('/user', async (req, res) => {
+app.post('/user', async (req, res) => {
+    const { tel } = req.body
     try {
-        const user = await User.findOne({ _id: req.session.user._id })
+        const user = await User.findOne({ tel })
 
         return res.status(200).json(user)
     } catch (error) {
         return res.status(400).json({ isAuthenticated: false });
     }
 })
+
 app.patch('/update-user', async (req, res) => {
     try {
-        const user = await req.session.user
-        const { address } = req.body;
+        const { address, tel } = req.body;
 
-        await User.findOneAndUpdate({ _id: user._id }, { $set: { address } }, { new: true });
+        await User.findOneAndUpdate({ tel }, { $set: { address } }, { new: true });
 
         return res.status(200).json("Usuario atualizado com sucesso.")
     } catch (error) {
@@ -112,21 +78,14 @@ app.patch('/update-user', async (req, res) => {
 
 });
 
-app.get('/logout', (req, res) => {
-    if (req.session.user) {
-        req.session.destroy()
-        return res.status(200).json("Usuario desconectado com sucesso!")
-    }
-
-})
 
 app.delete('/delete-user', async (req, res) => {
+
+    const { tel } = req.body
     try {
-        const { user } = req.session
-        const foundUser = User.findOne({ _id: user._id })
+        const foundUser = User.findOne({ tel: tel })
         if (!foundUser) return res.status(404).json("Usuario nao encontrado.")
 
-        req.session.destroy()
         await foundUser.deleteOne()
 
         return res.status(200).json("Sua conta foi deletada com sucesso.")
@@ -254,8 +213,9 @@ const currentDay = () => {
 
 app.post('/newOrder', async (req, res) => {
     try {
-        const user = await User.findOne({ _id: req.session.user._id });
-        const { price, products, extra } = req.body;
+        const { price, products, extra, tel } = req.body;
+
+        const user = await User.findOne({ tel });
 
         if (!user) {
             console.log(user, 'aaaa')
@@ -268,11 +228,11 @@ app.post('/newOrder', async (req, res) => {
         let orderId = generateOrderNumber()
         const foundOrder = await Order.findOne({ orderId })
         if (foundOrder) orderId = generateOrderNumber()
-        console.log(user)
+
         const newOrder = new Order({ userId: user._id, address, products, status: "Encomendado", price, extra, purchaseDate: currentDay(), orderId });
 
         await newOrder.save();
-        updateStock(products, currentDay(), req.session.user._id)
+        updateStock(products)
         return res.status(200).json({ msg: "Sua encomenda foi aceita com sucesso.", orderId: newOrder.orderId });
 
     } catch (error) {
@@ -315,9 +275,10 @@ app.delete("/productDelete/:productId", async (req, res) => {
 
 
 app.get('/orders', async (req, res) => {
+    const { tel } = req.body
     try {
-        if (!req.session.user) return res.status(404).json()
-        const user = await User.findOne({ _id: req.session.user._id })
+        if (!tel) return res.status(404).json()
+        const user = await User.findOne({ tel })
 
         const orders = await Order.find({ userId: user._id })
 
@@ -356,8 +317,12 @@ app.get('/admin-orderInfo', async (req, res) => {
 
 app.get('/orderInfo', async (req, res) => {
     try {
+        const { tel } = req.body
         const { orderId } = req.query
-        const order = await Order.findOne({ orderId, userId: req.session.user._id })
+
+        const user = await User.findOne({ tel })
+
+        const order = await Order.findOne({ orderId, userId: user._id })
 
         if (!order) return res.status(404).json("Pedido nao encontrado.")
 

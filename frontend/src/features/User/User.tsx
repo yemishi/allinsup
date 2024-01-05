@@ -10,7 +10,8 @@ export default function User() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await loginRequest.checkAuth()
+            const tel = localStorage.getItem("tel") as string
+            const response = await loginRequest.checkAuth(tel)
             if (response.isAuthenticated) {
                 setTel(response.user.tel)
                 setIsAuth(response.isAuthenticated)

@@ -23,27 +23,20 @@ const loginRequest = {
             console.error("Ocorreu um erro ao fazer login");
         }
     },
-    checkAuth: async (): Promise<UserData | { isAuthenticated: false }> => {
+    checkAuth: async (tel: string): Promise<UserData | { isAuthenticated: false }> => {
         try {
-            const response = await axiosInstance.get('/check-auth', { withCredentials: true });
+            const response = await axiosInstance.post('/check-auth', { tel }, { withCredentials: true });
             return Promise.resolve(response.data);
         } catch (error) {
             return { isAuthenticated: false }
         }
     },
 
-    logout: async (): Promise<any> => {
-        try {
-            const response = await axiosInstance.get('/logout', { withCredentials: true });
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
-    },
-    
+
     deleteUser: async (): Promise<any> => {
+        const tel = localStorage.getItem("tel")
         try {
-            const response = await axiosInstance.delete('/delete-user', { withCredentials: true })
+            const response = await axiosInstance.delete('/delete-user', { data: { tel }, withCredentials: true })
             return Promise.resolve(response.data);
         } catch (error) {
             console.error("Ocorreu algum erro ao deletar sua conta");
@@ -59,8 +52,9 @@ const loginRequest = {
         }
     },
     updateUser: async (address: AddressType): Promise<any> => {
+        const tel = localStorage.getItem("tel")
         try {
-            const response = await axiosInstance.patch('/update-user', { address }, { withCredentials: true })
+            const response = await axiosInstance.patch('/update-user', { address, tel }, { withCredentials: true })
             return Promise.resolve(response.data);
         } catch (error) {
             return "algo deu errado"
