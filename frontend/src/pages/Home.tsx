@@ -8,7 +8,7 @@ import axios from "axios";
 export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get("http://100.20.92.101/check-auth")
+      const response = await axios.get("https://allinsupback.onrender.com/test")
       console.log(response)
     }
     fetchData()
