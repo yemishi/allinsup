@@ -1,7 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const mongoose = require('mongoose');
-const MongoDBStore = require('connect-mongodb-session')(session);
+
 const cors = require('cors');
 const { search, productInfo, updateStock, generateOrderNumber, searchOrders } = require('./utils/index');
 const { User, Product, Order } = require('./models');
@@ -25,9 +25,6 @@ mongoose.connect(process.env.MONGODB_CONNECT_URL);
 
 
 
-store.on('error', (error) => {
-    console.error('Erro ao inicializar o MongoDBStore:', error);
-});
 
 app.set('trust proxy', 1);
 
@@ -69,7 +66,7 @@ app.get('/check-auth', (req, res) => {
     if (req.session.user) {
         return res.json({ isAuthenticated: true, user: req.session.user });
     } else {
-        return res.status(400).json({ isAuthenticated: false });
+        return res.status(400).json({ isAuthenticated: false, test: req.session });
     }
 });
 
