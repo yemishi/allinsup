@@ -13,11 +13,10 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-    origin: 'https://allinsuplementos.vercel.app/',
-    methods: ['GET', 'POST', 'DELETE', 'PATCH', "PUT"],
+    origin: 'https://allinsuplementos.vercel.app',
+    methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     credentials: true,
 };
-
 app.use(cors(corsOptions));
 
 
