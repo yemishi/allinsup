@@ -46,7 +46,7 @@ require('./connectMongoDB')()
 
 
 app.get("/test", async (req, res) => {
-return res.status(200).json("bom")
+    return res.status(200).json("bom")
 })
 app.post('/login', async (req, res) => {
     const { tel } = req.body;
