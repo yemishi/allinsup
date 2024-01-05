@@ -46,7 +46,7 @@ app.use(session({
 require('./connectMongoDB')()
 
 
-app.get('test-makelogin', async (req, res) => {
+app.get('/test-makelogin', async (req, res) => {
     try {
      req.session.user = {
         name:"test baby"
