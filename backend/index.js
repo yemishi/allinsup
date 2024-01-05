@@ -32,11 +32,15 @@ const store = new MongoDBStore({
 store.on('error', (error) => {
     console.error('Erro ao inicializar o MongoDBStore:', error);
 });
+
+app.set('trust proxy', 1);
+
 const sessionMiddleware = session({
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },
+    store: store
 
 });
 
