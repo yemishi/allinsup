@@ -47,6 +47,8 @@ export default function Login() {
     const submitLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         try {
+            localStorage.setItem("tel", phoneNumber)
+
             const response = await loginRequest.login(phoneNumber).then((res) => res)
             toast.success(response)
         } catch (error) {
