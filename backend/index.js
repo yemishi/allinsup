@@ -51,6 +51,7 @@ app.get('test-makelogin', async (req, res) => {
      req.session.user = {
         name:"test baby"
      }
+     return res.status(200).json("sucesso")
     
     } catch (error) {
         return res.status(400).json(error)
