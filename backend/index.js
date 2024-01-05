@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGODB_CONNECT_URL);
 const store = new MongoDBStore({
     uri: process.env.MONGODB_CONNECT_URL,
     collection: 'sessions',
-    expires: 1000,
+    expires: 1000 * 60 * 60 * 24 * 7,
 });
 
 store.on('error', (error) => {
@@ -34,17 +34,19 @@ store.on('error', (error) => {
 });
 
 app.set('trust proxy', 1);
-
-const sessionMiddleware = session({
-    secret: process.env.SECRET_KEY,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false },
-    store: store
-
-});
-
-app.use(sessionMiddleware)
+app.use(
+    session({
+        secret: process.env.SECRET_KEY,
+        resave: false,
+        saveUninitialized: true,
+        store: store,
+        cookie: {
+            maxAge: 1000 * 60 * 60 * 24 * 7,
+            secure: false,
+            httpOnly: true,
+        },
+    })
+);
 require('./connectMongoDB')()
 
 
