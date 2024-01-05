@@ -1,6 +1,6 @@
 
 import { CollectionRounded, Products, HighlightProducts } from "../features";
-import { Link, Outlet, } from "react-router-dom";
+import { Outlet, } from "react-router-dom";
 
 export default function Home() {
 
@@ -9,7 +9,6 @@ export default function Home() {
       <HighlightProducts />
       <CollectionRounded />
       <Products />
-      <Link to={"/dashboard-admin"}>DashBoard</Link>
       <div className="bg-primary-550 h-full w-full top-0 z-30  ">
         <Outlet />
       </div>
