@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: '*',
     methods: ['GET', 'POST', 'DELETE', 'PATCH', "PUT"],
     credentials: true,
 };
@@ -45,7 +45,9 @@ app.use(sessionMiddleware)
 require('./connectMongoDB')()
 
 
-
+app.get("/test", async (req, res) => {
+return res.status(200).json("bom")
+})
 app.post('/login', async (req, res) => {
     const { tel } = req.body;
     try {
