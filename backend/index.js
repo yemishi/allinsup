@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
 
 const cors = require('cors');
 const { search, productInfo, updateStock, generateOrderNumber, searchOrders } = require('./utils/index');
@@ -38,8 +39,13 @@ app.use(
             secure: true,
             httpOnly: true,
         },
+        store: MongoStore.create({
+            mongoUrl: process.env.MONGODB_CONNECT_URL,
+            ttl: 7 * 24 * 60 * 60, 
+        }),
     })
 );
+
 require('./connectMongoDB')()
 
 
