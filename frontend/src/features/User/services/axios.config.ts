@@ -6,9 +6,9 @@ const axiosInstance: AxiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_URL,
     headers: {
         'Content-Type': 'application/json',
-        withCredentials: true
-    }
-})
+    },
+    withCredentials: true
+});
 
 type FetchAddressType = { localidade: string, uf: string; } | { error: true };
 type UserData = { user: UserType, isAuthenticated: boolean }
