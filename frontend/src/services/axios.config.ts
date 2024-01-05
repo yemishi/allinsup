@@ -74,14 +74,14 @@ const axiosRequest = {
     removeProduct: (productId: string): Promise<any> => axiosInstance.delete(apiEndPoints.removeProduct(productId)),
 
 
-    getUser: (): Promise<DataUserType> => axiosInstance.get(apiEndPoints.getUser(), { withCredentials: true }),
+    getUser: (): Promise<DataUserType> => axiosInstance.get(apiEndPoints.getUser()),
 
-    newOrder: (price: string, products: OrderProducts[], extra: { paymentMethod: string, change: string | boolean }): Promise<newOrderType> => axiosInstance.post(apiEndPoints.newOrder(), { price, products, extra }, { withCredentials: true }),
-    getOrders: (): Promise<DataOrders> => axiosInstance.get(apiEndPoints.getOrders(), { withCredentials: true }),
-    adminGetOrders: (): Promise<DataOrders> => axiosInstance.get(apiEndPoints.adminGetOrders(), { withCredentials: true }),
-    updateOrder: (orderId: string, updatedOrder: UpdateOrderType): Promise<string> => axiosInstance.patch(apiEndPoints.updateOrder(), { orderId, updatedOrder }, { withCredentials: true }),
-    orderInfo: (orderId: string): Promise<DataOrder> => axiosInstance.get(apiEndPoints.orderInfo(orderId), { withCredentials: true }),
-    adminOrderInfo: (orderInfo: string): Promise<DataOrder> => axiosInstance.get(apiEndPoints.adminOrderInfo(orderInfo), { withCredentials: true }),
+    newOrder: (price: string, products: OrderProducts[], extra: { paymentMethod: string, change: string | boolean }): Promise<newOrderType> => axiosInstance.post(apiEndPoints.newOrder(), { price, products, extra }),
+    getOrders: (): Promise<DataOrders> => axiosInstance.get(apiEndPoints.getOrders()),
+    adminGetOrders: (): Promise<DataOrders> => axiosInstance.get(apiEndPoints.adminGetOrders()),
+    updateOrder: (orderId: string, updatedOrder: UpdateOrderType): Promise<string> => axiosInstance.patch(apiEndPoints.updateOrder(), { orderId, updatedOrder }),
+    orderInfo: (orderId: string): Promise<DataOrder> => axiosInstance.get(apiEndPoints.orderInfo(orderId)),
+    adminOrderInfo: (orderInfo: string): Promise<DataOrder> => axiosInstance.get(apiEndPoints.adminOrderInfo(orderInfo)),
     searchOrder: (query?: string, page?: number, limit?: number): Promise<OrderData> => axiosInstance.get(apiEndPoints.searchOrder(query, page, limit))
 
 
