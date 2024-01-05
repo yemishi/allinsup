@@ -32,11 +32,15 @@ const store = new MongoDBStore({
 store.on('error', (error) => {
     console.error('Erro ao inicializar o MongoDBStore:', error);
 });
+
+app.set('trust proxy', 1);
+
 const sessionMiddleware = session({
     secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },
+    store: store
 
 });
 
@@ -63,7 +67,13 @@ app.post('/login', async (req, res) => {
     }
 });
 
-
+app.get('/check-auth', (req, res) => {
+    if (req.session.user) {
+        return res.json({ isAuthenticated: true, user: req.session.user });
+    } else {
+        return res.status(400).json({ isAuthenticated: false });
+    }
+});
 
 
 app.get('/user', async (req, res) => {

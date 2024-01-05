@@ -1,9 +1,7 @@
 
-import { useEffect } from "react";
-import { useGlobalState } from "../App";
 import { CollectionRounded, Products, HighlightProducts } from "../features";
-import { Route, Routes, Outlet, Link } from "react-router-dom";
-import axios from "axios";
+import { Outlet, } from "react-router-dom";
+
 
 export default function Home() {
 
