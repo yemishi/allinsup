@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-    origin: '*',
+    origin: 'https://www.allinsuplementos.com',
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     credentials: true,
 };
@@ -95,7 +95,8 @@ app.get('/products', async (req, res) => {
         return res.status(200).json(q ? search(products, q) : products);
     }
 
-    catch (error) {;
+    catch (error) {
+        ;
         res.status(500).json({ message: 'Internal server error.' });
     }
 });
@@ -110,16 +111,15 @@ app.get("/productBrand", async (req, res) => {
 
         const skip = (parsedPage - 1) * (parsedLimit ? parsedLimit : 10);
 
-        const products = await Product.find({ brand: brand.toLocaleLowerCase() }).skip(skip).limit(parsedLimit || 10)
-
-        if (products.length === 0) {
+        if (!brand) {
             const products = await Product.find().skip(skip).limit(parsedLimit || 10)
             return res.status(201).json(products)
         }
+        const products = await Product.find({ brand: brand.toLocaleLowerCase() }).skip(skip).limit(parsedLimit || 10)
 
         return res.status(201).json(products)
     } catch (error) {
-        return res.status(400).json("algmo de errado")
+        return res.status(400).json("algo deu errado")
     }
 })
 
@@ -216,7 +216,8 @@ app.post('/newOrder', async (req, res) => {
         updateStock(products)
         return res.status(200).json({ msg: "Sua encomenda foi aceita com sucesso.", orderId: newOrder.orderId });
 
-    } catch (error) {;
+    } catch (error) {
+        ;
         return res.status(400).json("Algo deu errado");
     }
 });

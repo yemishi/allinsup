@@ -65,7 +65,7 @@ export default function AllProducts({ query, action, setForm, setVisible }: {
     }, [data]);
 
     return (
-        <div className="flex flex-wrap text-gray-200 gap-4 items-center justify-center">
+        <div className="flex flex-wrap text-gray-200 gap-4 items-center justify-center ">
             {products && products.map((product) => {
                 const { _id, coverPhoto, flavor, name,
                     sizeProduct, updatedName, } = productDetails(product, [])

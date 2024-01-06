@@ -114,11 +114,15 @@ export default function Variants({ form, setForm }: PropsType) {
 
                 <div className="flex gap-6 ">
                     <div className="relative w-full">
-                        <input type="text" className={inputClass} onChange={(e) => setNewPhoto(e.target.value)} placeholder=" " />
+                        <input type="text" className={inputClass} value={newPhoto} onChange={(e) => setNewPhoto(e.target.value)} placeholder=" " />
                         <label className={labelClass}>Url da imagem</label>
 
                     </div>
-                    <button className="bg-primary border border-primary-200 px-3 py-2 rounded-lg font-anton font-bold" onClick={(e) => { e.preventDefault(), handleVariantPhoto(variantIndex, newPhoto) }}>Adicionar</button>
+                    <button className="bg-primary border border-primary-200 px-3 py-2 rounded-lg font-anton font-bold" onClick={(e) => {
+                        e.preventDefault()
+                        handleVariantPhoto(variantIndex, newPhoto)
+                        setNewPhoto("")
+                    }}>Adicionar</button>
                 </div>
 
                 {photos.length > 0 && <div className="flex flex-col rounded-lg w-full gap-4">

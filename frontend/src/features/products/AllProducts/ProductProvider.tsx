@@ -61,11 +61,11 @@ export default function ProductProvider() {
     }, [data]);
 
     return (
-        <div className="w-full h-full justify-items-center bg-primary-550 flex flex-col items-center">
+        <div className="w-full h-full justify-items-center bg-primary-550 pb-6 flex flex-col items-center">
             {items.length > 0 && <ProductGrid products={items} />}
             {(isLoading || isFetchingNextPage) && waitingProduct}
             {hasNextPage ? <div ref={ref} /> : <div onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                className="bg-primary-500 p-2 mt-3 rounded-t-2xl text-secondary-500 w-full text-center">
+                className="bg-primary-500 p-2 absolute  bottom-0 rounded-t-2xl text-secondary-500 w-full text-center">
                 <p className="font-bold cursor-pointer font-serif ">FIM DA LISTA</p>
             </div>}
         </div>
