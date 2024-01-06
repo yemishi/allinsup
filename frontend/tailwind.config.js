@@ -9,6 +9,7 @@ const colorPrimary = {
   700: "#161616"
 }
 const colorSecondary = {
+  100: "#edead3",
   200: "#fb923c",
   300: "#FE8A71",
   400: "#FA8A6F",

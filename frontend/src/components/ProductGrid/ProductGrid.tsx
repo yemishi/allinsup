@@ -13,21 +13,22 @@ export default function ProductGrid({ products }: PropsType) {
         {products && products.map((product) => {
 
             const { _id, coverPhoto, category, price, stock, promotion, updatedName, amount, flavor, sizeProduct, name } = productDetails(product, state.cart)
-         
+
             const soldOff = (amount && amount >= stock) || !stock
 
-            return <div key={`/${category}${_id}_${product.name}`} className="!flex cursor-pointer hover:shadow-lightOn duration-300  flex-col h-[290px]
+            return <div key={`/${category}${_id}_${product.name}`} className="!flex hover:shadow-lightOn duration-300  flex-col h-[290px]
              max-[385px]:w-[165px] w-[180px] text-white bg-primary-500 p-1 gap-2 rounded-lg">
 
-                <Link className="flex flex-col gap-2" to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`}>
+                <div className="flex flex-col gap-2 h-full pb-1" >
 
-                    <div className="bg-white p-2  rounded-md">
+                    <Link to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`} className="bg-white p-2 cursor-pointer
+                      rounded-md">
                         <img className="w-44 h-44 object-contain hover:scale-105 duration-300" src={coverPhoto} alt={parseAlt(coverPhoto)} />
-                    </div>
+                    </Link>
 
                     <p className="truncate-2-lines">{updatedName}</p>
 
-                    <div className="flex justify-between items-center">
+                    <div className="flex justify-between items-center mt-auto">
 
                         <div className="flex flex-row gap-2 relative">
                             {promotion && <p className="font-bold text-secondary-500 duration-300 hover:text-secondary-700">{parseLocalCurrency(promotion)}</p>}
@@ -60,7 +61,7 @@ export default function ProductGrid({ products }: PropsType) {
 
                         </button>
                     </div>
-                </Link>
+                </div>
             </div >
         })}
 
