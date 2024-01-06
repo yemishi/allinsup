@@ -1,5 +1,5 @@
 import { PanInfo, Variants, motion } from 'framer-motion'
-import { Dispatch } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 
 interface PropsType {
     children: React.ReactNode;
@@ -15,35 +15,43 @@ interface PropsType {
 }
 export default function DivDraggable({ children, closeParent, onScroll, setState, state, setDirectionDrag, directionDrag, initialDirection, classAddition }: PropsType) {
 
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+
     const variants: Variants = {
         open: { x: 0 },
         close: { x: directionDrag }
-    }
+    };
+
     const handleClose = () => {
         setState(false);
         setTimeout(() => {
             closeParent()
             setState(true)
         }, 700);
-    }
+    };
 
     const handleDragEnd = async (_: any, info: PanInfo) => {
-        if (info.offset.x < -180) {
+        if (info.offset.x < -150) {
             setDirectionDrag("-100%")
             handleClose()
-        } else if (info.offset.x > 180) {
+        } else if (info.offset.x > 150) {
             setDirectionDrag("100%")
             handleClose();
-        }
+        };
 
     };
     return <>
-        <motion.div onScroll={onScroll} onClick={(e) => e.stopPropagation()} initial={{ x: initialDirection }} dragElastic={0.8} variants={variants}
-            onDragEnd={handleDragEnd} animate={state ? "open" : 'close'} drag="x"
-            className={`h-full ${classAddition || ""} self-end scrollBar relative overflow-auto min-[450px]:w-[450px] w-full flex flex-col bg-primary-700 text-white font-lato`}
-            transition={{ type: "just" }} dragConstraints={{ left: 0, right: 0 }} >
+        <motion.div onScroll={onScroll} onClick={(e) => e.stopPropagation()} initial={{ x: initialDirection }} variants={variants}
+            animate={state ? "open" : 'close'}
+            className={`h-full ${classAddition || ""}  self-end scrollBar relative overflow-auto min-[450px]:w-[450px] w-full flex flex-col bg-primary-700 text-white font-lato`}
+            transition={{ type: "just" }}   {...(!mediaQuery.matches && {
+                drag: "x",
+                onDragEnd: handleDragEnd,
+                dragElastic: 1,
+                dragConstraints: { left: 0, right: 0 }
+            })}>
             {children}
-        </motion.div>
+        </motion.div >
     </>
 
 }
