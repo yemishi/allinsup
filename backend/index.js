@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-    origin: 'https://www.allinsuplementos.com',
+    origin: process.env.PRIVATE_URL,
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     credentials: true,
 };

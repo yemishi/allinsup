@@ -50,21 +50,20 @@ export default function Login() {
             localStorage.setItem("tel", phoneNumber)
             const response = await loginRequest.login(phoneNumber).then((res) => res)
             toast.success(response)
-            handleClose() 
+            handleClose()
         } catch (error) {
             toast.error("Erro ao tentar iniciar sessão")
-            handleClose() 
+            handleClose()
         }
     }
-    
+
 
     const isAdmin = phoneNumber === import.meta.env.VITE_ADMIN_NUMBER
 
     const phoneNumberPattern = isAdmin ? "\\(75\\) 8 \\d{4}-\\d{4}" : "\\(\\d{2}\\) 9 \\d{4}-\\d{4}";
 
 
-
-    return (<motion.div animate={isExiting ? { opacity: 1 } : { opacity: 0, transition: { delay: 0.3 } }} className="w-full z-30 h-screen
+    return (<motion.div onClick={handleClose} animate={isExiting ? { opacity: 1 } : { opacity: 0, transition: { delay: 0.3 } }} className="w-full z-30 h-screen
      overflow-hidden fixed top-0 backdrop-brightness-50 backdrop-blur-sm" >
 
         <DivDraggable classAddition="py-3 gap-7" initialDirection="-100%" directionDrag={directionDrag} setState={setIsExiting} state={isExiting}
