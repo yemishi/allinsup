@@ -19,8 +19,9 @@ import DashboardProducts from "./Dashboard/Products/DashboardProducts";
 import RemoveProduct from "./Dashboard/Products/RemoveProduct";
 import EditProduct from "./Dashboard/Products/EditProduct";
 import CreateProduct from "./Dashboard/Products/CreateProduct";
+import Footer from "./Footer/Footer";
 
 export {
-    CollectionRounded, PurchaseSummary, MoneyMethod, Steps, Payment, Address, Review, Cart, Header, User, HighlightProducts,
+    CollectionRounded, Footer, PurchaseSummary, MoneyMethod, Steps, Payment, Address, Review, Cart, Header, User, HighlightProducts,
     ProductSliderGrid, DashboardOrders, DashboardProducts, Products, SearchProduct, ProductInfo, RemoveProduct, CreateProduct, EditProduct
 }
