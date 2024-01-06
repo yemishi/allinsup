@@ -11,11 +11,11 @@ export default function DashboardAdmin() {
         const fetchAdmin = async () => {
             const tel = localStorage.getItem("tel")
             const adminNumber = import.meta.env.VITE_ADMIN_NUMBER
-            console.log(adminNumber !== adminNumber)
             if (tel !== adminNumber) return navigate('/404')
         }
         fetchAdmin()
     }, [])
+
     return (
         <div className="flex flex-col gap-4">
             <header className="w-full p-2 bg-primary-600">
