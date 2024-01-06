@@ -1,5 +1,5 @@
 import { PanInfo, Variants, motion } from 'framer-motion'
-import { Dispatch, useEffect, useState } from 'react';
+import { Dispatch } from 'react';
 
 interface PropsType {
     children: React.ReactNode;

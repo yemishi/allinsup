@@ -1,6 +1,5 @@
 
 import { CollectionRounded, Products, HighlightProducts } from "../features";
-import { Outlet, } from "react-router-dom";
 
 export default function Home() {
 
@@ -9,10 +8,7 @@ export default function Home() {
       <HighlightProducts />
       <CollectionRounded />
       <Products />
-      
-      <div className="bg-primary-550 h-full w-full top-0 z-30  ">
-        <Outlet />
-      </div>
+    
     </div>
   );
 }
