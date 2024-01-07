@@ -46,7 +46,10 @@ const productSchema = new mongoose.Schema({
     category: String,
     brand: String,
     variants: [variantTypeSchema],
-    highlight: Number
+    highlight: {
+        type: mongoose.Schema.Types.Mixed,
+        default: false 
+      }
 });
 
 const User = mongoose.model('User', userSchema, 'users');

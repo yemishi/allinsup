@@ -33,6 +33,7 @@ export default function Variants({ form, setForm }: PropsType) {
             ...updatedVariants[variantIndex],
             [field]: value
         };
+        
         setForm({
             ...form,
             variants: updatedVariants
@@ -80,6 +81,7 @@ export default function Variants({ form, setForm }: PropsType) {
             ...updatedVariants[variantIndex],
             sizeDetails: updatedSize
         };
+
         if (field === "sizeHighlight") {
             return setForm({
                 ...form,

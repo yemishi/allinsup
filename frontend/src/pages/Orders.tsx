@@ -11,7 +11,6 @@ export default function Orders() {
         "orders",
         async () => {
             const response = await axiosRequest.getOrders();
-            console.log('response')
             return response.data;
         },
         {

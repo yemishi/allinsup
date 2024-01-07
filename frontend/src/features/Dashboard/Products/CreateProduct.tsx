@@ -73,7 +73,6 @@ export default function CreateProduct() {
 
                 </div>
                 <button type="submit" className="sticky bottom-0  p-2 bg-secondary-700 w-2/5 rounded-md text-white font-bold z-30">Concluir</button>
-
             </form >
 
         </div >
