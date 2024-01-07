@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'
 import DeleteUser from "./DeleteUser"
-import { Dispatch, useState, useCallback, memo } from "react"
+import { Dispatch, useState, useCallback } from "react"
 import { Link } from "react-router-dom"
 import { useGlobalState } from "../../App"
 
-function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dispatch<React.SetStateAction<boolean>> }) {
+export default function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dispatch<React.SetStateAction<boolean>> }) {
     const { dispatch } = useGlobalState()
     const handleLogout = useCallback(() => {
         localStorage.removeItem("tel")
@@ -36,4 +36,4 @@ function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dispatch<React.Set
     )
 }
 
-export default memo(Logout);
+
