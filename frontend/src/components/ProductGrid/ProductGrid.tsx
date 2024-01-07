@@ -8,7 +8,7 @@ interface PropsType {
 }
 export default function ProductGrid({ products }: PropsType) {
     const { dispatch, state } = useGlobalState()
-    return <div className="w-full h-full !flex flex-wrap justify-between px-1 gap-4 py-3 font-lato text-sm">
+    return <div className="w-full h-full !flex flex-wrap justify-center  px-1 gap-4 py-3 font-lato text-sm">
 
         {products && products.map((product) => {
 
@@ -16,14 +16,14 @@ export default function ProductGrid({ products }: PropsType) {
 
             const soldOff = (amount && amount >= stock) || !stock
 
-            return <div key={`/${category}${_id}_${product.name}`} className="!flex hover:shadow-lightOn duration-300  flex-col h-[290px]
-             max-[385px]:w-[165px] w-[180px] text-white bg-primary-500 p-1 gap-2 rounded-lg">
+            return <div key={`/${category}${_id}_${product.name}`} className="!flex hover:shadow-lightOn duration-300  flex-col
+            flex-1 min-w-[165px] max-w-[250px] pb-2 text-white md bg-primary-500 p-1 gap-2 rounded-lg">
 
                 <div className="flex flex-col gap-2 h-full pb-1" >
 
-                    <Link to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`} className="bg-white p-2 cursor-pointer
-                      rounded-md">
-                        <img className="w-44 h-44 object-contain hover:scale-105 duration-300" src={coverPhoto} alt={parseAlt(coverPhoto)} />
+                    <Link to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`} className="bg-white p-4 cursor-pointer
+                      rounded-md ">
+                        <img className="w-full h-44 object-contain hover:scale-105 duration-300" src={coverPhoto} alt={parseAlt(coverPhoto)} />
                     </Link>
 
                     <p className="truncate-2-lines">{updatedName}</p>
@@ -32,7 +32,7 @@ export default function ProductGrid({ products }: PropsType) {
 
                         <div className="flex flex-row gap-2 relative">
                             {promotion && <p className="font-bold text-secondary-500 duration-300 hover:text-secondary-700">{parseLocalCurrency(promotion)}</p>}
-                            <p className={`${promotion ? "text-[10px]  opacity-40  absolute right-0 -bottom-3 line-through " : "hover:text-secondary-700 text-secondary-500"} 
+                            <p className={`${promotion ? "text-[10px] opacity-50  absolute right-0 -bottom-4 line-through " : "hover:text-secondary-700 text-secondary-500"} 
                             font-bold duration-300 `}>{parseLocalCurrency(price)}</p>
                         </div>
 
@@ -64,6 +64,8 @@ export default function ProductGrid({ products }: PropsType) {
                 </div>
             </div >
         })}
+
+
 
     </div >
 }

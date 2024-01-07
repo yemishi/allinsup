@@ -97,21 +97,21 @@ export default function ProductInfo({ product, similarProducts }: { product: Pro
             </span>
 
             <div className="flex gap-4 justify-between ">
-                <span className="grid grid-cols-3 gap-4 border border-opacity-40 w-[45%] border-white px-4 py-2 rounded-md">
+                <span className="grid grid-cols-3  gap-4 border border-opacity-40 w-[45%] border-white px-4 py-2 max-h-16  rounded-md">
 
                     <button className={`${!stock && "pointer-events-none"} `} onClick={decrementAmount} >
-                        <svg className="stroke-white hover:stroke-secondary-500 duration-300 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"> <path d="M6 12L18 12" ></path> </g></svg>
+                        <svg className="stroke-white max-h-11 hover:stroke-secondary-500 duration-300 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"> <path d="M6 12L18 12" ></path> </g></svg>
                     </button>
 
                     <input onChange={(e) => handleAmount(parseInt(e.target.value))} value={amount} placeholder={String(amount)} inputMode="decimal" type="number" name="amountItem"
-                        className="bg-transparent outline-none text-center placeholder:text-white font-anton text-base" />
+                        className="bg-transparent max-h-11  outline-none text-center placeholder:text-white font-anton text-base" />
 
                     <button className={`${!stock && "pointer-events-none"}`} onClick={incrementAmount}>
-                        <svg className="stroke-white fill-white hover:stroke-secondary-500 hover:fill-secondary duration-300" viewBox="-3 0 19 19" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"><path d="M12.711 9.182a1.03 1.03 0 0 1-1.03 1.03H7.53v4.152a1.03 1.03 0 0 1-2.058 0v-4.152H1.318a1.03 1.03 0 1 1 0-2.059h4.153V4.001a1.03 1.03 0 0 1 2.058 0v4.152h4.153a1.03 1.03 0 0 1 1.029 1.03z"></path></g></svg>
+                        <svg className="stroke-white max-h-11 ml-auto   fill-white hover:stroke-secondary-500 hover:fill-secondary duration-300" viewBox="-3 0 19 19" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"><path d="M12.711 9.182a1.03 1.03 0 0 1-1.03 1.03H7.53v4.152a1.03 1.03 0 0 1-2.058 0v-4.152H1.318a1.03 1.03 0 1 1 0-2.059h4.153V4.001a1.03 1.03 0 0 1 2.058 0v4.152h4.153a1.03 1.03 0 0 1 1.029 1.03z"></path></g></svg>
                     </button>
                 </span>
 
-                <button onClick={addInCart} className="bg-secondary-600 px-6 w-[55%] rounded flex items-center justify-center">
+                <button onClick={addInCart} className="bg-secondary-600 w-[55%] max-h-16 rounded flex items-center justify-center">
                     <span className="flex gap-2 text-sm font-anton font-semibold">
                         <svg style={{ strokeLinecap: 'round' }} className="stroke-white w-5 stroke-[1.5] hover:stroke-[#fb923c] duration-200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier"></g>
                             <g id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier">

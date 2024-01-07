@@ -39,7 +39,7 @@ export default function CartProducts() {
                                     <svg className="stroke-white hover:stroke-secondary-text-secondary-500 duration-300" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"> <path d="M6 12L18 12" ></path> </g></svg>
                                 </button>
 
-                                <input onChange={(event) => dispatch({ type: "UPDATE_PRODUCT_AMOUNT", payload: { amount: parseInt(event.target.value), product } })} min={1} inputMode="decimal" type="number" name="amountItem"
+                                <input onChange={(event) => dispatch({ type: "UPDATE_PRODUCT_AMOUNT", payload: { amount: parseInt(event.target.value)||1, product } })} min={1} inputMode="decimal" type="number" name="amountItem"
                                     className="bg-transparent w-6 outline-none text-center placeholder:text-white" value={amount} placeholder={String(amount)} />
 
                                 <button onClick={() => dispatch({ type: "INCREMENT_AMOUNT", payload: { amount: 1, product } })} className="w-5">

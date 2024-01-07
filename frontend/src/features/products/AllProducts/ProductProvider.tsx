@@ -65,7 +65,7 @@ export default function ProductProvider() {
             {items.length > 0 && <ProductGrid products={items} />}
             {(isLoading || isFetchingNextPage) && waitingProduct}
             {hasNextPage ? <div ref={ref} /> : <div onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                className="bg-primary-500 p-2    rounded-2xl text-secondary-500 w-3/6 mt-4 text-center">
+                className="bg-primary-500 p-2  rounded-2xl text-secondary-500 w-3/6 mt-4 text-center">
                 <p className="font-bold cursor-pointer font-serif ">FIM DA LISTA</p>
             </div>}
         </div>
