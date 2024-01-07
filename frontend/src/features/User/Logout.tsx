@@ -20,7 +20,7 @@ export default function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dis
                     <p className="text-emerald-500  font-thin font-anton ">{tel}</p>
                 </span>
                 <span className="flex justify-between  font-bold  font-lato">
-                    <button onClick={() => setDeleteUser(true)} className="self-end p-2 rounded-bl-lg  bg-secondary-700">
+                    <button  className="self-end p-2 rounded-bl-lg  bg-secondary-700">
                         Excluir conta
                     </button>
                     <Link to="/myOrders" onClick={() => dispatch({ type: "SET_USER_OPEN", payload: false })} className="self-end p-2   bg-secondary-700">
