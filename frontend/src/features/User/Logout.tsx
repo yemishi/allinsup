@@ -31,7 +31,6 @@ export default function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dis
                     </button>
                 </span>
             </motion.div>
-            {deleteUser && <DeleteUser setDeleteUser={setDeleteUser} setIsAuth={setIsAuth} />}
         </motion.div>
     )
 }
