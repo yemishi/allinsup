@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { motion } from 'framer-motion'
 import { axiosRequest } from '../components'
 import { divList, parseAlt, parseLocalCurrency, parseToNumber } from '../utils';
 
 export default function OrderInfo() {
-    const navigate = useNavigate()
     const [allowProduct, setAllowProduct] = useState<boolean>(false)
     const { orderId } = useParams();
 
@@ -15,7 +14,7 @@ export default function OrderInfo() {
         closed: { y: '-100vh', opacity: 0, height: "1px" }
     }
 
-    const { data, error } = useQuery('orderInfo', async () => {
+    const { data } = useQuery('orderInfo', async () => {
         const response = await axiosRequest.orderInfo(orderId || "")
         return response.data
     }, {
@@ -25,7 +24,6 @@ export default function OrderInfo() {
     });
 
 
-    if (error) return setTimeout(() => navigate('/'), 500)
 
     if (!data) return <p className='text-center text-white font-bold'>Onde estou ?</p>
 
