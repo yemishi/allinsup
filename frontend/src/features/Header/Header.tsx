@@ -92,8 +92,6 @@ export default function Header() {
                 className="outline-none border-b rounded-md p-2 text-white text-base w-[80%] bg-transparent self-center focus:border-secondary-600"
             />
 
-
-
         </motion.header >
     )
 }
