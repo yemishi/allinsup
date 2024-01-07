@@ -1,8 +1,10 @@
-export const waitingProduct = <div className={`w-full h-full !flex flex-wrap min-h-[290px] justify-between px-1 gap-2  py-3 font-lato text-sm `} >
+export const waitingProduct = <div className="w-full h-full !flex flex-wrap justify-center  px-1 gap-4 py-3 font-lato text-sm" >
     {[null, null].map((_, index) => (
 
-        <div key={index} style={{ maxWidth: '370px', width: '160px' }} className="!flex flex-col shadow-xl  h-[290px] w-[180px] text-white bg-primary-500 p-1 gap-2 rounded-lg">
-            <span className="animate-pulse bg-gray-600 w-full h-[162px] rounded-t-xl" />
+        <div key={index} className="!flex hover:shadow-lightOn duration-300  flex-col
+        flex-1 min-w-[165px] max-w-[250px] pb-2 text-white md bg-primary-500 p-1 gap-2 rounded-lg">
+
+            <span className="animate-pulse bg-gray-600 w-full h-44 rounded-t-xl" />
             <span className="animate-pulse rounded-md bg-gray-600 w-full h-[40px] mt-2" />
 
             <div className="w-full flex justify-between mt-auto items-center">

@@ -94,12 +94,13 @@ input::-webkit-inner-spin-button {
   color: #000;
 }
 
-.toast-message {
-  background: darkblue;
-  color: #fff;
-  font-size: 20px;
-  width: 34vw;
-  padding: 30px 20px;
+
+.swiper-pagination-bullet{
+  background-color: #8f8f8f !important ;
+}
+.swiper-pagination-bullet-active{
+  background-color: #161616cb !important;
+
 }
 
 input,
@@ -107,11 +108,15 @@ textarea,
 button,
 select,
 a {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-a:focus,a:visited,a:active{
+
+a:focus,
+a:visited,
+a:active {
   outline: none;
 }
+
 * {
-    -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
 }
