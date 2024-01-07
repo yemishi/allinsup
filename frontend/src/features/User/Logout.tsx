@@ -15,7 +15,7 @@ export default function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dis
 
     return (
         <motion.div onClick={() => dispatch({ type: "SET_USER_OPEN", payload: false })} className="backdrop-brightness-50 h-full w-full items-start flex left-0 top-0 absolute z-30">
-            <div  className="text-white flex flex-col
+            <motion.div onClick={(e) => e.stopPropagation()} initial={{ y: "-100%" }} transition={{ type: 'just' }} animate={{ y: 0 }} className="text-white flex flex-col
              gap-11 bg-primary sticky top-0 w-full pt-2 rounded-br-lg">
                 <span className="self-center border-b border-emerald-300 p-1">
                     <p className="text-emerald-500  font-thin font-anton ">{tel}</p>
@@ -31,7 +31,7 @@ export default function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dis
                         Desconectar
                     </button>
                 </span>
-            </div>
+            </motion.div>
             {deleteUser && <DeleteUser setDeleteUser={setDeleteUser} setIsAuth={setIsAuth} />}
         </motion.div>
     )
