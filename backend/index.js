@@ -171,7 +171,6 @@ app.post('/newProduct', async (req, res) => {
         const findProduct = await Product.findOne({ name, category })
 
         if (findProduct) return res.send("product already created!")
-
         const newProduct = new Product({ name, desc, highlight, brand, category, variants })
         await newProduct.save()
 
@@ -283,6 +282,7 @@ app.get('/admin-orders', async (req, res) => {
 app.get('/admin-orderInfo', async (req, res) => {
     try {
         const { orderId } = req.query
+        console.log(orderId)
         const order = await Order.findOne({ orderId })
 
         if (!order) return res.status(404).json("Pedido nao encontrado.")
@@ -295,7 +295,7 @@ app.get('/admin-orderInfo', async (req, res) => {
 })
 
 
-app.get('/orderInfo', async (req, res) => {
+app.post('/orderInfo', async (req, res) => {
     try {
         const { tel } = req.body
         const { orderId } = req.query
