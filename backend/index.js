@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-    origin: process.env.PRIVATE_URL,
+    origin: process.env.LOCAL_URL,
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     credentials: true,
 };
@@ -255,7 +255,7 @@ app.delete("/productDelete/:productId", async (req, res) => {
 })
 
 
-app.get('/orders', async (req, res) => {
+app.post('/orders', async (req, res) => {
     const { tel } = req.body
     try {
         if (!tel) return res.status(404).json()
