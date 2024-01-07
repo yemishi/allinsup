@@ -19,8 +19,11 @@ export default function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dis
                 <span className="self-center border-b border-emerald-300 p-1">
                     <p className="text-emerald-500  font-thin font-anton ">{tel}</p>
                 </span>
+                <button className="self-end p-2 rounded-bl-lg  bg-secondary-700">Testit</button>
                 <span className="flex justify-between  font-bold  font-lato">
-                    <button onClick={() => setDeleteUser(true)} className="self-end p-2 rounded-bl-lg  bg-secondary-700">
+                <button className="self-end p-2 rounded-bl-lg  bg-secondary-500">Testit2</button>
+
+                    <button className="self-end p-2 rounded-bl-lg  bg-secondary-700">
                         Excluir conta
                     </button>
                     <Link to="/myOrders" onClick={() => dispatch({ type: "SET_USER_OPEN", payload: false })} className="self-end p-2   bg-secondary-700">
@@ -31,6 +34,7 @@ export default function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dis
                     </button>
                 </span>
             </motion.div>
+            {deleteUser && <DeleteUser setDeleteUser={setDeleteUser} setIsAuth={setIsAuth} />}
         </motion.div>
     )
 }
