@@ -1,4 +1,3 @@
-import { toast } from "../../components"
 import { motion } from 'framer-motion'
 import DeleteUser from "./DeleteUser"
 import { Dispatch, useState } from "react"
@@ -8,12 +7,8 @@ import { useGlobalState } from "../../App"
 export default function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dispatch<React.SetStateAction<boolean>> }) {
     const { dispatch } = useGlobalState()
     const handleLogout = async () => {
-        try {
-            localStorage.removeItem("tel")
-            setIsAuth(false);
-        } catch (error) {
-            toast.error("Algo deu errado, tente novamente");
-        }
+        localStorage.removeItem("tel")
+        setIsAuth(false);
     };
     const [deleteUser, setDeleteUser] = useState<boolean>(false)
 
