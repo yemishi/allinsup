@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { axiosRequest } from "../../components"
 import { AddressType } from "../../types"
 
-
 export default function Address() {
     const { dispatch, state } = useGlobalState()
     const [currentAddress, setCurrentAddress] = useState<AddressType>()
@@ -19,6 +18,7 @@ export default function Address() {
         fetchData()
 
     }, [state.addressOpen])
+
     return (
         <div className="flex flex-col items-center text-gray-200 bg-primary-600 p-6 gap-4 ">
             <span className="font-anton text-xl text-left self-start">

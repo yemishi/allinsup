@@ -3,6 +3,7 @@ import { useInfiniteQuery } from "react-query"
 import { axiosRequest, toast } from "../../../../components";
 import { ProductType } from "../../../../types";
 import { productDetails } from "../../../../utils";
+import { ErrorPage, Loading } from "../../..";
 
 async function fetchProducts({ query = "", pageParam = 1 }) {
     const response = await axiosRequest.productsSearch(query, pageParam);
@@ -17,7 +18,7 @@ export default function AllProducts({ query, action, setForm, setVisible }: {
     const observer = useRef<IntersectionObserver | null>(null);
     const ref = useRef<HTMLDivElement>(null)
 
-    const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
+    const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
         ['productsSearch', query],
         ({ pageParam }) => fetchProducts({ query, pageParam })
         ,
@@ -29,6 +30,7 @@ export default function AllProducts({ query, action, setForm, setVisible }: {
             },
         }
     )
+
 
     useEffect(() => {
         if (!isLoading && hasNextPage) {
@@ -43,6 +45,7 @@ export default function AllProducts({ query, action, setForm, setVisible }: {
             if (observer.current) observer.current.disconnect();
         }
     }, [isLoading, hasNextPage, isFetchingNextPage])
+
 
     const fetchProduct = async (flavor: string, sizeProduct: string, _id: string): Promise<void> => {
         try {
@@ -63,6 +66,9 @@ export default function AllProducts({ query, action, setForm, setVisible }: {
         }
         return [];
     }, [data]);
+
+    if (isLoading) return <Loading />
+    if (error) return <ErrorPage />
 
     return (
         <div className="flex flex-wrap text-gray-200 gap-4 items-center justify-center ">

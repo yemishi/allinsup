@@ -4,7 +4,7 @@ import { axiosRequest } from "../components"
 import { divList } from "../utils"
 import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
-import { Loading } from "../features"
+import { ErrorPage, Loading } from "../features"
 
 export default function Orders() {
     const [orders, setOrders] = useState<OrderType[]>()
@@ -19,28 +19,16 @@ export default function Orders() {
             retryDelay: 100,
         }
     );
- 
+
     useEffect(() => {
         if (data) {
             setOrders(data);
         }
     }, [data]);
 
-    const reloadPage = () => {
-        window.location.reload();
-    };
-
     if (isLoading) return <Loading />
 
-    if (isError) return <div className="flex flex-col items-center gap-2 py-6  w-full text-gray-200">
-        <img src="./public/error.svg" className="w-20" alt="error icon" />
-        <h1 className="text-xl mt-4 font-anton font-semibold text-center px-6">Não conseguimos buscar seus pedidos 😞</h1>
-
-        <span className="my-10 w-full self-center flex flex-col gap-4 items-center">
-            <p className="font-lato font-thin text-gray-400">Tente recarregar a pagina!</p>
-            <button onClick={reloadPage} className="self-center bg-primary-200 p-2 font-anton font-bold rounded-md px-4">Recarregar</button>
-        </span>
-    </div>
+    if (isError) return <ErrorPage />
 
     return (
         <div className="flex flex-col items-center p-4 text-white gap-5">

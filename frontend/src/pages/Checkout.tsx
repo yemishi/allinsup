@@ -83,7 +83,7 @@ export default function Checkout() {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <div className="w-full h-screen flex gap-2 flex-col ">
+            <div className="w-full h-screen flex gap-2 flex-col relative">
 
                 <header className="flex justify-between items-center text-white bg-primary-600 p-4 ">
 
@@ -101,9 +101,10 @@ export default function Checkout() {
                         </span>
                     </span>
                 </header>
+
                 <Steps />
                 <Outlet />
-                <div className="sticky bottom-0  mt-auto grid border-primary-500 border-t grid-cols-2 w-full font-anton">
+                <div className="sticky bottom-0  grid border-primary-500 border-t grid-cols-2 w-full font-anton">
                     <span className="p-4 text-secondary-600 bg-primary font-bold">{parseLocalCurrency(totalPrice(state.cart))}</span>
                     {!location.pathname.includes('payment') ? <Link className="bg-secondary-600 p-4 text-center text-white" to={handleNext()}>Continuar</Link> :
                         <button onClick={handleFinishCheckout} className={`${!state.paymentMethod && "pointer-events-none"} bg-secondary-600 p-4 text-center text-white`}>

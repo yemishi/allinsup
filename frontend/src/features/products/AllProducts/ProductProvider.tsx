@@ -63,7 +63,8 @@ export default function ProductProvider() {
     return (
         <div className="w-full h-full justify-items-center pb-7 bg-primary-550 flex flex-col items-center">
             {items.length > 0 && <ProductGrid products={items} />}
-            {(isLoading || isFetchingNextPage) && waitingProduct}
+            {isLoading && waitingProduct}
+            {isFetchingNextPage && <span className=" w-11 h-11 py-3 border-4 border-y-transparent border-l-green-600 border-r-secondary-200 rounded-full animate-spin" />}
             {hasNextPage ? <div ref={ref} /> : <div onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}
                 className="bg-primary-500 p-2  rounded-2xl text-secondary-500 w-3/6 mt-4 text-center">
                 <p className="font-bold cursor-pointer font-serif ">FIM DA LISTA</p>

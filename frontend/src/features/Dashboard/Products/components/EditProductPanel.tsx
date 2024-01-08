@@ -36,7 +36,7 @@ export default function EditProductPanel({ form, setForm, setVisible }: {
         }
     }
     return (
-        <motion.div className="flex flex-col w-screen absolute h-full backdrop-brightness-50 " variants={variantsParent}
+        <motion.div onClick={() => setVisible(false)} className="flex flex-col w-screen absolute h-full backdrop-brightness-50 " variants={variantsParent}
             animate={open ? 'open' : 'exit'}>
 
             <DivDraggable directionDrag={directionDrag} initialDirection="-100%" setDirectionDrag={setDirectionDrag}

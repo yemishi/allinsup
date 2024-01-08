@@ -12,7 +12,6 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
         spaceBetween: 20,
         freeMode: true,
         slidesPerView: "auto",
-        grabCursor: true,
         style: {
             background: 'linear-gradient(transparent,#161616)',
             height: "310px",

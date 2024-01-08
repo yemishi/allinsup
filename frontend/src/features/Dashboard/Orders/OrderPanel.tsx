@@ -2,16 +2,19 @@ import { useQuery } from "react-query"
 import { axiosRequest } from "../../../components"
 import { useParams } from "react-router-dom"
 import { divList, parseAlt } from "../../../utils"
+import { ErrorPage, Loading } from "../.."
 
 export default function OrderPanel() {
     const { orderId } = useParams()
-    const { data } = useQuery("order", async () => {
-        const response = await axiosRequest.adminOrderInfo(orderId || "")
+    const { data, error, isLoading } = useQuery("order", async () => {
+        const response = await axiosRequest.adminOrderInfo(orderId as string)
         return response.data
     }
     )
-  
-    if (!data) return <p>where i am </p>
+
+    if (isLoading) return <Loading />
+    if (error || !data) return <ErrorPage />
+
     const { extra, price, products, purchaseDate, receivedDate, status, userId, address } = data
     const { name, cep, complement, houseNumber, tel, address: houseAddress } = address
     const { paymentMethod, change } = extra

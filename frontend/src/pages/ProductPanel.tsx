@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import { useQuery } from "react-query"
 import { axiosRequest } from "../components"
-import { ProductInfo } from "../features"
+import { ErrorPage, Loading, ProductInfo } from "../features"
 
 async function fetchProduct(flavor: string, size: string, _id: string) {
     const response = await axiosRequest.productInfo(flavor, size, _id)
@@ -18,12 +18,15 @@ export default function ProductPanel() {
     const flavor = nameArr[1]
     const size = nameArr[2]
 
-    const { data: product } = useQuery(['product', flavor, size, _id], () => fetchProduct(flavor, size, _id || ""), {
-        retry: 5
+    const { data: product, isLoading, error } = useQuery(['product', flavor, size, _id], () => fetchProduct(flavor, size, _id as string), {
+        retry: 2
     });
+
     const { data: similarProducts, } = useQuery(['similarProduct'], () => fetchSimilarProducts(decodeURIComponent(String(category)) || ""), {
-        retry:5
+        retry: 2
     });
+    if (isLoading) return <Loading />
+    if (error) return <ErrorPage />
 
     return (
         <div className="flex flex-col items-center p-4">
