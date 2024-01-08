@@ -37,7 +37,7 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
                 const soldOff = ((amount && amount >= stock) || !stock)
                 const handleStyle = soldOff ? "group-hover:bg-[#c18203] bg-[#996600] pointer-events-none" : "bg-secondary hover:bg-secondary-800"
 
-                return <Slide key={`${_id}_${updatedName}`} className='max-w-[200px] group !flex rounded-t-xl text-sm bg-primary-500 font-lato 
+                return <Slide key={`${_id}_${updatedName}`} className='max-w-[200px] group !flex rounded-xl text-sm bg-primary-500 font-lato 
                     pb-4 text-white flex-col justify-between'>
 
                     <div className='bg-white flex items-center justify-center rounded-t-xl p-4'>
