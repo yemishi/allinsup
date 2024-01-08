@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const { search, productInfo, updateStock, generateOrderNumber, searchOrders } = require('./utils/index');
 const { User, Product, Order } = require('./models');
+const sendEmail = require("./transporter")
+
 require('dotenv').config();
 
 
@@ -16,6 +18,7 @@ const corsOptions = {
     methods: ['GET', 'POST', 'DELETE', 'PATCH', 'PUT'],
     credentials: true,
 };
+
 app.use(cors(corsOptions));
 
 
@@ -180,8 +183,6 @@ app.post('/newProduct', async (req, res) => {
     }
 })
 
-
-
 const currentDay = () => {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
@@ -198,7 +199,6 @@ app.post('/newOrder', async (req, res) => {
         const user = await User.findOne({ tel });
 
         if (!user) {
-            console.log(user, 'aaaa')
             return res.status(404).json("Usuário não encontrado.");
         }
         const { address } = user
@@ -213,10 +213,11 @@ app.post('/newOrder', async (req, res) => {
 
         await newOrder.save();
         updateStock(products)
+        sendEmail(user.address.name, orderId)
         return res.status(200).json({ msg: "Sua encomenda foi aceita com sucesso.", orderId: newOrder.orderId });
 
     } catch (error) {
-        ;
+
         return res.status(400).json("Algo deu errado");
     }
 });

@@ -5,31 +5,37 @@ import { useNavigate } from "react-router-dom"
 
 import { totalPrice, parseLocalCurrency } from "../../utils"
 import { Link } from "react-router-dom"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+
 
 export default function PurchaseSummary() {
     const { state, dispatch } = useGlobalState()
     const products = state.cart.map((e) => {
         return {
-            productId: e._id, productQtd: e.amount, coverPhoto: e.coverPhoto, name: e.updatedName, productPrice: parseLocalCurrency(e.price)
+            productId: e._id, productQtd: e.amount, flavor: e.flavor, sizeProduct: e.sizeProduct, coverPhoto: e.coverPhoto,
+            name: e.updatedName, productPrice: parseLocalCurrency(e.price)
         }
     })
+
     const { extra, wppMsg, isPix } = state.paymentInfo
     const navigate = useNavigate()
-    const price = parseLocalCurrency(totalPrice(state.cart))
+    const [price, setPrice] = useState<string>("")
+
 
     useEffect(() => {
         if (!state.cart.length) {
             toast.error('Algo deu errado, tente novamente.')
             return navigate('/checkout/payment')
         }
+        setPrice(parseLocalCurrency(totalPrice(state.cart)))
     }, [])
 
     const { data } = useQuery('newOrder', async () => {
-        const response = await axiosRequest.newOrder(price, products, extra)
-        dispatch({ type: "RESET_CART" })
-        return response.data
-    })
+        const response = await axiosRequest.newOrder(price, products, extra);
+        dispatch({ type: "RESET_CART" });
+        return response.data;
+    });
+
     const msg = `${encodeURIComponent(wppMsg || "")}%0AEncomenda%20Nº${data?.orderId.toUpperCase()}`;
 
 

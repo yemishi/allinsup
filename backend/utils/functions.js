@@ -1,9 +1,8 @@
 const updateStock = async (products) => {
-    const { Product} = require('../models');
+    const { Product } = require('../models');
 
     try {
         for (const { productId, flavor, sizeProduct, productQtd } of products) {
-
             const product = await Product.findOne({
                 'variants.flavor': flavor,
                 'variants.sizeDetails.sizeProduct': sizeProduct
@@ -28,7 +27,7 @@ const updateStock = async (products) => {
                     },
                     {
                         $set: {
-                            'variants.$.sizeDetails.$[elem].stock': updatedStock
+                            'variants.$.sizeDetails.$[elem].stock': updatedStock > 0 ? updatedStock : 0
                         }
                     },
                     {
@@ -41,7 +40,6 @@ const updateStock = async (products) => {
             }
         }
     } catch (error) {
-        console.error("Erro ao atualizar o estoque:", error);
         throw error;
     }
 }
