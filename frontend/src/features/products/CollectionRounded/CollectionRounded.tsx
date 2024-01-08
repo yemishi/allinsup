@@ -1,7 +1,7 @@
 import { RoundedSlider } from "../../../components"
 
 interface ChildrenType {
-    name: "Max Titanium" | "Growth" | "Probiotica" | "Integral médica" | "Black Skull" | "Diversas",
+    name: "Max Titanium" | "Growth" | "Probiótica" | "Integral médica" | "Black Skull" | "Diversas",
     banner: string
 }
 
@@ -19,7 +19,7 @@ export default function CollectionRounded() {
             name: 'Growth',
             banner: "https://cdn.discordapp.com/attachments/914969778387570688/1185324566411751525/image.png?ex=658f3286&is=657cbd86&hm=f1a14461f6a7be3cdcb21e4fcdd4170eb00b7d2317de6e52b1982cabd354bba4&"
         }, {
-            name: "Probiotica",
+            name: "Probiótica",
             banner: "https://d3p2amk7tvag7f.cloudfront.net/brands/f4f4c95a54a8c65fd6af2f5cc166db42d214f2f3.png"
         },
         {

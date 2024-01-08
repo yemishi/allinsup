@@ -27,7 +27,7 @@ type Action =
     | { type: 'UPDATE_CART'; payload: CartType[] }
     | { type: 'SET_PAYMENT_METHOD'; payload: "Dinheiro" | "Cartão de Crédito" | "Cartão de Débito" | "Pix" }
     | { type: 'RESET_CART'; }
-    | { type: 'SET_BRAND_HOME'; payload: "Diversas" | "Max Titanium" | "Growth" | "Probiotica" | "Integral médica" | "Black Skull" }
+    | { type: 'SET_BRAND_HOME'; payload: "" | "max titanium" | "growth" | "probiotica" | "integralmédica" | "black skull" }
     | { type: 'SET_PAYMENT_INFO'; payload: PaymentInfoType }
 
 const initialState: GlobalState = {

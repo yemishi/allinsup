@@ -4,7 +4,7 @@ import { parseAlt } from "../../utils"
 
 
 interface ChildrenType {
-    name: "Max Titanium" | "Growth" | "Probiotica" | "Integral médica" | "Black Skull" | "Diversas",
+    name: "Max Titanium" | "Growth" | "Probiótica" | "Integral médica" | "Black Skull" | "Diversas",
     banner: string
 }
 
@@ -24,6 +24,21 @@ export default function RoundedSlider({ children }: PropsType) {
             background: '#1e1e1e',
         }
     }
+    const brands: {
+        "Max Titanium": "max titanium",
+        "Growth": "growth",
+        "Probiótica": "probiotica",
+        "Integral médica": "integralmédica",
+        "Black Skull": "black skull",
+        "Diversas": ""
+    } = {
+        "Max Titanium": "max titanium",
+        "Growth": "growth",
+        "Probiótica": "probiotica",
+        "Integral médica": "integralmédica",
+        "Black Skull": "black skull",
+        "Diversas": ""
+    };
 
     return (
         <Slider settings={settings}>
@@ -31,7 +46,7 @@ export default function RoundedSlider({ children }: PropsType) {
                 const { name, banner } = e
                 const current = state.brandHome === name
 
-                return <Slide key={name} onClick={() => dispatch({ type: "SET_BRAND_HOME", payload: name })} className={`max-w-[110px] group 
+                return <Slide key={name} onClick={() => dispatch({ type: "SET_BRAND_HOME", payload: brands[name] })} className={`max-w-[110px] group 
                 !flex cursor-pointer items-center flex-col gap-3  hover:text-secondary-200 duration-200 font-lato text-sm ${current ? "text-secondary-200" : "text-white"}`}>
 
                     <div className={`h-[110px] w-[110px] overflow-hidden duration-200 bg-primary rounded-full border-2
