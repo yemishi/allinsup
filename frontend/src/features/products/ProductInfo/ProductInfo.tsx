@@ -1,13 +1,13 @@
-import { useState, lazy } from "react";
+import { useState } from "react";
 import { ProductType } from "../../../types";
-const ProductSliderGrid = lazy(() => import('../ProductSlider/ProductSliderGrid'))
 import { productDetails, parseAlt, parseLocalCurrency, slideOptions } from "../../../utils";
 import { Slide, Slider, SliderProps, toast } from "../../../components";
 import { useGlobalState } from "../../../App";
 import { useNavigate } from "react-router-dom";
+import SimilarProduct from "../Similar/SimilarProducts";
 
 
-export default function ProductInfo({ product, similarProducts }: { product: ProductType, similarProducts: ProductType[] | undefined }) {
+export default function ProductInfo({ product, q }: { product: ProductType, q: string }) {
     const navigate = useNavigate()
     const { dispatch, state } = useGlobalState()
     const [variantIndex, setVariantIndex] = useState<number>(0)
@@ -155,12 +155,8 @@ export default function ProductInfo({ product, similarProducts }: { product: Pro
                 })}
             </tbody>
         </table>
-        {similarProducts && similarProducts?.length > 0 && <div className="flex flex-col gap-4">
-            <span className="border-l-4 border-secondary-600 flex items-center justify-between ">
-                <h3 className="font-lato font-semibold text-lg ml-1">Produtos semelhantes</h3>
-            </span>
-            <ProductSliderGrid children={similarProducts} />
-        </div>}
+
+        <SimilarProduct q={q} title="Produtos semelhantes" />
     </div >
 
 }
