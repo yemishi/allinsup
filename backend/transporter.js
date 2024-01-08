@@ -11,7 +11,6 @@ const transporter = nodemailer.createTransport({
 
 });
 
-
 const sendEmail = (name, orderId) => transporter.sendMail({
     from: "entregasallin@gmail.com",
     to: process.env.EMAIL_DEFAULT,
@@ -25,12 +24,14 @@ const sendEmail = (name, orderId) => transporter.sendMail({
           flex-direction: column">
             <h1 style="font-family: 'Georgia', 'Times New Roman', 'Times', serif; margin: 0; color: #333;">Nova encomenda de
                 ${name}!</h1>
+                <p style="font-size: 20px;font-family: Arial, font-weight:700,Helvetica, sans-serif;">E essa é a encomenda número...${orderId}</p>
             <span>
                 <p style="font-size: 16px;font-family: Arial, Helvetica, sans-serif;">De uma clicada ai meu camarada</p>
+
                 <a href="${process.env.ORDER_URL}/${orderId}" style="text-decoration: none;">
                     <button
-                        style="font-weight: 700; background-color: #ba8f00; cursor: pointer;;color: white; border: none; padding: 15px 30px; border-radius: 5px; font-size: 16px; cursor: pointer;">Confira
-                        a encomenda</button>
+                        style="font-weight: 700; background-color: #ba8f00; cursor: pointer;;color: white; border: none; padding: 15px 30px; border-radius: 5px; font-size: 16px; cursor: pointer;">
+                        Confira a encomenda</button>
                 </a>
             </span>
         </div>

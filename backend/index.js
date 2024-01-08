@@ -188,7 +188,6 @@ const currentDay = () => {
     const day = String(today.getDate()).padStart(2, '0');
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const year = today.getFullYear();
-
     return `${day}/${month}/${year}`;
 };
 
@@ -196,7 +195,8 @@ app.post('/newOrder', async (req, res) => {
     try {
         const { price, products, extra, tel } = req.body;
 
-        const user = await User.findOne({ tel });
+        if (products.length === 0) return res.status(401).json("Sem produto no carrinho.")
+            const user = await User.findOne({ tel });
 
         if (!user) {
             return res.status(404).json("Usuário não encontrado.");

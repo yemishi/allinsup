@@ -15,7 +15,7 @@ interface PropsType {
 export default function Slider({ settings, children }: PropsType) {
 
     return (
-        <Swiper modules={[Navigation, Pagination, A11y, EffectFade, Autoplay, FreeMode]}  {...settings}>
+        <Swiper modules={[Navigation, Pagination, A11y, EffectFade, Autoplay, FreeMode]} speed={2400}  {...settings}>
             {children}
         </Swiper>
     )

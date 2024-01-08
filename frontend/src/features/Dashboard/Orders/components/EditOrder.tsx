@@ -2,6 +2,7 @@ import { useQuery } from "react-query"
 import { DivDraggable, axiosRequest, toast } from "../../../../components"
 import { Dispatch, useState } from "react";
 import { motion } from 'framer-motion'
+import { ErrorPage, Loading } from "../../..";
 
 interface PropsType {
     closeParent: () => void;
@@ -21,16 +22,17 @@ export default function EditOrder({ orderId, closeParent, directionDrag, setDire
     }
     const [newMethod, setNewMethod] = useState<string>()
 
-    const { data } = useQuery("order", async () => {
+    const { data, isLoading, error } = useQuery("order", async () => {
         const response = await axiosRequest.adminOrderInfo(orderId)
         setNewMethod(response.data.status)
         return response.data
     })
 
-    if (!data) return <p>loading...</p>
+    if (isLoading) return <Loading />
+    if (error || !data) return <ErrorPage />
+
     const { extra, products, status } = data
     const { paymentMethod } = extra
-
 
     const paymentMethods = {
         Pix: ["Encomendado", "Pago", "Preparando o produto", "Expedido", "Entregue"],
@@ -54,7 +56,7 @@ export default function EditOrder({ orderId, closeParent, directionDrag, setDire
         }
     }
     return (
-        <motion.div animate={state ? "open" : "exit"} variants={variantsParent} className="flex flex-col w-full h-full fixed top-0 backdrop-brightness-50">
+        <motion.div onClick={closeParent} animate={state ? "open" : "exit"} variants={variantsParent} className="flex flex-col w-full h-full fixed top-0 backdrop-brightness-50">
             <DivDraggable directionDrag={directionDrag} initialDirection="-100%" setDirectionDrag={setDirectionDrag} state={state} setState={setState}
                 closeParent={closeParent}>
 

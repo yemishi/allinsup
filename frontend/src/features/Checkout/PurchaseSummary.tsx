@@ -3,9 +3,10 @@ import { useQuery } from "react-query"
 import { axiosRequest, toast } from "../../components"
 import { useNavigate } from "react-router-dom"
 
-import { totalPrice, parseLocalCurrency } from "../../utils"
+import { totalPrice, parseLocalCurrency, reloadPage } from "../../utils"
 import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { Loading } from ".."
 
 export default function PurchaseSummary() {
     const { state, dispatch } = useGlobalState()
@@ -20,7 +21,6 @@ export default function PurchaseSummary() {
     const navigate = useNavigate()
     const [price, setPrice] = useState<string>("")
 
-
     useEffect(() => {
         if (!state.cart.length) {
             toast.error('Algo deu errado, tente novamente.')
@@ -29,14 +29,29 @@ export default function PurchaseSummary() {
         setPrice(parseLocalCurrency(totalPrice(state.cart)))
     }, [])
 
-    const { data } = useQuery('newOrder', async () => {
+    const { data, isLoading, error } = useQuery('newOrder', async () => {
         const response = await axiosRequest.newOrder(parseLocalCurrency(totalPrice(state.cart)), products, extra);
         dispatch({ type: "RESET_CART" });
         return response.data;
     });
 
+    if (isLoading) return <Loading />
+    if (error) return <div className="w-full gap-7 min-h-full items-center py-8 flex flex-col fixed backdrop-brightness-50 text-white bg-primary z-20 pb-0">
+        <span className="flex flex-col items-center gap-3 px-11 text-center">
+            <svg className=" w-20  rounded-full fill-red-500" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" ><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"> <g> <path d="M26,0C11.664,0,0,11.663,0,26s11.664,26,26,26s26-11.663,26-26S40.336,0,26,0z M26,50C12.767,50,2,39.233,2,26 S12.767,2,26,2s24,10.767,24,24S39.233,50,26,50z"></path> <path d="M35.707,16.293c-0.391-0.391-1.023-0.391-1.414,0L26,24.586l-8.293-8.293c-0.391-0.391-1.023-0.391-1.414,0 s-0.391,1.023,0,1.414L24.586,26l-8.293,8.293c-0.391,0.391-0.391,1.023,0,1.414C16.488,35.902,16.744,36,17,36 s0.512-0.098,0.707-0.293L26,27.414l8.293,8.293C34.488,35.902,34.744,36,35,36s0.512-0.098,0.707-0.293 c0.391-0.391,0.391-1.023,0-1.414L27.414,26l8.293-8.293C36.098,17.316,36.098,16.684,35.707,16.293z"></path> </g> </g></svg>
+            <p className="font-anton text-secondary-600 text-lg font-thin">Sentimos muito 😞</p>
+            <p className="font-anton text-secondary-600 text-lg font-thin">Não foi possivel concluir a compra</p>
+        </span>
+
+        <span className="my-16 w-full self-center  flex flex-col gap-4 items-center">
+            <p className="font-lato font-thin text-gray-400">Tente recarregar a pagina!</p>
+            <button onClick={reloadPage} className="self-center bg-primary-300 py-2 border border-gray-500 font-anton rounded-md px-6">Recarregar</button>
+        </span>
+        <button onClick={() => navigate('/')} className="p-2 mt-auto bg-primary-200 w-3/6 rounded-t-lg font-bold font-anton text-gray-300">Inicio</button>
+    </div>
+
     const msg = `${encodeURIComponent(wppMsg || "")}%0AEncomenda%20Nº${data?.orderId.toUpperCase()}`;
-    
+
     const copyToClipboard = () => {
         navigator.clipboard.writeText("53.065.683/0001-21")
             .then(() => {
@@ -48,7 +63,7 @@ export default function PurchaseSummary() {
     };
 
     return (
-        <div className="w-full h-full items-center py-8 flex flex-col absolute backdrop-brightness-50 text-white bg-primary z-20 pb-0">
+        <div className="w-full min-h-full items-center py-8 flex flex-col fixed backdrop-brightness-50 text-white bg-primary z-20 pb-0">
             <span className="flex flex-col items-center gap-3 px-11 text-center">
                 <svg version="1.1" className="fill-none w-20 border-2 rounded-full border-secondary-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" fill="#000000"><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <circle className="fill-[#25AE88];" cx="25" cy="25" r="25"></circle> <polyline style={{ strokeWidth: '2px' }} className="fill-none stroke-secondary-600 " points=" 38,15 22,33 12,25 "></polyline> </g></svg>
                 <p className="font-anton text-secondary-600 text-lg font-thin">{data?.msg}</p>
@@ -80,7 +95,6 @@ export default function PurchaseSummary() {
             <div className="grid grid-cols-2 mt-auto w-full font-anton font-bold  text-gray-200 text-center ">
                 <Link className="bg-sky-500 p-3 rounded-md flex-1" to={`/orderInfo/${data?.orderId}`}>Ver pedido</Link>
                 <Link className="bg-secondary-600 p-3 rounded-md flex-1" to={'/'}>Inicio</Link>
-
             </div>
         </div >
     )
