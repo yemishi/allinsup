@@ -14,8 +14,8 @@ export default function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dis
     const [deleteUser, setDeleteUser] = useState<boolean>(false)
 
     return (
-        <motion.div onClick={() => dispatch({ type: "SET_USER_OPEN", payload: false })} className="backdrop-brightness-50 h-full w-full items-start flex left-0 top-0 absolute z-30">
-            <div onClick={(e) => e.stopPropagation()}  className="text-white flex flex-col
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={() => dispatch({ type: "SET_USER_OPEN", payload: false })} className="backdrop-brightness-50 h-full w-full items-start flex left-0 top-0 absolute z-30">
+            <div onClick={(e) => e.stopPropagation()} className="text-white flex flex-col
              gap-11 bg-primary sticky top-0 w-full pt-2 rounded-br-lg">
                 <span className="self-center border-b border-emerald-300 p-1">
                     <p className="text-emerald-500  font-thin font-anton ">{tel}</p>
@@ -24,7 +24,7 @@ export default function Logout({ tel, setIsAuth }: { tel: string, setIsAuth: Dis
                     <button onClick={() => setDeleteUser(true)} className="self-end p-2 rounded-bl-lg  bg-secondary-700">
                         Excluir conta
                     </button>
-                    <Link to="/myOrders" onClick={() => dispatch({ type: "SET_USER_OPEN", payload: false })} className="self-end p-2   bg-secondary-700">
+                    <Link to="/myOrders" onClick={() => dispatch({ type: "SET_USER_OPEN", payload: false })} className="self-end p-2   bg-sky-600">
                         Meus pedidos
                     </Link>
                     <button onClick={handleLogout} className="self-end p-2 rounded-br-lg bg-secondary-700">
