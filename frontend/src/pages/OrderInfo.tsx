@@ -4,18 +4,19 @@ import { useQuery } from 'react-query'
 import { motion } from 'framer-motion'
 import { axiosRequest } from '../components'
 import { divList, parseAlt, parseLocalCurrency, parseToNumber } from '../utils';
+import { ErrorPage, Loading } from '../features'
 
 export default function OrderInfo() {
-    const [allowProduct, setAllowProduct] = useState<boolean>(false)
+    const [allowProduct, setAllowProduct] = useState<boolean>(true)
     const { orderId } = useParams();
 
     const variant = {
         open: { y: 0, opacity: 1, height: "auto" },
-        closed: { y: '-100vh', opacity: 0, height: "1px" }
+        closed: { y: '-100%', opacity: 0, height: "1px" }
     }
 
-    const { data, isLoading } = useQuery('orderInfo', async () => {
-        const response = await axiosRequest.orderInfo(orderId || "")
+    const { data, isLoading, error } = useQuery('orderInfo', async () => {
+        const response = await axiosRequest.orderInfo(orderId as string)
         return response.data
     }, {
 
@@ -24,8 +25,8 @@ export default function OrderInfo() {
     });
 
 
-    if (isLoading) return <p>SIUUUUUUUUU</p>
-    if (!data) return <p className='text-center text-white font-bold'>Onde estou ?</p>
+    if (isLoading) return <Loading />
+    if (!data || error) return <ErrorPage />
 
     const { price, products, purchaseDate, status, extra } = data
     const { paymentMethod } = extra
@@ -214,7 +215,7 @@ export default function OrderInfo() {
                 <div onClick={() => setAllowProduct(!allowProduct)} className='z-20 font-lato text-lg font-bold p-2 rounded-b-lg bg-primary-600 
                  w-full flex'>
                     <p>Produtos</p>
-                    <svg fill="#ffffff" className={`w-7 h-7 ml-auto duration-500 ${allowProduct ? "rotate-180" : "fill-gray-600 stroke-gray-600 "}`} viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"><title></title><path d="M81.8457,25.3876a6.0239,6.0239,0,0,0-8.45.7676L48,56.6257l-25.396-30.47a5.999,5.999,0,1,0-9.2114,7.6879L43.3943,69.8452a5.9969,5.9969,0,0,0,9.2114,0L82.6074,33.8431A6.0076,6.0076,0,0,0,81.8457,25.3876Z"></path></g></svg>
+                    <svg fill="#ffffff" className={`w-6 h-6 ml-auto duration-500 ${allowProduct ? "rotate-180" : "fill-gray-600 stroke-gray-600 "}`} viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"><title></title><path d="M81.8457,25.3876a6.0239,6.0239,0,0,0-8.45.7676L48,56.6257l-25.396-30.47a5.999,5.999,0,1,0-9.2114,7.6879L43.3943,69.8452a5.9969,5.9969,0,0,0,9.2114,0L82.6074,33.8431A6.0076,6.0076,0,0,0,81.8457,25.3876Z"></path></g></svg>
                 </div>
 
                 <motion.div transition={{ type: "just" }} variants={variant} initial="closed" animate={allowProduct ? "open" : "closed"} className='flex flex-col gap-4'>

@@ -5,6 +5,7 @@ import { OrderType } from "../../../../types"
 import { divList, parseAlt } from "../../../../utils"
 import EditOrder from "./EditOrder"
 import { Link } from "react-router-dom"
+import { ErrorPage, Loading } from "../../.."
 
 export default function AllOrders({ query }: { query: string }) {
     const [isEdit, setIsEdit] = useState<boolean>(false)
@@ -19,7 +20,7 @@ export default function AllOrders({ query }: { query: string }) {
         return response.data
     }
 
-    const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
+    const { data, isLoading, fetchNextPage, error, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
         ['searchOrders', query],
         ({ pageParam }) => fetchOrders({ query, pageParam }),
         {
@@ -57,10 +58,13 @@ export default function AllOrders({ query }: { query: string }) {
         setOrderId(orderId)
         setIsEdit(true)
     }
+    if (isLoading) return <Loading />
+    if (error) return <ErrorPage />
+
     return (
 
         <div className="flex flex-col items-center text-gray-200 p-4 gap-4 w-full">
-            {orders.map((order) => {
+            {orders.slice().reverse().map((order) => {
                 const { extra, orderId, price, products, userId, address, status } = order
                 const { name, cep, complement, houseNumber, tel, address: houseAddress } = address
                 const { paymentMethod, change } = extra

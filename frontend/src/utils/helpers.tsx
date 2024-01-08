@@ -60,3 +60,6 @@ export const logoCloseEvent = (fnc?: () => void, classAdditional?: string): JSX.
 }
 
 
+export const reloadPage = () => {
+    window.location.reload();
+};
