@@ -4,6 +4,7 @@ import { useInfiniteQuery } from "react-query";
 import { axiosRequest, ProductGrid } from "../../../components";
 import { waitingProduct } from "../../../utils";
 import { useGlobalState } from "../../../App";
+import { ErrorPage } from "../..";
 
 
 async function fetchProducts({ brand = "", pageParam = 1 }) {
@@ -16,7 +17,7 @@ export default function ProductProvider() {
 
     const ref = useRef<HTMLDivElement>(null)
     const { state } = useGlobalState()
-    const { data, refetch, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
+    const { data, refetch, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage, error } = useInfiniteQuery(
         ['products', state.brandHome],
         ({ pageParam }) => {
             return fetchProducts({ brand: state.brandHome, pageParam })
@@ -59,6 +60,8 @@ export default function ProductProvider() {
         }
         return [];
     }, [data]);
+    
+    if (error) return <ErrorPage />
 
     return (
         <div className="w-full h-full justify-items-center pb-7 bg-primary-550 flex flex-col items-center">
