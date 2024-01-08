@@ -7,7 +7,6 @@ import { totalPrice, parseLocalCurrency } from "../../utils"
 import { Link } from "react-router-dom"
 import { useEffect, useState } from "react"
 
-
 export default function PurchaseSummary() {
     const { state, dispatch } = useGlobalState()
     const products = state.cart.map((e) => {
@@ -31,14 +30,13 @@ export default function PurchaseSummary() {
     }, [])
 
     const { data } = useQuery('newOrder', async () => {
-        const response = await axiosRequest.newOrder(price, products, extra);
+        const response = await axiosRequest.newOrder(parseLocalCurrency(totalPrice(state.cart)), products, extra);
         dispatch({ type: "RESET_CART" });
         return response.data;
     });
 
     const msg = `${encodeURIComponent(wppMsg || "")}%0AEncomenda%20Nº${data?.orderId.toUpperCase()}`;
-
-
+    
     const copyToClipboard = () => {
         navigator.clipboard.writeText("53.065.683/0001-21")
             .then(() => {
@@ -80,7 +78,7 @@ export default function PurchaseSummary() {
             </div>
 
             <div className="grid grid-cols-2 mt-auto w-full font-anton font-bold  text-gray-200 text-center ">
-                <Link className="bg-sky-500 p-3 rounded-md flex-1 " to={'/myOrders'}>Pedidos</Link>
+                <Link className="bg-sky-500 p-3 rounded-md flex-1" to={`/orderInfo/${data?.orderId}`}>Ver pedido</Link>
                 <Link className="bg-secondary-600 p-3 rounded-md flex-1" to={'/'}>Inicio</Link>
 
             </div>

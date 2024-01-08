@@ -14,7 +14,7 @@ export default function OrderInfo() {
         closed: { y: '-100vh', opacity: 0, height: "1px" }
     }
 
-    const { data } = useQuery('orderInfo', async () => {
+    const { data, isLoading } = useQuery('orderInfo', async () => {
         const response = await axiosRequest.orderInfo(orderId || "")
         return response.data
     }, {
@@ -24,7 +24,7 @@ export default function OrderInfo() {
     });
 
 
-
+    if (isLoading) return <p>SIUUUUUUUUU</p>
     if (!data) return <p className='text-center text-white font-bold'>Onde estou ?</p>
 
     const { price, products, purchaseDate, status, extra } = data
