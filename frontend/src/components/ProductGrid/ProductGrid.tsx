@@ -8,7 +8,7 @@ interface PropsType {
 }
 export default function ProductGrid({ products }: PropsType) {
     const { dispatch, state } = useGlobalState()
-    return <div className="w-full h-full !flex flex-wrap justify-center  px-1 gap-4 py-3 font-lato text-sm">
+    return <div className="w-full h-full !flex flex-wrap justify-center px-1 gap-4 py-3 font-lato text-sm md:text-base">
 
         {products && products.map((product) => {
 
@@ -17,12 +17,12 @@ export default function ProductGrid({ products }: PropsType) {
             const soldOff = (amount && amount >= stock) || !stock
 
             return <div key={`/${category}${_id}_${product.name}`} className="!flex hover:shadow-lightOn duration-300  flex-col
-            flex-1 min-w-[165px] max-w-[250px] pb-2 text-white md bg-primary-500 p-1 gap-2 rounded-lg">
+            flex-1 min-w-[165px] max-w-[250px] md:min-w-[185px] text-white bg-primary-500 p-1 md:p-2 gap-2 pb-2 md:pb-3 md:gap-4 rounded-lg">
 
                 <div className="flex flex-col gap-2 h-full pb-1" >
 
-                    <Link to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`} className="bg-white p-4 cursor-pointer
-                      rounded-md ">
+                    <Link to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`}
+                        className="bg-white p-4 cursor-pointer rounded-md ">
                         <img className="w-full h-44 object-contain hover:scale-105 duration-300" src={coverPhoto} alt={parseAlt(coverPhoto)} />
                     </Link>
 
@@ -32,7 +32,7 @@ export default function ProductGrid({ products }: PropsType) {
 
                         <div className="flex flex-row gap-2 relative">
                             {promotion && <p className="font-bold text-secondary-500 duration-300 hover:text-secondary-700">{parseLocalCurrency(promotion)}</p>}
-                            <p className={`${promotion ? "text-[10px] opacity-50  absolute right-0 -bottom-4 line-through " : "hover:text-secondary-700 text-secondary-500"} 
+                            <p className={`${promotion ? "text-[10px] md:text-xs text-gray-300  absolute right-0 -bottom-4 line-through " : "hover:text-secondary-700 text-secondary-500"} 
                             font-bold duration-300 `}>{parseLocalCurrency(price)}</p>
                         </div>
 
@@ -40,7 +40,7 @@ export default function ProductGrid({ products }: PropsType) {
                         rounded-lg relative ${!amount && !soldOff ? 'border-white ' : "border-secondary-500 "}
                          ${soldOff ? "pointer-events-none grayscale" : "cursor-pointer"} group `}>
 
-                            <svg style={{ strokeWidth: 1.4 }} className={`w-5 ${!amount && !soldOff ? "stroke-white" : 'stroke-secondary-500 '} group-hover:scale-110 duration-300`}
+                            <svg style={{ strokeWidth: 1.4 }} className={`w-5 md:w-6 ${!amount && !soldOff ? "stroke-white" : 'stroke-secondary-500 '} group-hover:scale-110 duration-300`}
                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" >
 
                                 <g id="SVGRepo_bgCarrier" />
@@ -52,9 +52,9 @@ export default function ProductGrid({ products }: PropsType) {
                                     <path d="M2 3L2.26121 3.09184C3.5628 3.54945 4.2136 3.77826 4.58584 4.32298C4.95808 4.86771 4.95808 5.59126 4.95808 7.03836V9.76C4.95808 12.7016 5.02132 13.6723 5.88772 14.5862C6.75412 15.5 8.14857 15.5 10.9375 15.5H12M16.2404 15.5C17.8014 15.5 18.5819 15.5 19.1336 15.0504C19.6853 14.6008 19.8429 13.8364 20.158 12.3075L20.6578 9.88275C21.0049 8.14369 21.1784 7.27417 20.7345 6.69708C20.2906 6.12 18.7738 6.12 17.0888 6.12H11.0235M4.95808 6.12H7" /> </g>
                             </svg>
 
-                            {amount && <span className="bg-secondary-600 w-5 h-5 absolute duration-300 -top-1 -right-1 rounded-full flex justify-center items-center">
+                            {amount && <span className="bg-secondary-600 w-5 h-5 md:w-6 md:h-6 absolute duration-300 -top-1 -right-1 md:-top-2 rounded-full flex justify-center items-center">
                                 <AnimatePresence mode="wait">
-                                    <p key={amount} className={`text-xs after:content-["+1"] font-bold after:ml-0.5 pong absolute after:text-green-300 after:font-bold after:absolute  
+                                    <p key={amount} className={`text-xs md:text-sm after:content-["+1"] font-bold after:ml-0.5 pong absolute after:text-green-300 after:font-bold after:absolute  
                                     after:-top-1 after:left-0 after:h-7 `}>{amount}</p>
                                 </AnimatePresence>
                             </span>}

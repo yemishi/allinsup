@@ -1,5 +1,5 @@
 import { Swiper, SliderProps, ReactNode } from ".."
-import { Navigation, A11y, Pagination, EffectFade, Autoplay, FreeMode } from "swiper/modules"
+import { Navigation, A11y, Pagination, EffectFade, Autoplay, FreeMode, Thumbs } from "swiper/modules"
 
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -15,7 +15,7 @@ interface PropsType {
 export default function Slider({ settings, children }: PropsType) {
 
     return (
-        <Swiper modules={[Navigation, Pagination, A11y, EffectFade, Autoplay, FreeMode]} speed={1000}  {...settings}>
+        <Swiper modules={[Thumbs, Navigation, Pagination, A11y, EffectFade, Autoplay, FreeMode]}  {...settings}>
             {children}
         </Swiper>
     )

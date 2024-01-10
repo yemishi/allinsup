@@ -20,9 +20,10 @@ export default function OrderPanel() {
     const { paymentMethod, change } = extra
 
     return (
-        <div className="flex flex-col items-center text-gray-200 p-4 gap-4 w-full">
+        <div className="flex flex-col items-center text-gray-200 p-4 gap-4 w-full md:mt-10 ">
 
-            <div className="w-full justify-between  bg-primary-600 items-center flex gap-1  flex-col p-3 rounded-md " key={`${orderId}_${userId}`}>
+            <div className="w-full justify-between  bg-primary-600 items-center flex gap-1 border border-primary-200 md:hover:shadow-lightOn
+            duration-300  flex-col p-3 rounded-md " key={`${orderId}_${userId}`}>
 
                 <h2 className="text-lg font-montserrat font-semibold py-3 text-sky-300">Informações do usuario</h2>
 
@@ -47,7 +48,7 @@ export default function OrderPanel() {
 
                 <h2 className="text-lg font-montserrat font-semibold py-3 text-sky-300">Produtos</h2>
 
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-6 md:grid md:grid-cols-2">
                     {products.map((product, index) => {
                         const { coverPhoto, name, productQtd } = product
 

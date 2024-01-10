@@ -103,16 +103,16 @@ export default function AddressManager() {
         handleClose()
     }
 
-    const inputClass = `block py-2.5 ps-7 pe-0 w-full text-sm text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none
+    const inputClass = `block py-2.5 ps-7 pe-0 w-full text-sm md:text-base text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none
      focus:ring-0 focus:border-secondary-600 peer`
 
-    const labelClass = `absolute text-sm text-white text-opacity-50 duration-300 transform -translate-y-7 translate-x-1 scale-75 top-3 pointer-events-none origin-[0] 
+    const labelClass = `absolute text-sm md:text-base text-white text-opacity-50 duration-300 transform -translate-y-7 translate-x-1 scale-75 top-3 pointer-events-none origin-[0] 
      peer-placeholder-shown:start-6 peer-focus:start-0 peer-focus:text-secondary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
      peer-focus:scale-75 peer-focus:-translate-y-7 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto`
 
     return (
         <>
-            {state.addressOpen && <div className="h-screen items-center absolute w-full backdrop-brightness-50 flex flex-col z-30 ">
+            {state.addressOpen && <div onClick={handleClose} className="h-screen items-center absolute w-full backdrop-brightness-50 flex flex-col z-30 ">
 
                 <DivDraggable setState={setIsExisting} initialDirection="100%" setDirectionDrag={setDirectionDrag} closeParent={() => dispatch({ type: "SET_ADDRESS_OPEN", payload: false })}
                     directionDrag={directionDrag} state={isExisting} >
@@ -121,7 +121,7 @@ export default function AddressManager() {
                         {logoCloseEvent(handleClose)}
 
                         <form onSubmit={handleSubmit} className="bg-primary-600 gap-8 w-full flex flex-col items-center p-3 pt-5 rounded-lg">
-                            <p className="font-anton text-xl font-semibold">Endereço de entrega</p>
+                            <p className="font-anton text-xl font-semibold text-secondary-100">Endereço de entrega</p>
 
                             {errors.cep && <p className="text-red-400  font-anton font-bold ">{errors.cep}</p>}
 
@@ -196,7 +196,7 @@ export default function AddressManager() {
                                 peer-placeholder-shown:start-0  peer-focus:start-0 peer-focus:text-secondary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
                                peer-focus:scale-75 peer-focus:-translate-y-9'>Complemento</label>
                             </div>
-                            <button className={`bg-secondary-700 p-2 w-2/4 font-semibold rounded font-anton ${errorsCount > 0 ? "pointer-events-none bg-opacity-10" : ""} `} type="submit">submit</button>
+                            <button className={`bg-secondary-700 p-2 w-2/4 font-semibold rounded font-anton ${errorsCount > 0 ? "pointer-events-none bg-opacity-10" : ""} `} type="submit">Submit</button>
                         </form>
                     </div>
                 </DivDraggable >

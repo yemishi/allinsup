@@ -56,11 +56,11 @@ export default function EditOrder({ orderId, closeParent, directionDrag, setDire
         }
     }
     return (
-        <motion.div onClick={closeParent} animate={state ? "open" : "exit"} variants={variantsParent} className="flex flex-col w-full h-full fixed top-0 backdrop-brightness-50">
+        <motion.div onClick={closeParent} animate={state ? "open" : "exit"} variants={variantsParent} className="flex md:justify-center flex-col w-full h-full fixed top-0 backdrop-brightness-50">
             <DivDraggable directionDrag={directionDrag} initialDirection="-100%" setDirectionDrag={setDirectionDrag} state={state} setState={setState}
-                closeParent={closeParent}>
+             classAddition="md:w-auto md:h-auto md:self-center justify-self-center"    closeParent={closeParent}>
 
-                <div className="flex flex-col gap-6 py-4 w-full  items-center">
+                <div className="flex flex-col gap-6 py-4 w-full    md:items-center">
 
                     <p className="font-bold text-lg font-anton text-sky-300">Produtos</p>
 

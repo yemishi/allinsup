@@ -31,9 +31,9 @@ export default function OrderInfo() {
     const { price, products, purchaseDate, status, extra } = data
     const { paymentMethod } = extra
     const statusIcon = {
-        Encomendado: <svg viewBox="0 0 24 24" className='fill-orange-200 stroke-slate-900 w-9 h-9' xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"> <defs>  </defs> <g id="reciept"> <line x1="8.18" y1="9.16" x2="12.95" y2="9.16"></line> <line x1="8.18" y1="12.98" x2="12.95" y2="12.98"></line> <line x1="8.18" y1="16.8" x2="12.95" y2="16.8"></line> <path d="M19.64,22.52H4.36A2.86,2.86,0,0,1,1.5,19.66V2.48L4,4.39,6.59,2.48,9.13,4.39l2.55-1.91,2.54,1.91,2.55-1.91V19.66a2.87,2.87,0,0,0,2.87,2.86Z"></path> <line x1="4.36" y1="9.16" x2="6.27" y2="9.16"></line> <line x1="4.36" y1="12.98" x2="6.27" y2="12.98"></line> <line x1="4.36" y1="16.8" x2="6.27" y2="16.8"></line> <path d="M18.68,10.11H22.5v9.55a2.87,2.87,0,0,1-5.73,0V10.11h1.91Z"></path> </g> </g>
+        Encomendado: <svg viewBox="0 0 24 24" className='fill-orange-200 stroke-slate-900 ' xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"> <defs>  </defs> <g id="reciept"> <line x1="8.18" y1="9.16" x2="12.95" y2="9.16"></line> <line x1="8.18" y1="12.98" x2="12.95" y2="12.98"></line> <line x1="8.18" y1="16.8" x2="12.95" y2="16.8"></line> <path d="M19.64,22.52H4.36A2.86,2.86,0,0,1,1.5,19.66V2.48L4,4.39,6.59,2.48,9.13,4.39l2.55-1.91,2.54,1.91,2.55-1.91V19.66a2.87,2.87,0,0,0,2.87,2.86Z"></path> <line x1="4.36" y1="9.16" x2="6.27" y2="9.16"></line> <line x1="4.36" y1="12.98" x2="6.27" y2="12.98"></line> <line x1="4.36" y1="16.8" x2="6.27" y2="16.8"></line> <path d="M18.68,10.11H22.5v9.55a2.87,2.87,0,0,1-5.73,0V10.11h1.91Z"></path> </g> </g>
         </svg>,
-        Pago: <svg className='w-9 h-9' version="1.1"
+        Pago: <svg version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -66,7 +66,6 @@ export default function OrderInfo() {
             </g>
         </svg>,
         "Preparando o produto": <svg
-            className='w-9 h-9'
             version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +92,6 @@ export default function OrderInfo() {
             </g>
         </svg>,
         Expedido: <svg
-            className='w-11 h-11'
             version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +142,6 @@ export default function OrderInfo() {
             </g>
         </svg>,
         Entregue: <svg
-            className='w-10 h-10'
             version="1.1"
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
@@ -183,32 +180,56 @@ export default function OrderInfo() {
 
     return (
         <div className='flex flex-col p-4 text-white gap-7'>
-            <h1 className='font-anton text-xl ml-4  font-semibold'>Detalhe da compra</h1>
+            <h1 className='font-anton text-xl ml-4  font-semibold'>Informações da compra</h1>
+            <div className="md:grid md:grid-cols-2 bg-primary-600 border-y text-gray-200 border-primary-200" >
 
-            <dl className="w-full flex flex-col gap-3 p-4 bg-primary-600 border-y text-gray-200 border-primary-200" >
-                {divList("Encomenda N°:", String(orderId))}
-                {divList("Data da compra:", purchaseDate)}
-                {divList("Valor:", price)}
-                {divList("Situação atual:", status)}
-                {divList("Metodo de pagamento:", paymentMethod)}
-            </dl>
-
-            <div className='flex flex-col gap-7 after:h-[95%]  after:border after:absolute relative after:mt-2  after:ml-4 after:border-secondary-200  after:border-dashed   '>
-                {stages.map((stage, index) => {
-                    const currentIndex = stages.indexOf(status)
-
-                    return <div key={`${stage}_${index}`} className='flex flex-row'>
-
-                        <div className='flex font-medium  gap-2 items-center duration-300 w-full'>
-
-                            <span className={`p-4 rounded-full duration-300 border-2 border-primary-400 z-10 ${currentIndex >= index ? "bg-secondary-200 border-secondary-200 shadow-lightOn" :
-                                "bg-primary-600"} `} />
-                            <p className={`self-center ${currentIndex >= index ? "text-secondary-200" : "text-gray-400"}`}>{stage}</p>
-                        </div>
-                        {statusIcon[stage as "Encomendado" | "Pago" | "Expedido" | "Entregue"]}
+                <dl className="flex flex-col gap-3 p-4">
+                    {divList("Encomenda N°:", String(orderId))}
+                    {divList("Data da compra:", purchaseDate)}
+                    {divList("Valor:", price)}
+                    {divList("Situação atual:", status)}
+                    {divList("Metodo de pagamento:", paymentMethod)}
+                </dl>
+                <div className='gap-3 py-4 flex-col border-l items-center hidden md:flex'>
+                    <p className='font-lato  text-secondary-100 text-lg font-bold'>Estado atual da emcomenda</p>
+                    <div className='w-24 h-24'>
+                        {statusIcon[status as "Encomendado" | "Pago" | "Expedido" | "Entregue"]}
                     </div>
+                    <p className='text-base font-anton text-secondary-400'>{status}</p>
+                </div>
+            </div>
 
-                })}
+            <div className='md:grid md:grid-cols-2 md:gap-5'>
+                <div className='flex flex-col gap-7 md:self-center after:h-[95%] md:after:h-[85%] after:border after:absolute relative after:mt-2 after:ml-4 after:border-secondary-200  after:border-dashed'>
+                    {stages.map((stage, index) => {
+                        const currentIndex = stages.indexOf(status)
+
+                        return <div key={`${stage}_${index}`} className='flex md:gap-14'>
+
+                            <div className='flex font-medium  gap-2 items-center duration-300 w-full'>
+
+                                <span className={`p-4 rounded-full duration-300 border-2 border-primary-400 z-10 ${currentIndex >= index ? "bg-secondary-200 border-secondary-200 shadow-lightOn" :
+                                    "bg-primary-600"} `} />
+                                <p className={`self-center ${currentIndex >= index ? "text-secondary-200" : "text-gray-400"}`}>{stage}</p>
+                            </div>
+                            <div className='w-9 h-9 md:w-12 md:h-12'>
+                                {statusIcon[stage as "Encomendado" | "Pago" | "Expedido" | "Entregue"]}
+                            </div>
+
+                        </div>
+
+                    })}
+                </div>
+
+                <div className='hidden md:flex flex-col items-center gap-6 justify-center px-5 text-center '>
+                    <p className='font-lato text-lg font-bold text-secondary-100'>Tem alguma duvida sobre a encomenda?</p>
+
+                    <a href={`https://api.whatsapp.com/send?phone=${import.meta.env.VITE_PHONE_NUMBER}&text=Olá estou com uma dúvida em relação ao pedido N°${orderId}`} className="w-16 duration-200 p-3 border
+                     rounded-3xl border-green-500 hover:bg-black justify-self-end ">
+                        <svg className='fill-green-500' viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier"></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"><path d="M11.42 9.49c-.19-.09-1.1-.54-1.27-.61s-.29-.09-.42.1-.48.6-.59.73-.21.14-.4 0a5.13 5.13 0 0 1-1.49-.92 5.25 5.25 0 0 1-1-1.29c-.11-.18 0-.28.08-.38s.18-.21.28-.32a1.39 1.39 0 0 0 .18-.31.38.38 0 0 0 0-.33c0-.09-.42-1-.58-1.37s-.3-.32-.41-.32h-.4a.72.72 0 0 0-.5.23 2.1 2.1 0 0 0-.65 1.55A3.59 3.59 0 0 0 5 8.2 8.32 8.32 0 0 0 8.19 11c.44.19.78.3 1.05.39a2.53 2.53 0 0 0 1.17.07 1.93 1.93 0 0 0 1.26-.88 1.67 1.67 0 0 0 .11-.88c-.05-.07-.17-.12-.36-.21z"></path><path d="M13.29 2.68A7.36 7.36 0 0 0 8 .5a7.44 7.44 0 0 0-6.41 11.15l-1 3.85 3.94-1a7.4 7.4 0 0 0 3.55.9H8a7.44 7.44 0 0 0 5.29-12.72zM8 14.12a6.12 6.12 0 0 1-3.15-.87l-.22-.13-2.34.61.62-2.28-.14-.23a6.18 6.18 0 0 1 9.6-7.65 6.12 6.12 0 0 1 1.81 4.37A6.19 6.19 0 0 1 8 14.12z"></path></g></svg>
+                    </a>
+                    <p className='font-anton text-secondary-200 font-semibold'>Contate-nos</p>
+                </div>
             </div>
 
             <div className='flex flex-col gap-2 overflow-hidden'>
@@ -218,23 +239,21 @@ export default function OrderInfo() {
                     <svg fill="#ffffff" className={`w-6 h-6 ml-auto duration-500 ${allowProduct ? "rotate-180" : "fill-gray-600 stroke-gray-600 "}`} viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"><title></title><path d="M81.8457,25.3876a6.0239,6.0239,0,0,0-8.45.7676L48,56.6257l-25.396-30.47a5.999,5.999,0,1,0-9.2114,7.6879L43.3943,69.8452a5.9969,5.9969,0,0,0,9.2114,0L82.6074,33.8431A6.0076,6.0076,0,0,0,81.8457,25.3876Z"></path></g></svg>
                 </div>
 
-                <motion.div transition={{ type: "just" }} variants={variant} initial="closed" animate={allowProduct ? "open" : "closed"} className='flex flex-col gap-4'>
+                <motion.div transition={{ type: "just" }} variants={variant} initial="closed" animate={allowProduct ? "open" : "closed"} className='flex flex-col gap-4 md:grid md:grid-cols-2'>
                     {products.map((product, index) => {
                         const { coverPhoto, name, productId, productQtd, productPrice } = product
 
+                        return <div key={`${name}_${productId}_${index}`} className='flex gap-7 md:gap-3 pb-7 md:pb-2 border-b border-primary-200 md:grid md:grid-cols-2 '>
 
-                        return <div key={`${name}_${productId}_${index}`} className='flex gap-7 pb-7 border-b   border-primary-200'>
-
-
-                            <div className=' w-2/6' >
-                                <img src={coverPhoto} className='rounded-lg duration-300 object-contain h-28 p-1 w-full bg-white' alt={parseAlt(coverPhoto)} />
+                            <div className="w-2/6  h-28 md:w-auto md:h-36" >
+                                <img src={coverPhoto} className='rounded-lg duration-300 object-contain p-1 w-full h-full bg-white' alt={parseAlt(coverPhoto)} />
                             </div>
 
-                            <div className='flex w-3/5 flex-col font-anton'>
-                                <dl className='flex flex-col gap-2 '>
-                                    <p className='font-semibold text-center text-md mb-6 text-gray-200'>{name}</p>
-                                    {divList("Quantidade:", String(`${productQtd}x`), "justify-between px-6")}
-                                    {divList("Total:", parseLocalCurrency(parseToNumber(productPrice) * productQtd), "justify-between px-6")}
+                            <div className='flex w-3/5 flex-col font-anton md:w-auto '>
+                                <dl className='flex flex-col gap-2  h-full '>
+                                    <p className='font-semibold text-center mb-6 text-gray-200'>{name}</p>
+                                    {divList("Quantidade:", String(`${productQtd}x`), "justify-between px-6 md:mt-auto")}
+                                    {divList("Total:", parseLocalCurrency(parseToNumber(productPrice) * productQtd), "justify-between px-6 ")}
                                 </dl>
                             </div>
 

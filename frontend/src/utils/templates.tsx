@@ -33,7 +33,7 @@ export const slideOptions = (array: OptionsArrayType[], selectedState: SelectedS
                     const item = e[selected]
                     return (
                         <Slide key={`${e}-${i}`} className={`!w-auto`} onClick={() => setState(i)}>
-                            <div className={`!w-auto border-2 cursor-pointer text-sm ${classActive(state, i)} font-semibold p-2 rounded-lg font-lato`}>
+                            <div className={`!w-auto border-2 cursor-pointer text-sm md:text-base ${classActive(state, i)} font-semibold p-2 rounded-lg font-lato`}>
                                 <p>{item}</p>
                             </div>
                         </Slide>

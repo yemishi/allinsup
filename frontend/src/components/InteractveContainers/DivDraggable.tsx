@@ -15,7 +15,7 @@ interface PropsType {
 }
 export default function DivDraggable({ children, closeParent, onScroll, setState, state, setDirectionDrag, directionDrag, initialDirection, classAddition }: PropsType) {
 
-    const mediaQuery = window.matchMedia('(min-width: 1024px)');
+    const minTablet = window.matchMedia('(min-width: 768px)');
 
     const variants: Variants = {
         open: { x: 0 },
@@ -43,8 +43,9 @@ export default function DivDraggable({ children, closeParent, onScroll, setState
     return <>
         <motion.div onScroll={onScroll} onClick={(e) => e.stopPropagation()} initial={{ x: initialDirection }} variants={variants}
             animate={state ? "open" : 'close'}
-            className={`h-full ${classAddition || ""}  self-end scrollBar relative overflow-auto min-[450px]:w-[450px] w-full flex flex-col bg-primary-700 text-white font-lato`}
-            transition={{ type: "just" }}   {...(!mediaQuery.matches && {
+            className={`h-full ${classAddition || ""}  self-end scrollBar w relative overflow-auto w-full min-[450px]:w-[450px] flex flex-col
+             bg-primary-700 text-white font-lato`}
+            transition={{ type: "just" }}   {...(!minTablet.matches && {
                 drag: "x",
                 onDragEnd: handleDragEnd,
                 dragElastic: 1,

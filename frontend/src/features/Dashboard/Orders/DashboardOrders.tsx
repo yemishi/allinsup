@@ -7,7 +7,7 @@ export default function DashboardOrders() {
     const checkPath = (path: string) => location.pathname.toLowerCase().includes(path)
     return (
         <div className="flex flex-col">
-            <div className="w-full flex bg-primary-600 font-anton font-bold text-sm  ">
+            <div className="w-full flex bg-primary-600 font-anton font-bold   ">
 
 
                 <Link className={`p-3 duration-300  flex-1 ${checkPath("search-order") ? "bg-primary-500 text-secondary-200" : "bg-primary-600 text-gray-300"}`}
