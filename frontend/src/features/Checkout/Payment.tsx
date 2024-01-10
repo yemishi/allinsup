@@ -16,7 +16,6 @@ export default function Payment() {
         </svg>
     }
 
-
     return (
         <div className="flex flex-col gap-2 text-gray-200 p-2 mt-10">
             <h2 className="font-lato text-xl ml-3 font-semibold text-secondary-100">Método de Pagamento</h2>
@@ -32,6 +31,7 @@ export default function Payment() {
                         <p className="font-anton md:text-lg">
                             {method}
                         </p>
+                        
                         <span className="ml-auto">
                             <div className="w-8 h-8 md:w-11 md:h-11">
                                 {svgMethod[method]}

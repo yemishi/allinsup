@@ -172,14 +172,18 @@ export default function OrderInfo() {
         Pix: ["Encomendado", "Pago", "Preparando o produto", "Expedido", "Entregue"],
         default: ["Encomendado", "Preparando o produto", "Expedido", "Entregue"]
     };
-
+    const variants = {
+        initial: { opacity: 0, scale: 0.8 },
+        animate: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+        exit: { opacity: 0, scale: 1.2, transition: { duration: 0.5 } },
+      };
     const getTrackingStage = (paymentMethod: "Dinheiro" | "Cartão de Crédito" | "Cartão de Débito" | "Pix") => {
         return paymentMethod === "Pix" ? paymentMethods[paymentMethod] : paymentMethods.default
     };
     const stages = getTrackingStage(paymentMethod)
 
     return (
-        <div className='flex flex-col p-4 text-white gap-7'>
+        <motion.div variants={variants} className='flex flex-col p-4 text-white gap-7'>
             <h1 className='font-anton text-xl ml-4  font-semibold'>Informações da compra</h1>
             <div className="md:grid md:grid-cols-2 bg-primary-600 border-y text-gray-200 border-primary-200" >
 
@@ -261,6 +265,6 @@ export default function OrderInfo() {
                     })}
                 </motion.div>
             </div >
-        </div >
+        </motion.div >
     )
 }
