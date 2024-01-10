@@ -39,9 +39,15 @@ export default function EditProductPanel({ form, setForm, setVisible }: {
         <motion.div onClick={() => setVisible(false)} className="flex flex-col w-screen absolute h-full backdrop-brightness-50 " variants={variantsParent}
             animate={open ? 'open' : 'exit'}>
 
-            <DivDraggable directionDrag={directionDrag} initialDirection="-100%" setDirectionDrag={setDirectionDrag}
+            <DivDraggable directionDrag={directionDrag} initialDirection="-100%" classAddition="md:w-full" setDirectionDrag={setDirectionDrag}
                 setState={setOpen} state={open} closeParent={() => setVisible(false)} >
                 <form onSubmit={handleSubmit} className="w-full text-gray-300  font-anton flex flex-col pb-2 pt-6 bg-primary-600 items-center gap-6" >
+
+                    <button onClick={(e) => { e.preventDefault(), setVisible(false) }}
+                        className="hidden md:block absolute top-0 right-0 w-11 h-11 font-anton font-bold text-lg border-t border-r
+                                  border-primary bg-primary-500 text-rose-600 rounded-bl-lg ">X</button>
+
+                    <h2 className="hidden md:block text-secondary-100 font-semibold my-4 text-lg">{form.name}</h2>
 
                     <div className="flex flex-col px-6 gap-6 w-full items-center">
 
@@ -49,16 +55,15 @@ export default function EditProductPanel({ form, setForm, setVisible }: {
                         {inputField({ name: "category", onChange: handleValue, value: form.category })}
                         {inputField({ name: "brand", onChange: handleValue, value: form.brand })}
 
-
                     </div>
 
                     <Description form={form} setForm={setForm} />
 
                     <div className="flex flex-col w-full gap- ">
-                        <div className="w-full flex justify-between px-4 ">
-                            <h3 className="font-bold text-lg text-secondary-200 ml-2 mb-6">Variants</h3>
+                        <div className="w-full flex justify-between px-4 md:pb-6 items-center text-lg md:text-xl ">
+                            <h3 className="font-bold text-secondary-200 ml-2 ">Variants</h3>
 
-                            <button className="h-8 w-8 bg-primary border border-primary-300 font-anton font-bold text-lg rounded-full" onClick={(e) => {
+                            <button className="h-8 w-8 md:w-11 md:h-11 bg-primary border border-primary-300 font-anton font-bold rounded-full" onClick={(e) => {
                                 e.preventDefault()
                                 const newVariant: NewVariantType = {
                                     flavor: "Sabor",

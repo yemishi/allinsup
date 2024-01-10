@@ -34,7 +34,7 @@ export default function HighlightProducts() {
     </div >
 
     return (
-        <div className={`bg-center w-full min-h-[420px] bg-cover flex items-end
+        <div className={`bg-center w-full min-h-[420px] bg-cover flex items-end md:min-h-[600px]
         bg-[url('https://cdn.discordapp.com/attachments/914969778387570688/1181751820968800306/Design_sem_nome_5.png?ex=658b6da6&is=6578f8a6&hm=1ba88c0b7b5b5b81ebedfa12287be13c3354d5f7c082c657f75b13fa81fe8215&')]`} >
             {highlight && (
                 <ProductSliderGrid>

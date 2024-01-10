@@ -13,7 +13,7 @@ export default function Steps() {
                 const foundActive = index === indexPath || indexPath >= index
 
                 return <li className={`${foundActive ? "text-secondary-500 border-secondary-500" : ""} px-4 bg-primary py-2 flex border-dashed justify-center 
-                    items-center border z-10 rounded-full text-lg font-anton`} key={index}>
+                    items-center border z-10 rounded-full text-lg md:text-xl md:px-6 md:py-4 font-anton`} key={index}>
                     {index < indexPath ? (
                         <Link to={`/checkout/${element}`}>{index + 1} </Link>
                     ) : (
