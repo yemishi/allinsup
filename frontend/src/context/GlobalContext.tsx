@@ -1,6 +1,8 @@
 import React, { createContext, useReducer, Dispatch, ReactNode, useEffect } from 'react';
 import { ProductType, CartType } from '../types';
 import { toast } from "react-toastify"
+import { axiosRequest } from '../components';
+
 interface PaymentInfoType {
     wppMsg: string,
     extra: { paymentMethod: string, change: string | boolean },
@@ -200,8 +202,54 @@ const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({ children 
 
     useEffect(() => {
         const savedCart = localStorage.getItem('cart');
+
         if (savedCart) {
-            dispatch({ type: "UPDATE_CART", payload: JSON.parse(savedCart) })
+            const savedProducts = JSON.parse(savedCart) as CartType[];
+            let isChanged = false;
+
+            const fetchDataForProduct = async (product: CartType) => {
+                const { _id, flavor, sizeProduct, amount, price: savedPrice } = product;
+
+                try {
+                    const response = await axiosRequest.productInfo(flavor, sizeProduct, _id);
+                    const sizeSelected = response.data.variants.find((item) => item.isSelected === true)?.sizeDetails.find((item) => item.isSelected === true);
+
+                    if (sizeSelected) {
+                        const { price, stock } = sizeSelected;
+
+                        if (stock === 0) return null;
+                        if (price !== savedPrice || amount > stock) {
+                            isChanged = true;
+                        }
+
+                        product.stock = stock;
+                        product.price = price;
+
+                        if (amount > stock) {
+                            product.amount = stock;
+                        }
+
+                        return product;
+                    }
+                } catch (error) {
+                    toast.warn("Não foi possivel recuperar alguns items do seu carrinho.");
+                    return null;
+                }
+            };
+
+            const updateCart = async () => {
+                const updatedProductsPromises = savedProducts.map((product) => fetchDataForProduct(product));
+                const updatedProducts = await Promise.all(updatedProductsPromises);
+
+                if (isChanged) {
+                    toast.warn('Houve alterações em alguns produtos em seu carrinho. Já atualizamos para você.');
+                }
+
+                dispatch({ type: "UPDATE_CART", payload: updatedProducts.filter((product) => product !== null) as CartType[] });
+                localStorage.setItem("cart", JSON.stringify(updatedProducts.filter((product) => product !== null)))
+            };
+
+            updateCart();
         }
     }, []);
 

@@ -9,9 +9,11 @@ interface PropsType {
 }
 
 export default function Variants({ form, setForm }: PropsType) {
+    const minTable = window.matchMedia("(min-width:768px)").matches
 
     const settings: SliderProps = {
         spaceBetween: 20,
+        navigation: minTable,
         slidesPerView: "auto",
         style: {
             width: "100%"
@@ -19,10 +21,10 @@ export default function Variants({ form, setForm }: PropsType) {
     };
 
     const [newPhoto, setNewPhoto] = useState<string>("")
-    const inputClass = `block py-2.5 ps-2 pe-0 w-full text-sm text-white bg-transparent border-primary-200 border-b border-gray-300 appearance-none focus:outline-none
+    const inputClass = `block py-2.5 ps-2 pe-0 w-full text-sm md:text-base text-white bg-transparent border-primary-200 border-b border-gray-300 appearance-none focus:outline-none
     focus:ring-0 focus:border-secondary-600 peer`
 
-    const labelClass = `absolute text-sm text-white text-opacity-50 duration-300 transform -translate-y-7 translate-x-1 scale-75 top-3 pointer-events-none origin-[0] 
+    const labelClass = `absolute text-sm text-white text-opacity-50 md:text-base duration-300 transform -translate-y-7 translate-x-1 scale-75 top-3 pointer-events-none origin-[0] 
     peer-placeholder-shown:start-2 peer-focus:start-0 peer-focus:text-secondary-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 
     peer-focus:scale-75 peer-focus:-translate-y-7 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto`
 
@@ -33,7 +35,7 @@ export default function Variants({ form, setForm }: PropsType) {
             ...updatedVariants[variantIndex],
             [field]: value
         };
-        
+
         setForm({
             ...form,
             variants: updatedVariants
@@ -103,10 +105,10 @@ export default function Variants({ form, setForm }: PropsType) {
         form.variants.map((variant, variantIndex) => {
             const { flavor, photos } = variant
 
-            return <div className="flex flex-col gap-6 border-t border-primary-200 mb-5 bg-primary-500 px-6 py-4 relative" key={`${variant}_${variantIndex}`}>
+            return <div className="flex flex-col gap-6 md:gap-8 border-t border-primary-200 mb-5 bg-primary-500 px-6 py-4 relative" key={`${variant}_${variantIndex}`}>
                 <button onClick={(e) => { e.preventDefault(), removeVariant(variantIndex) }} className="absolute right-0 top-0 bg-primary px-2 py-1 rounded-bl-lg ">X</button>
-                <h4 className="font-anton text-base">{`Variant N°${variantIndex + 1}`}</h4>
-                <div className="relative w-3/6">
+                <h4 className="font-anton text-base md:text-lg">{`Variant N°${variantIndex + 1}`}</h4>
+                <div className="relative w-3/6 md:self-center">
                     <input type="text" className={inputClass} value={flavor} onChange={(e) => handleVariantChange(variantIndex, "flavor", e.target.value)}
                         placeholder=" " required />
                     <label className={labelClass}>Sabor do produto</label>
@@ -114,7 +116,7 @@ export default function Variants({ form, setForm }: PropsType) {
                 </div>
 
 
-                <div className="flex gap-6 ">
+                <div className="flex gap-6 md:self-center md:w-3/6">
                     <div className="relative w-full">
                         <input type="text" className={inputClass} value={newPhoto} onChange={(e) => setNewPhoto(e.target.value)} placeholder=" " />
                         <label className={labelClass}>Url da imagem</label>
@@ -133,10 +135,10 @@ export default function Variants({ form, setForm }: PropsType) {
                     <Slider settings={settings} >
                         {photos.map((photo, photoIndex) => (
 
-                            <Slide key={`${photo}_${photoIndex}`} className="!w-40 bg-primary relative pt-2 rounded-lg  !flex flex-col gap-3 ">
-                                <p className="text-sm font-lato font-bold ml-2">{`Imagem n°${photoIndex + 1}`}</p>
+                            <Slide key={`${photo}_${photoIndex}`} className="!w-40 md:!w-64 bg-primary relative pt-2 md:pt-3 rounded-lg !flex flex-col gap-3 ">
+                                <p className="text-sm font-lato font-bold ml-2 md:text-base">{`Imagem n°${photoIndex + 1}`}</p>
                                 <button onClick={(e) => { e.preventDefault(), removePhoto(photoIndex, variantIndex) }}
-                                    className="absolute top-0 right-0 w-6 h-6 font-anton font-bold text-xs border-t border-r
+                                    className="absolute top-0 right-0 w-6 h-6 md:w-8 md:h-8 font-anton font-bold text-xs border-t border-r
                                   border-primary bg-primary-500 text-rose-600 rounded-bl-lg rounded-tr-lg">X</button>
                                 <img src={photo} className="object-contain !h-48 p-4 bg-white rounded-lg" alt={parseAlt(photo)} />
                             </Slide>
@@ -146,35 +148,35 @@ export default function Variants({ form, setForm }: PropsType) {
 
                 {variant.sizeDetails.map((detail, sizeIndex) => {
                     const { price, sizeHighlight, sizeProduct, stock, promotion } = detail
-                    return <div className="flex flex-col gap-5" key={`${detail}_${sizeIndex}`}>
+                    return <div className="flex flex-col gap-5 md:items-center" key={`${detail}_${sizeIndex}`}>
 
-                        <div className="relative w-4/6 self-start">
+                        <div className="relative w-4/6">
                             <input type="number" className={inputClass} value={price} onChange={(e) => handleSizeProduct(variantIndex, sizeIndex, "price", e.target.value)} placeholder=" " required />
                             <label className={labelClass}>price</label>
                             <p className="absolute right-0 top-0">{parseLocalCurrency(Number(price))}</p>
                         </div>
 
-                        <div className="relative w-4/6 self-start">
+                        <div className="relative w-4/6">
                             <input type="text" className={inputClass} value={sizeProduct} onChange={(e) => handleSizeProduct(variantIndex, sizeIndex, "sizeProduct", e.target.value)}
                                 placeholder=" " required />
                             <label className={labelClass}>Tamanho do produto</label>
 
                         </div>
 
-                        <div className="relative w-4/6 self-start">
+                        <div className="relative w-4/6">
                             <input type="number" className={inputClass} value={stock} onChange={(e) => handleSizeProduct(variantIndex, sizeIndex, "stock", e.target.value)}
                                 placeholder=" " required />
                             <label className={labelClass}>Quantidade no estoque</label>
                         </div>
 
-                        <div className="relative w-4/6 self-start">
+                        <div className="relative w-4/6">
                             <input type="number" className={inputClass} value={promotion ? promotion : ""} onChange={(e) => handleSizeProduct(variantIndex, sizeIndex, "promotion", e.target.value)}
                                 placeholder=" " />
                             <label className={labelClass}>Promoção ?</label>
                             {promotion && <p className="absolute right-0 top-0">{parseLocalCurrency(Number(promotion))}</p>}
                         </div>
 
-                        <div className="w-4/6 self-start flex gap-2">
+                        <div className="w-4/6 flex gap-2 md:font-bold ">
                             <span onClick={(e) => { e.preventDefault(), handleSizeProduct(variantIndex, sizeIndex, "sizeHighlight", !sizeHighlight) }}
                                 className={`p-3 cursor-pointer rounded-full border-2 duration-300 border-primary-400 ${sizeHighlight ? "bg-secondary-200 border-secondary-300 shadow-lightOn" : "bg-primary"}`} />
                             <p>Destaque</p>

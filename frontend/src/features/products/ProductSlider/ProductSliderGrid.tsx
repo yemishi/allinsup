@@ -6,24 +6,40 @@ import { Link } from 'react-router-dom'
 
 export default function ProductSliderGrid({ children }: { children: ProductType[] }) {
     const { dispatch, state } = useGlobalState()
+    const minTablet = window.matchMedia("(min-width:768px)").matches
 
     const parseLocalCurrency = (e: (number)) => e.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
     const settings: SliderProps = {
         spaceBetween: 20,
         freeMode: true,
-        slidesPerView: "auto",
+        slidesPerView: 2,
+        navigation: minTablet,
+
         style: {
             background: 'linear-gradient(transparent,#161616)',
-            height: "310px",
             cursor: children && children?.length > 2 ? "grab" : "",
             width: '100%',
             bottom: 0,
-            zIndex: 10
+            zIndex: 10,
+        },
+   
+        breakpoints: {
+            460: {
+                slidesPerView: 2.2,
+            },
+            550: {
+                slidesPerView: 2.5,
+            },
+            650: {
+                slidesPerView: 3,
+            },
+            768: {
+                slidesPerView: 3.3,
+            }
         }
     }
-
     return (
-        <Slider settings={settings}>
+        <Slider settings={settings} >
 
             {children?.map((e) => {
                 const sizeIndex = e.variants.map((ele) => {
@@ -33,36 +49,37 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
                     return
                 }).find((highlighted) => highlighted !== null);
 
-                const { _id, category, coverPhoto, flavor, name, price, sizeProduct, stock, updatedName, amount, promotion, } = productDetails(e, state.cart, e.highlight, sizeIndex)
+                const { _id, category, coverPhoto, flavor, name, price, sizeProduct, stock, updatedName, amount, promotion } = productDetails(e, state.cart, e.highlight, sizeIndex)
                 const soldOff = ((amount && amount >= stock) || !stock)
                 const handleStyle = soldOff ? "group-hover:bg-[#c18203] bg-[#996600] pointer-events-none" : "bg-secondary hover:bg-secondary-800"
 
-                return <Slide key={`${_id}_${updatedName}`} className='max-w-[200px] group !flex rounded-xl text-sm bg-primary-500 font-lato 
-                    pb-4 text-white flex-col justify-between'>
+                return <Slide key={`${_id}_${updatedName}`} className='max-w group !flex rounded-xl text-sm bg-primary-500 font-lato 
+                    pb-4 min-h-[310px] md:min-h-[370px] text-white flex-col justify-between md:text-base'>
 
                     <div className='bg-white flex items-center justify-center rounded-t-xl p-4'>
 
                         <Link to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`}>
-                            <img src={coverPhoto} className='self-center group-hover:scale-110 duration-200 w-[140px] h-[130px] object-contain' alt={parseAlt(coverPhoto)} />
+                            <img src={coverPhoto} className='self-center group-hover:scale-110 duration-200 w-full h-[140px] md:h-[170px] object-contain' alt={parseAlt(coverPhoto)} />
                         </Link>
                     </div>
 
-                    <h3 className='font-bold px-2 truncate-2-lines'>{updatedName}</h3>
+                    <h3 className='font-bold px-2 truncate-2-lines '>{updatedName}</h3>
 
                     <div className='flex justify-between text-secondary-200 font-bold px-2'>
                         {promotion && <p>{parseLocalCurrency(promotion)}</p>}
                         <p className={`${promotion ? 'text-white text-xs line-through self-end' : ''} `}>{parseLocalCurrency(price)}</p>
                     </div>
                     <button onClick={() => dispatch({ type: "ADD_PRODUCT", payload: e })}
-                        className={`p-2 w-[80%] self-center ${handleStyle}  
-                         duration-300 text-xs gap-1 rounded-xl font-sans font-semibold flex justify-center items-center`}>
+                        className={`p-2 w-[80%] self-center ${handleStyle} duration-300 text-xs  gap-1 rounded-xl font-sans 
+                        font-semibold flex justify-center items-center md:text-sm`}>
                         <img src='/cartPlus.svg' className='w-4' />
                         <p>{`${soldOff ? 'ESGOTADO' : 'ADICIONAR'}`}</p>
 
                     </button>
 
                 </Slide >
-            })}
+            })
+            }
         </Slider >
     )
 }

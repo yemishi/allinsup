@@ -23,8 +23,8 @@ export default function CartProducts() {
 
                     <div className="flex flex-col text-sm  w-full">
 
-                        <p className="hover:text-secondary-500 duration-300">{updatedName}adawdawdadawdwdawdwadiawjefiouawefhiuoqwh</p>
-                        <button onClick={() => dispatch({ type: "REMOVE_PRODUCT", payload: product })} className="absolute top-0 right-0 cursor-pointer self-start">
+                        <p className="hover:text-secondary-500 duration-300">{updatedName}</p>
+                        <button onClick={() => dispatch({ type: "REMOVE_PRODUCT", payload: product })} className="absolute top-2 right-0 cursor-pointer self-start">
                             <svg style={{ strokeWidth: '24px' }} className="stroke-white hover:stroke-secondary-text-secondary-500 duration-300 w-5" viewBox="-23.04 -23.04 302.08 302.08" id="Flat" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier"></g><g id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <path d="M202.82861,197.17188a3.99991,3.99991,0,1,1-5.65722,5.65624L128,133.65723,58.82861,202.82812a3.99991,3.99991,0,0,1-5.65722-5.65624L122.343,128,53.17139,58.82812a3.99991,3.99991,0,0,1,5.65722-5.65624L128,122.34277l69.17139-69.17089a3.99991,3.99991,0,0,1,5.65722,5.65624L133.657,128Z"></path> </g></svg>
                         </button>
 

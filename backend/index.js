@@ -8,7 +8,6 @@ const sendEmail = require("./transporter")
 
 require('dotenv').config();
 
-
 const app = express();
 
 app.use(express.json());
@@ -283,7 +282,6 @@ app.get('/admin-orders', async (req, res) => {
 app.get('/admin-orderInfo', async (req, res) => {
     try {
         const { orderId } = req.query
-        console.log(orderId)
         const order = await Order.findOne({ orderId })
 
         if (!order) return res.status(404).json("Pedido nao encontrado.")
@@ -317,7 +315,6 @@ app.post('/orderInfo', async (req, res) => {
 app.patch('/updateOrder', async (req, res) => {
     try {
         const { orderId, updatedOrder } = req.body
-        console.log(updatedOrder)
         await Order.findOneAndUpdate({ orderId }, { $set: updatedOrder }, { new: true });
         return res.status(200).json("Encomenda atualizada com sucesso")
 

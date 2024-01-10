@@ -17,7 +17,6 @@ const search = (products, query) => {
                     const { flavor, sizeDetails } = subElement;
 
                     if (flavor && filterBySearchTerms(flavor)) {
-                        console.log(filterBySearchTerms(flavor), flavor)
                         subElement.isSelected = true;
                         found = true;
                     } else subElement.isSelected = false
@@ -52,8 +51,6 @@ const search = (products, query) => {
             }
 
             if (typeof product === 'string') {
-
-                console.log('aaaaaaa')
                 if (filterBySearchTerms(product)) {
                     return true;
                 }

@@ -5,7 +5,7 @@ import Login from "./Login";
 
 export default function User() {
     const [isAuth, setIsAuth] = useState<boolean>(false);
-    const [tel, setTel] = useState<string>(''); 
+    const [tel, setTel] = useState<string>('');
     const { state } = useGlobalState();
 
     useEffect(() => {
@@ -24,8 +24,7 @@ export default function User() {
 
     return (
         <>
-            {!isAuth && state.userOpen && <Login />}
-            {isAuth && state.userOpen && <Logout setIsAuth={setIsAuth} tel={tel} />}
+            {state.userOpen && (!isAuth ? < Login /> : <Logout setIsAuth={setIsAuth} tel={tel} />)}
         </>
     );
 }

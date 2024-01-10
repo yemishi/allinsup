@@ -75,7 +75,7 @@ export default function AllProducts({ query, action, setForm, setVisible }: {
             {products && products.map((product) => {
                 const { _id, coverPhoto, flavor, name,
                     sizeProduct, updatedName, } = productDetails(product, [])
-                return <div className="flex flex-col gap-3 w-44 overflow-hidden h-72 bg-primary-550 rounded-lg" key={`${_id}_${name}`}>
+                return <div className="flex flex-col gap-3 w-44 overflow-hidden min-w-[170px] h-72 bg-primary-550 rounded-lg flex-1 md:min-w-[195px] md:max-w-[270px]" key={`${_id}_${name}`}>
                     <div className=" h-40 flex p-2 bg-white rounded-lg">
                         <img src={coverPhoto} className="w-full object-contain" alt="" />
                     </div>

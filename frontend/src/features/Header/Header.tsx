@@ -51,7 +51,7 @@ export default function Header() {
     return (
         <motion.header variants={stickyVariant} animate={isSticky ? "sticky" : "noSticky"} className={`w-full px-5 py-3  z-20 top-0 flex flex-col gap-2  bg-primary-600`}>
 
-            <div className="flex justify-between w-full relative">
+            <div className="flex justify-between w-full relative items-center">
 
                 <span className="flex relative">
                     <button className="w-7" onClick={() => dispatch({ type: "SET_USER_OPEN", payload: true })}>
@@ -66,13 +66,12 @@ export default function Header() {
                     </Link>}
                 </span>
 
-                <div onClick={handleToHome} className="text-white text-center cursor-pointer hover:scale-105 duration-300 ">
-                    <h1 style={{ borderImage: 'linear-gradient(to right, transparent, rgb(255 144 70),transparent) 1' }}
-                        className="font-montserrat text-lg leading-3 py-1 border-y-2 px-4 font-extrabold  ">ALL IN</h1>
-                    <p className="text-orange-400 text-[10px] leading-3 font-mono font-semibold">SUPLEMENTOS</p>
+                <div onClick={handleToHome} className="text-white text-center cursor-pointer">
+                    <h1 
+                        className="font-montserrat  leading-3 py-3 text-3xl  px-4 font-extrabold md:text-xl md:py-0 md:px-6 md:hover:px-7 duration-300">ALL IN</h1>
                 </div>
 
-                <button className="w-7 relative" onClick={() => dispatch({ type: "SET_CART_OPEN", payload: true })}>
+                <button className="w-7 relative " onClick={() => dispatch({ type: "SET_CART_OPEN", payload: true })}>
                     <svg style={{ strokeLinecap: 'round' }} className="stroke-white stroke-[1.5] hover:stroke-[#fb923c] duration-200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier"></g>
                         <g id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier">
                             <path d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
@@ -83,7 +82,7 @@ export default function Header() {
                             ></path> </g>
                     </svg>
 
-                    <span className="bg-secondary-500 font-bold absolute top-1 font-lato text-[8px] text-white -right-1 rounded-full h-3 w-3 flex flex-center justify-center ">
+                    <span className="bg-secondary-500 font-bold absolute top-0 font-lato text-[8px] text-white -right-1 rounded-full h-3 w-3 flex flex-center justify-center ">
                         {state.cart.length || 0}</span>
                 </button>
             </div>

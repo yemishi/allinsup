@@ -60,37 +60,38 @@ export default function AllOrders({ query }: { query: string }) {
     }
     if (isLoading) return <Loading />
     if (error) return <ErrorPage />
+    const listStyle = "w-full justify-between  pb-2 0 px-2"
 
     return (
 
         <div className="flex flex-col items-center text-gray-200 p-4 gap-4 w-full">
             {orders.slice().reverse().map((order) => {
-                const { extra, orderId, price, products, userId, address, status } = order
+                const { extra, orderId, price, products, userId, address, status, purchaseDate } = order
                 const { name, cep, complement, houseNumber, tel, address: houseAddress } = address
                 const { paymentMethod, change } = extra
 
-                return <div className="w-full justify-between  bg-primary-600 items-center flex gap-1  flex-col p-3 rounded-md " key={`${orderId}_${userId}`}>
+                return <div className="w-full justify-between bg-primary-600 items-center flex gap-1 border border-primary-200 flex-col p-3 rounded-md " key={`${orderId}_${userId}`}>
 
                     <h2 className="text-lg font-montserrat font-semibold py-3 text-sky-300">Informações do usuario</h2>
 
-                    {divList("Número do pedido:", orderId, "w-full justify-between  pb-2 0 px-2")}
-                    {divList("Nome do usuario:", name, "w-full justify-between  pb-2 0 px-2")}
-                    {divList("Endereço:", houseAddress, "w-full justify-between  pb-2 0 px-2")}
-                    {divList("Telefone:", String(tel), "w-full justify-between  pb-2 0 px-2")}
-                    {divList("Número da morada:", String(houseNumber), "w-full justify-between  pb-2 0 px-2")}
-                    {complement && divList("Valor da compra:", complement, "w-full justify-between pb-2  px-2")}
+                    {divList("Número do pedido:", orderId, listStyle)}
+                    {divList("Nome do usuario:", name, listStyle)}
+                    {divList("Endereço:", houseAddress, listStyle)}
+                    {divList("Telefone:", String(tel), listStyle)}
+                    {divList("Número da morada:", String(houseNumber), listStyle)}
+                    {complement && divList("Valor da compra:", complement, "w-full justify-between pb-2 px-2")}
                     {divList("Cep:", cep, "w-full justify-between border-b-2 pb-3 border-dashed border-primary-200 px-2")}
 
                     <h2 className="text-lg font-montserrat font-semibold py-3 text-sky-300">Dados da compra</h2>
-
+                    {divList("Data da compra:", purchaseDate, listStyle)}
                     {divList("Valor da compra:", price, "w-full justify-between pb-2 px-2")}
                     {divList("Estado do pedido:", status, "w-full justify-between pb-2 px-2")}
-                    {change && divList("Troco para:", change, "w-full justify-between pb-2  px-2")}
+                    {change && divList("Troco para:", change, "w-full justify-between pb-2 px-2")}
                     {divList("Método de pagamento:", paymentMethod, "w-full justify-between  pb-2 px-2 border-b-2 border-dashed border-primary-200")}
 
                     <h2 className="text-lg font-montserrat font-semibold py-3 text-sky-300">Produtos</h2>
 
-                    <div className="flex flex-col gap-6">
+                    <div className="flex flex-col gap-6 w-full md:grid md:grid-cols-2 ">
                         {products.map((product, index) => {
                             const { coverPhoto, name, productQtd } = product
 
@@ -99,8 +100,8 @@ export default function AllOrders({ query }: { query: string }) {
                                     <img className="w-full h-full object-contain p-2 bg-white rounded-lg" src={coverPhoto} alt={parseAlt(coverPhoto)} />
                                 </span>
                                 <div className="flex flex-col gap-2 flex-1">
-                                    <p className="font-lato text-base font-semibold text-secondary-200">{name}</p>
-                                    <span className="flex self-center mt-auto gap-2">
+                                    <p className="font-lato text-base self-end font-semibold text-secondary-200">{name}</p>
+                                    <span className="flex self-end mt-auto  gap-2">
                                         <p className="font-thin">Quantidade:</p>
                                         <p className="font-bold text-secondary-500">{productQtd}</p>
                                     </span>
@@ -108,8 +109,8 @@ export default function AllOrders({ query }: { query: string }) {
                             </div>
                         })}
                     </div>
-                    <span className="flex mt-auto sticky bottom-0 w-full gap-3">
-                        <Link to={`/dashboard-admin/orders/see-order/${orderId}`} className="p-2 bg-sky-500 flex-1 font-semibold font-lato rounded-t-lg">Olhar</Link>
+                    <span className="flex mt-auto w-full gap-3">
+                        <Link to={`/dashboard-admin/orders/see-order/${orderId}`} className="p-2 bg-sky-500 flex-1 font-semibold font-lato rounded-t-lg text-center">Olhar</Link>
                         <button onClick={() => handleEdit(orderId)} className="p-2 bg-secondary-600 flex-1 font-semibold font-lato rounded-t-lg">Editar</button>
                     </span>
                 </div>

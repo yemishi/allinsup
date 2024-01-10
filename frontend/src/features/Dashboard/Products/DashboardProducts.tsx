@@ -5,7 +5,7 @@ export default function DashboardProducts() {
     const checkPath = (path: string) => location.pathname.toLowerCase().includes(path)
     return (
         <div className="flex flex-col">
-            <div className="w-full flex bg-primary-600 font-anton font-bold text-sm">
+            <div className="w-full flex bg-primary-600 font-anton font-bold">
                 <Link className={`p-3 duration-300 flex-1 ${checkPath("create-product") ? "bg-primary-500 text-secondary-200" : "bg-primary-600 text-gray-300"}`}
                     to={"/dashboard-admin/products/create-product"}>Novo produto</Link>
 
