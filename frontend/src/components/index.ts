@@ -1,6 +1,7 @@
 import RoundedSlider from "./Slider/RoundedSlider";
 import ProductGrid from "./ProductGrid/ProductGrid";
 import Slider from "./Slider/Slider";
+import Layout from "./Layout/Layout";
 
 import { ReactNode } from 'react'
 import axiosRequest from "../services/axios.config"
@@ -9,7 +10,7 @@ import { toast } from "react-toastify";
 
 import { SwiperSlide, SwiperProps as SliderProps, Swiper } from "swiper/react";
 
-export { SwiperSlide as Slide, DivDraggable, toast, ProductGrid, Slider, Swiper, RoundedSlider, axiosRequest }
+export { SwiperSlide as Slide, DivDraggable, Layout, toast, ProductGrid, Slider, Swiper, RoundedSlider, axiosRequest }
 
 
 export type { SliderProps, ReactNode }

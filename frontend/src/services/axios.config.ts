@@ -77,7 +77,7 @@ const axiosRequest = {
 
     getUser: (tel: string = ""): Promise<DataUserType> => axiosInstance.post(apiEndPoints.getUser(), { tel }),
 
-    newOrder: (price: string, products: OrderProducts[], extra: { paymentMethod: string, change: string | boolean }): Promise<newOrderType> => axiosInstance.post(apiEndPoints.newOrder(), { price, products, extra, tel }),
+    newOrder: (price: string, products: OrderProducts[], extra: { paymentMethod: string, change: string | boolean },tel:string): Promise<newOrderType> => axiosInstance.post(apiEndPoints.newOrder(), { price, products, extra, tel }),
     getOrders: (): Promise<DataOrders> => axiosInstance.post(apiEndPoints.getOrders(), { tel }),
     adminGetOrders: (): Promise<DataOrders> => axiosInstance.get(apiEndPoints.adminGetOrders()),
     updateOrder: (orderId: string, updatedOrder: UpdateOrderType): Promise<string> => axiosInstance.patch(apiEndPoints.updateOrder(), { orderId, updatedOrder }),

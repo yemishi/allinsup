@@ -191,8 +191,10 @@ const currentDay = () => {
 };
 
 app.post('/newOrder', async (req, res) => {
+    console.log('aaaaa')
     try {
         const { price, products, extra, tel } = req.body;
+        console.log(tel,'aaaaa')
 
         if (products.length === 0) return res.status(401).json("Sem produto no carrinho.")
             const user = await User.findOne({ tel });

@@ -6,7 +6,7 @@ import Checkout from "../pages/Checkout";
 import { Payment, Address, Review, DashboardOrders, DashboardProducts, RemoveProduct, CreateProduct, EditProduct } from "../features/";
 import OrderInfo from "../pages/OrderInfo";
 import Orders from "../pages/Orders";
-import DashboardAdmin from "../pages/DashboardAdmin,";
+import DashboardAdmin from "../pages/DashboardAdmin";
 import OrdersPanel from "../features/Dashboard/Orders/OrdersPanel";
 import OrderPanel from "../features/Dashboard/Orders/OrderPanel";
 import NotFoundPage from "../pages/NotFoundPage";
@@ -64,7 +64,7 @@ const routesConfig = [
                         children: [
                             {
                                 path: "search-orders",
-                                element: <OrdersPanel />
+                                element: <OrdersPanel />,
                             },
                             {
                                 path: "see-order/:orderId",

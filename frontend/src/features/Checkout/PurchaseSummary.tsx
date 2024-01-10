@@ -30,8 +30,8 @@ export default function PurchaseSummary() {
     }, [])
 
     const { data, isLoading, error } = useQuery('newOrder', async () => {
-        const response = await axiosRequest.newOrder(parseLocalCurrency(totalPrice(state.cart)), products, extra);
-        dispatch({ type: "RESET_CART" });
+        const response = await axiosRequest.newOrder(parseLocalCurrency(totalPrice(state.cart)), products, extra, String(localStorage.getItem("tel")));
+        dispatch({ type: "RESET_CART" })
         return response.data;
     });
 
@@ -73,7 +73,7 @@ export default function PurchaseSummary() {
             </span>
             <div className="mt-10 bg-primary-500  w-full p-6 flex flex-col justify-center gap-4">
 
-                {!isPix && <div className="flex flex-col gap-2 md:self-center md:w-3/6">
+                {isPix && <div className="flex flex-col gap-2 md:self-center md:w-3/6">
                     <p className="font-lato font-semibold text-secondary-200 text-center md:text-lg">Chave Pix para pagamento</p>
                     <span className="flex relative gap-2 font-anton md:text-lg font-bold text-base p-3 border-2 rounded-lg border-secondary-700 bg-primary-600">
                         <p className="text-secondary-600">CNPJ:</p>
@@ -84,7 +84,7 @@ export default function PurchaseSummary() {
                 </div>}
 
                 <div className="flex flex-col gap-2  md:w-3/6 md:self-center md:text-lg">
-                    {!isPix && <p className="font-lato font-semibold text-secondary-200 text-center">O comprovante do pix precisa ser enviado</p>}
+                    {isPix && <p className="font-lato font-semibold text-secondary-200 text-center">O comprovante do pix precisa ser enviado</p>}
                     <a href={`https://api.whatsapp.com/send?phone=${import.meta.env.VITE_PHONE_NUMBER}&text=${msg}`} className="flex gap-2 font-mono
                          items-end font-semibold text-base p-3 border-2  rounded-lg border-green-600 text-green-500 md:text-lg md:items-center
                            bg-primary-600 md:p-4">
