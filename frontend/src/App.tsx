@@ -2,6 +2,7 @@ import { lazy, useContext } from 'react'
 import GlobalContextProvider from './context/GlobalContext'
 import { Outlet, useLocation } from 'react-router-dom'
 import { GlobalContext } from './context/GlobalContext'
+import { AnimatePresence } from 'framer-motion'
 import { Cart, Footer, Header } from './features'
 const User = lazy(() => import('./features/User/User'))
 const AddressManager = lazy(() => import('./features/User/AddressManager'))
@@ -23,14 +24,17 @@ function App() {
 
     <div className='h-full item-center  w-full flex flex-col relative '>
       <ToastContainer theme='dark' />
-      <GlobalContextProvider>
-        {!isCheckoutRoute && <Header />}
-        <Cart />
-        <User />
-        <AddressManager />
-        <Outlet />
-        {!isCheckoutRoute && <Footer />}
-      </GlobalContextProvider>
+
+      <AnimatePresence>
+        <GlobalContextProvider>
+          {!isCheckoutRoute && <Header />}
+          <Cart />
+          <User />
+          <AddressManager />
+          <Outlet />
+          {!isCheckoutRoute && <Footer />}
+        </GlobalContextProvider>
+      </AnimatePresence>
     </div>
   )
 }

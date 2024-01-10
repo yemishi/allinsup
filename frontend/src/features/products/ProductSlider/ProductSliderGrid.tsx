@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom'
 export default function ProductSliderGrid({ children }: { children: ProductType[] }) {
     const { dispatch, state } = useGlobalState()
     const minTablet = window.matchMedia("(min-width:768px)").matches
-
     const parseLocalCurrency = (e: (number)) => e.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
     const settings: SliderProps = {
         spaceBetween: 20,
@@ -22,7 +21,7 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
             bottom: 0,
             zIndex: 10,
         },
-   
+
         breakpoints: {
             460: {
                 slidesPerView: 2.2,
