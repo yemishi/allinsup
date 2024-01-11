@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 export default function ProductSliderGrid({ children }: { children: ProductType[] }) {
     const { dispatch, state } = useGlobalState()
     const minTablet = window.matchMedia("(min-width:768px)").matches
+
     const parseLocalCurrency = (e: (number)) => e.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
     const settings: SliderProps = {
         spaceBetween: 20,
@@ -56,7 +57,6 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
                     pb-4 min-h-[310px] md:min-h-[370px] text-white flex-col justify-between md:text-base'>
 
                     <div className='bg-white flex items-center justify-center rounded-t-xl p-4'>
-
                         <Link to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`}>
                             <img src={coverPhoto} className='self-center group-hover:scale-110 duration-200 w-full h-[140px] md:h-[170px] object-contain' alt={parseAlt(coverPhoto)} />
                         </Link>
