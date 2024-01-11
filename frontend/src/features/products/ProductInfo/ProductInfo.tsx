@@ -88,7 +88,7 @@ export default function ProductInfo({ product, q }: { product: ProductType, q: s
     };
 
     const thumbSettings: SliderProps = {
-        onSwiper: (swiper) => setActiveThumb(swiper),
+
         slidesPerView: "auto",
         direction: "vertical",
         spaceBetween: 10,
@@ -98,6 +98,7 @@ export default function ProductInfo({ product, q }: { product: ProductType, q: s
             width: "20%",
             height: "100%",
         },
+        ...(activeThumb && { onSwiper: (swiper) => setActiveThumb(swiper), })
 
     };
 
