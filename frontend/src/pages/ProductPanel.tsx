@@ -9,9 +9,10 @@ async function fetchProduct(flavor: string, size: string, _id: string) {
 }
 export default function ProductPanel() {
 
-    const { name, category, _id } = useParams()
+    const { name, _id } = useParams()
     const nameArr = name?.split('-') || []
     const flavor = nameArr[1]
+
     const size = nameArr[2]
 
     const { data: product, isLoading, error } = useQuery(['product', flavor, size, _id], () => fetchProduct(flavor, size, _id as string), {
@@ -23,7 +24,7 @@ export default function ProductPanel() {
 
     return (
         <div className="flex flex-col items-center p-4">
-            {product && <ProductInfo product={product} q={decodeURIComponent(String(category))} />}
+            {product && <ProductInfo product={product} q={"max creatina"} />}
         </div>
     )
 }

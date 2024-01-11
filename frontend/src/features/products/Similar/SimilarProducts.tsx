@@ -5,7 +5,6 @@ import { ProductSliderGrid } from "../.."
 export default function SimilarProduct({ q, title }: { q: string, title: string }) {
     const { data } = useQuery("similar-products", async () => {
         const response = await axiosRequest.productsSearch(q, 1, 5)
-        console.log(response.data)
         return response.data
     })
 
