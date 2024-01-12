@@ -68,7 +68,7 @@ export default function AllProducts({ query, action, setForm, setVisible }: {
     }, [data]);
 
     if (isLoading) return <Loading />
-    if (error) return <ErrorPage />
+    if (error) return <ErrorPage msg="Vish... algo deu errado aqui"/>
 
     return (
         <div className="flex flex-wrap text-gray-200 gap-4 items-center justify-center ">

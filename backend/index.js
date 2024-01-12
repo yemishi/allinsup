@@ -125,6 +125,28 @@ app.get("/productBrand", async (req, res) => {
     }
 })
 
+app.get("/productCategory", async (req, res) => {
+    try {
+
+        const { category, page = 1, limit } = req.query
+
+        const parsedPage = parseInt(page);
+        const parsedLimit = parseInt(limit);
+
+        const skip = (parsedPage - 1) * (parsedLimit ? parsedLimit : 10);
+
+        if (!category) {
+            const products = await Product.find().skip(skip).limit(parsedLimit || 10)
+            return res.status(201).json(products)
+        }
+        const products = await Product.find({ category: category.toLocaleLowerCase() }).skip(skip).limit(parsedLimit || 10)
+
+        return res.status(201).json(products)
+    } catch (error) {
+        return res.status(400).json("algo deu errado")
+    }
+})
+
 
 app.get('/ordersSearch', async (req, res) => {
     try {
@@ -257,7 +279,7 @@ app.delete("/productDelete/:productId", async (req, res) => {
 
 
 app.post('/orders', async (req, res) => {
-    const { tel } = req.body
+    const { tel } = req.body 
     try {
         if (!tel) return res.status(404).json()
         const user = await User.findOne({ tel })

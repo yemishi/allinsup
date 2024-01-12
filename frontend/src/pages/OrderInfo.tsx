@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 import { motion } from 'framer-motion'
 import { axiosRequest } from '../components'
-import { divList, parseAlt, parseLocalCurrency, parseToNumber } from '../utils';
+import { blinkVariant, divList, parseAlt, parseLocalCurrency, parseToNumber } from '../utils';
 import { ErrorPage, Loading } from '../features'
 
 export default function OrderInfo() {
@@ -26,7 +26,7 @@ export default function OrderInfo() {
 
 
     if (isLoading) return <Loading />
-    if (!data || error) return <ErrorPage />
+    if (!data || error) return <ErrorPage msg='Nao foi possivel recuperar o pedido.' />
 
     const { price, products, purchaseDate, status, extra } = data
     const { paymentMethod } = extra
@@ -172,20 +172,16 @@ export default function OrderInfo() {
         Pix: ["Encomendado", "Pago", "Preparando o produto", "Expedido", "Entregue"],
         default: ["Encomendado", "Preparando o produto", "Expedido", "Entregue"]
     };
-    const variants = {
-        initial: { opacity: 0, scale: 0.8 },
-        animate: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
-        exit: { opacity: 0, scale: 1.2, transition: { duration: 0.5 } },
-      };
+
     const getTrackingStage = (paymentMethod: "Dinheiro" | "Cartão de Crédito" | "Cartão de Débito" | "Pix") => {
         return paymentMethod === "Pix" ? paymentMethods[paymentMethod] : paymentMethods.default
     };
     const stages = getTrackingStage(paymentMethod)
 
     return (
-        <motion.div variants={variants} className='flex flex-col p-4 text-white gap-7'>
-            <h1 className='font-anton text-xl ml-4  font-semibold'>Informações da compra</h1>
-            <div className="md:grid md:grid-cols-2 bg-primary-600 border-y text-gray-200 border-primary-200" >
+        <motion.div variants={blinkVariant} animate="animate" initial="initial" exit="exit" transition={{ duration: 0.2 }} className='flex flex-col p-4 text-white gap-7'>
+            <h1 className='font-anton text-xl lg:text-2xl ml-4  font-semibold'>Informações da compra</h1>
+            <div className="md:grid md:grid-cols-2 lg:text-lg bg-primary-600 border-y text-gray-200 border-primary-200" >
 
                 <dl className="flex flex-col gap-3 p-4">
                     {divList("Encomenda N°:", String(orderId))}
@@ -194,12 +190,13 @@ export default function OrderInfo() {
                     {divList("Situação atual:", status)}
                     {divList("Metodo de pagamento:", paymentMethod)}
                 </dl>
+
                 <div className='gap-3 py-4 flex-col border-l items-center hidden md:flex'>
-                    <p className='font-lato  text-secondary-100 text-lg font-bold'>Estado atual da emcomenda</p>
+                    <p className='font-lato text-lg font-bold'>Estado atual da encomenda</p>
                     <div className='w-24 h-24'>
                         {statusIcon[status as "Encomendado" | "Pago" | "Expedido" | "Entregue"]}
                     </div>
-                    <p className='text-base font-anton text-secondary-400'>{status}</p>
+                    <p className='text-base font-anton  text-secondary-400'>{status}</p>
                 </div>
             </div>
 
@@ -208,7 +205,7 @@ export default function OrderInfo() {
                     {stages.map((stage, index) => {
                         const currentIndex = stages.indexOf(status)
 
-                        return <div key={`${stage}_${index}`} className='flex md:gap-14'>
+                        return <div key={`${stage}_${index}`} className='flex md:gap-14 lg:text-lg'>
 
                             <div className='flex font-medium  gap-2 items-center duration-300 w-full'>
 
@@ -226,7 +223,7 @@ export default function OrderInfo() {
                 </div>
 
                 <div className='hidden md:flex flex-col items-center gap-6 justify-center px-5 text-center '>
-                    <p className='font-lato text-lg font-bold text-secondary-100'>Tem alguma duvida sobre a encomenda?</p>
+                    <p className='font-lato text-lg font-bold '>Tem alguma duvida sobre a encomenda?</p>
 
                     <a href={`https://api.whatsapp.com/send?phone=${import.meta.env.VITE_PHONE_NUMBER}&text=Olá estou com uma dúvida em relação ao pedido N°${orderId}`} className="w-16 duration-200 p-3 border
                      rounded-3xl border-green-500 hover:bg-black justify-self-end ">
@@ -236,20 +233,22 @@ export default function OrderInfo() {
                 </div>
             </div>
 
-            <div className='flex flex-col gap-2 overflow-hidden'>
-                <div onClick={() => setAllowProduct(!allowProduct)} className='z-20 font-lato text-lg font-bold p-2 rounded-b-lg bg-primary-600 
-                 w-full flex'>
+            <div className='flex flex-col gap-2 overflow-hidden lg:w-[80%] self-center'>
+                <div onClick={() => setAllowProduct(!allowProduct)} className='z-20 cursor-pointer font-lato text-lg font-bold p-2 rounded-b-lg
+                 bg-primary-600 hover:bg-primary-500 w-full flex duration-200'>
                     <p>Produtos</p>
                     <svg fill="#ffffff" className={`w-6 h-6 ml-auto duration-500 ${allowProduct ? "rotate-180" : "fill-gray-600 stroke-gray-600 "}`} viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"><title></title><path d="M81.8457,25.3876a6.0239,6.0239,0,0,0-8.45.7676L48,56.6257l-25.396-30.47a5.999,5.999,0,1,0-9.2114,7.6879L43.3943,69.8452a5.9969,5.9969,0,0,0,9.2114,0L82.6074,33.8431A6.0076,6.0076,0,0,0,81.8457,25.3876Z"></path></g></svg>
                 </div>
 
-                <motion.div transition={{ type: "just" }} variants={variant} initial="closed" animate={allowProduct ? "open" : "closed"} className='flex flex-col gap-4 md:grid md:grid-cols-2'>
+                <motion.div transition={{ type: "just" }} variants={variant} initial="closed" animate={allowProduct ? "open" : "closed"}
+                    className='flex flex-col gap-4 md:grid md:grid-cols-2'>
                     {products.map((product, index) => {
                         const { coverPhoto, name, productId, productQtd, productPrice } = product
 
-                        return <div key={`${name}_${productId}_${index}`} className='flex gap-7 md:gap-3 pb-7 md:pb-2 border-b border-primary-200 md:grid md:grid-cols-2 '>
+                        return <div key={`${name}_${productId}_${index}`} className='flex gap-7 lg:text-lg md:gap-3 pb-7 md:pb-2 border-b
+                         border-primary-200 md:grid md:grid-cols-2 lg:gap-14'>
 
-                            <div className="w-2/6  h-28 md:w-auto md:h-36" >
+                            <div className="w-2/6 h-28 md:w-auto md:h-36" >
                                 <img src={coverPhoto} className='rounded-lg duration-300 object-contain p-1 w-full h-full bg-white' alt={parseAlt(coverPhoto)} />
                             </div>
 

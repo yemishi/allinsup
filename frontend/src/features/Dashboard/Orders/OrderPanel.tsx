@@ -13,7 +13,7 @@ export default function OrderPanel() {
     )
 
     if (isLoading) return <Loading />
-    if (error || !data) return <ErrorPage />
+    if (error || !data) return <ErrorPage msg="Não foi possivel encontrar o pedido selecionado."/>
 
     const { extra, price, products, purchaseDate, receivedDate, status, userId, address } = data
     const { name, cep, complement, houseNumber, tel, address: houseAddress } = address

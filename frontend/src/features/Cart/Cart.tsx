@@ -23,7 +23,7 @@ export default function Cart() {
         <>
             {state.cartOpen && <motion.div
                 onClick={handleCloseCart} variants={variantsParent} animate={isExiting ? 'open' : 'exit'}
-                className="w-full z-30 h-full overflow-hidden fixed backdrop-brightness-50 flex flex-col">
+                className="w-screen z-30 h-full right-0 overflow-hidden fixed backdrop-brightness-50 flex flex-col">
                 <CartPanel isExisting={isExiting} setIsExisting={setIsExisting} handleClose={handleCloseCart} />
             </motion.div >}
         </>

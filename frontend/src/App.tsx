@@ -1,13 +1,13 @@
 import { lazy, useContext } from 'react'
 import GlobalContextProvider from './context/GlobalContext'
-import { Outlet, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { GlobalContext } from './context/GlobalContext'
-import { AnimatePresence } from 'framer-motion'
-import { Cart, Footer, Header } from './features'
+import { BurgerMenu, Cart, Footer, Header } from './features'
 const User = lazy(() => import('./features/User/User'))
 const AddressManager = lazy(() => import('./features/User/AddressManager'))
 import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
+import RoutesConfig from './routes/routesConfig'
 
 
 
@@ -22,20 +22,23 @@ function App() {
 
   return (
 
-    <div className='h-full item-center  w-full flex flex-col relative '>
+
+    <div className='max-w-[1523px] w-full item-center ml-auto mr-auto h-full flex flex-col '>
       <ToastContainer theme='dark' />
 
-      <AnimatePresence>
-        <GlobalContextProvider>
-          {!isCheckoutRoute && <Header />}
-          <Cart />
-          <User />
-          <AddressManager />
-          <Outlet />
-          {!isCheckoutRoute && <Footer />}
-        </GlobalContextProvider>
-      </AnimatePresence>
+      <GlobalContextProvider>
+        {!isCheckoutRoute && <Header />}
+        <BurgerMenu />
+        <Cart />
+        <RoutesConfig />
+        <User />
+        <AddressManager />
+        {!isCheckoutRoute && <Footer />}
+      </GlobalContextProvider>
     </div>
+
+
+
   )
 }
 

@@ -79,7 +79,7 @@ export default function Login() {
                 {logoCloseEvent(handleClose)}
 
 
-                <div className=" text-secondary-100  w-full bg-primary-500 bg-opacity-90 flex flex-col gap-7 py-4 shadow-md shadow-primary-500">
+                <div className=" w-full bg-primary-500 bg-opacity-90 flex flex-col gap-7 py-4 shadow-md shadow-primary-500">
                     <h2 className="text-center font-anton text-xl font-bold md:text-2xl text">Iniciar Sessão</h2>
 
                     <form onSubmit={submitLogin} className="max-w-xs mx-auto flex flex-col gap-8 w-full items-center">
