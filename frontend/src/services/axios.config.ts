@@ -50,6 +50,7 @@ const apiEndPoints = {
     removeProduct: (productId: string) => `/productDelete/${productId}`,
     searchOrder: (query?: string, page?: number, limit?: number) => `/ordersSearch?q=${query}&page=${page}&limit=${limit}`,
     productBrand: (brand: string, page?: number, limit?: number) => `/productBrand?brand=${brand}&page=${page}&limit=${limit}`,
+    productCategory: (category: string, page?: number, limit?: number) => `/productCategory?category=${category}&page=${page}&limit=${limit}`,
 
     getUser: () => '/user',
     newOrder: () => '/newOrder',
@@ -68,6 +69,7 @@ const axiosRequest = {
 
     products: (page: number, limit: number): Promise<ProductsType> => axiosInstance.get(apiEndPoints.products(page, limit)),
     productBrand: (brand: string, page?: number, limit?: number): Promise<ProductsType> => axiosInstance.get(apiEndPoints.productBrand(brand, page, limit)),
+    productCategory: (category: string, page?: number, limit?: number): Promise<ProductsType> => axiosInstance.get(apiEndPoints.productCategory(category, page, limit)),
     productsSearch: (query: string, page?: number, limit?: number): Promise<ProductsType> => axiosInstance.get(apiEndPoints.productsSearch(query, page, limit)),
     productInfo: (flavor: string, size: string, _id: string): Promise<ProductInfoType> => axiosInstance.get(apiEndPoints.productInfo(flavor, size, _id)),
     newProduct: (product: NewProductType) => axiosInstance.post(apiEndPoints.newProduct(), product),
@@ -78,7 +80,7 @@ const axiosRequest = {
     getUser: (tel: string = ""): Promise<DataUserType> => axiosInstance.post(apiEndPoints.getUser(), { tel }),
 
     newOrder: (price: string, products: OrderProducts[], extra: { paymentMethod: string, change: string | boolean },tel:string): Promise<newOrderType> => axiosInstance.post(apiEndPoints.newOrder(), { price, products, extra, tel }),
-    getOrders: (): Promise<DataOrders> => axiosInstance.post(apiEndPoints.getOrders(), { tel }),
+    getOrders: (tel:string): Promise<DataOrders> => axiosInstance.post(apiEndPoints.getOrders(), { tel }),
     adminGetOrders: (): Promise<DataOrders> => axiosInstance.get(apiEndPoints.adminGetOrders()),
     updateOrder: (orderId: string, updatedOrder: UpdateOrderType): Promise<string> => axiosInstance.patch(apiEndPoints.updateOrder(), { orderId, updatedOrder }),
     orderInfo: (orderId: string): Promise<DataOrder> => axiosInstance.post(apiEndPoints.orderInfo(orderId), { tel }),

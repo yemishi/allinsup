@@ -1,6 +1,5 @@
 import Home from "../pages/Home";
 import Search from "../pages/Search";
-import App from "../App";
 import ProductPanel from "../pages/ProductPanel";
 import Checkout from "../pages/Checkout";
 import { Payment, Address, Review, DashboardOrders, DashboardProducts, RemoveProduct, CreateProduct, EditProduct } from "../features/";
@@ -10,91 +9,48 @@ import DashboardAdmin from "../pages/DashboardAdmin";
 import OrdersPanel from "../features/Dashboard/Orders/OrdersPanel";
 import OrderPanel from "../features/Dashboard/Orders/OrderPanel";
 import NotFoundPage from "../pages/NotFoundPage";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+import OptionMenu from "../pages/OptionMenu";
 
 
-const routesConfig = [
-    {
-        element: <App />,
-        children: [
-            {
-                path: "/",
-                element: <Home />
-            },
-            {
+export default function RoutesConfig() {
+    const location = useLocation()
+    return (
+        <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname} >
+                <Route path="/" element={<Home />} />
 
-                element: <Checkout />,
-                children: [
-                    {
-                        path: '/checkout/payment',
-                        element: <Payment />
-                    },
-                    {
-                        path: '/checkout/address',
-                        element: <Address />
-                    },
-                    {
-                        path: '/checkout/review',
-                        element: <Review />
-                    }
+                <Route path="/orderInfo/:orderId" element={<OrderInfo />} />
+                <Route path="/myOrders" element={<Orders />} />
 
-                ],
-            },
-            {
-                path: "/dashboard-admin",
-                element: <DashboardAdmin />,
-                children: [
-                    {
-                        path: "products",
-                        element: <DashboardProducts />,
-                        children: [
-                            {
-                                path: "remove-product",
-                                element: <RemoveProduct />
-                            }, {
-                                path: "create-product",
-                                element: <CreateProduct />
-                            }, {
-                                path: "edit-product",
-                                element: <EditProduct />
-                            }
-                        ]
-                    }, {
-                        path: "orders",
-                        element: <DashboardOrders />,
-                        children: [
-                            {
-                                path: "search-orders",
-                                element: <OrdersPanel />,
-                            },
-                            {
-                                path: "see-order/:orderId",
-                                element: <OrderPanel />
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                path: '/orderInfo/:orderId',
-                element: <OrderInfo />
-            },
-            {
-                path: '/myOrders',
-                element: <Orders />
-            },
-            {
-                path: '/search',
-                element: <Search />
-            }, {
-                path: '/:category/:name/:_id',
-                element: <ProductPanel />
-            }, {
-                path: "*",
-                element: < NotFoundPage />
-            }
-        ]
-    }
-];
+                <Route path="/search" element={<Search />} />
+                <Route path="/:category/:name/:_id" element={<ProductPanel />} />
+                <Route path="/option-menu/:q" element={<OptionMenu />} />
 
+                <Route path="/checkout" element={<Checkout />}>
+                    <Route path="/checkout/payment" element={<Payment />} />
+                    <Route path="/checkout/address" element={<Address />} />
+                    <Route path="/checkout/review" element={<Review />} />
+                </Route>
 
-export default routesConfig
+                <Route path="/dashboard-admin" element={<DashboardAdmin />}>
+                    <Route path="products" element={<DashboardProducts />}>
+                        <Route path="create-product" element={<CreateProduct />} />
+                        <Route path="edit-product" element={<EditProduct />} />
+                        <Route path="remove-product" element={<RemoveProduct />} />
+                    </Route>
+
+                    <Route path="orders" element={<DashboardOrders />}>
+                        <Route path="search-orders" element={<OrdersPanel />} />
+                        <Route path="see-order/:orderId" element={<OrderPanel />} />
+                    </Route>
+                </Route>
+
+                <Route path="*" element={<NotFoundPage />} />
+
+            </Routes>
+        </AnimatePresence>
+    )
+
+}

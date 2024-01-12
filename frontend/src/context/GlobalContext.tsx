@@ -14,12 +14,14 @@ interface GlobalState {
     brandHome: string;
     cartOpen: boolean;
     userOpen: boolean;
+    burgerOpen: boolean;
     addressOpen: boolean;
     paymentMethod: string;
 }
 
 type Action =
     | { type: 'SET_CART_OPEN'; payload: boolean }
+    | { type: 'SET_BURGER_OPEN'; payload: boolean }
     | { type: 'SET_USER_OPEN'; payload: boolean }
     | { type: 'SET_ADDRESS_OPEN'; payload: boolean }
     | { type: 'ADD_PRODUCT'; payload: ProductType }
@@ -34,6 +36,7 @@ type Action =
 
 const initialState: GlobalState = {
     cart: [],
+    burgerOpen: false,
     paymentInfo: { extra: { paymentMethod: "", change: "" }, isPix: false, wppMsg: "" },
     brandHome: "Diversas",
     cartOpen: false,
@@ -46,6 +49,8 @@ const reducer = (state: GlobalState, action: Action): GlobalState => {
     switch (action.type) {
         case 'SET_CART_OPEN':
             return { ...state, cartOpen: action.payload };
+        case 'SET_BURGER_OPEN':
+            return { ...state, burgerOpen: action.payload };
         case 'SET_USER_OPEN':
             return { ...state, userOpen: action.payload };
         case 'SET_ADDRESS_OPEN':
@@ -196,9 +201,9 @@ interface GlobalContextProviderProps {
 const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     useEffect(() => {
-        document.body.style.overflow = state.cartOpen || state.userOpen || state.addressOpen ? 'hidden' : 'auto';
+        document.body.style.overflow = state.cartOpen || state.userOpen || state.burgerOpen || state.addressOpen ? 'hidden' : 'auto';
 
-    }, [state.cartOpen, state.userOpen, state.addressOpen]);
+    }, [state.cartOpen, state.userOpen, state.addressOpen, state.burgerOpen]);
 
     useEffect(() => {
         const savedCart = localStorage.getItem('cart');

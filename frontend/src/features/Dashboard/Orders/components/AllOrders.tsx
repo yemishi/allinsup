@@ -38,7 +38,6 @@ export default function AllOrders({ query }: { query: string }) {
         }
         return [];
     }, [data]);
-
     useEffect(() => {
         if (!isLoading && hasNextPage) {
             observer.current = new IntersectionObserver((entries) => {
@@ -59,20 +58,20 @@ export default function AllOrders({ query }: { query: string }) {
         setIsEdit(true)
     }
     if (isLoading) return <Loading />
-    if (error) return <ErrorPage />
+    if (error) return <ErrorPage msg="Algo deu errado!" />
     const listStyle = "w-full justify-between  pb-2 0 px-2"
 
     return (
 
         <div className="flex flex-col items-center text-gray-200 p-4 gap-4 w-full">
+            <p className="text-lg font-montserrat font-bold text-secondary-200 lg:text-2xl">{`Total de encomendas: ${orders.length}`}</p>
             {orders.slice().reverse().map((order) => {
                 const { extra, orderId, price, products, userId, address, status, purchaseDate } = order
                 const { name, cep, complement, houseNumber, tel, address: houseAddress } = address
                 const { paymentMethod, change } = extra
 
-                return <div className="w-full justify-between bg-primary-600 items-center flex gap-1 border border-primary-200 flex-col p-3 rounded-md " key={`${orderId}_${userId}`}>
-
-                    <h2 className="text-lg font-montserrat font-semibold py-3 text-sky-300">Informações do usuario</h2>
+                return <div className="w-full lg:text-lg justify-between bg-primary-600 items-center flex gap-1 border border-primary-200 flex-col p-3 rounded-md " key={`${orderId}_${userId}`}>
+                    <h2 className="text-lg lg:text-xl font-montserrat font-semibold py-3 text-sky-300">Informações do usuario</h2>
 
                     {divList("Número do pedido:", orderId, listStyle)}
                     {divList("Nome do usuario:", name, listStyle)}
@@ -89,18 +88,18 @@ export default function AllOrders({ query }: { query: string }) {
                     {change && divList("Troco para:", change, "w-full justify-between pb-2 px-2")}
                     {divList("Método de pagamento:", paymentMethod, "w-full justify-between  pb-2 px-2 border-b-2 border-dashed border-primary-200")}
 
-                    <h2 className="text-lg font-montserrat font-semibold py-3 text-sky-300">Produtos</h2>
+                    <h2 className="text-lg lg:text-xl font-montserrat font-semibold py-3 text-sky-300">Produtos</h2>
 
                     <div className="flex flex-col gap-6 w-full md:grid md:grid-cols-2 ">
                         {products.map((product, index) => {
                             const { coverPhoto, name, productQtd } = product
 
                             return <div key={`${name}_${index}`} className="flex gap-4 w-full justify-between border-b pb-2 border-primary-200 ">
-                                <span className="w-36 h-36">
+                                <span className="w-36 h-36 lg:w-40 lg:h-40">
                                     <img className="w-full h-full object-contain p-2 bg-white rounded-lg" src={coverPhoto} alt={parseAlt(coverPhoto)} />
                                 </span>
                                 <div className="flex flex-col gap-2 flex-1">
-                                    <p className="font-lato text-base self-end font-semibold text-secondary-200">{name}</p>
+                                    <p className="font-lato text-base lg:text-lg self-end font-semibold text-secondary-200">{name}</p>
                                     <span className="flex self-end mt-auto  gap-2">
                                         <p className="font-thin">Quantidade:</p>
                                         <p className="font-bold text-secondary-500">{productQtd}</p>
@@ -119,7 +118,7 @@ export default function AllOrders({ query }: { query: string }) {
                 setState={setOpen} state={open} orderId={orderId} />}
 
             {hasNextPage ? <div ref={ref} /> : <div onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                className="bg-primary-500 p-2 mt-3 rounded-t-2xl text-secondary-500 w-full text-center">
+                className="bg-primary-500 p-2 mt-3 rounded-t-2xl text-secondary-500 w-full text-center lg:w-auto lg:px-11 lg:py-3 lg:rounded-full lg:text-lg">
                 <p className="font-bold cursor-pointer font-serif ">FIM DA LISTA</p>
             </div>}
         </div>

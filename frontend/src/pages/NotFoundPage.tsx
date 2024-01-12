@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
+import { blinkVariant } from '../utils';
+import { motion } from "framer-motion"
 
 export default function NotFoundPage() {
     return (
-        <div className="min-h-screen flex items-center text-center min-w-full justify-center bg-primary text-white absolute z-50">
+        <motion.div animate="animate" exit="exit" initial="initial" transition={{ duration: 0.2 }} variants={blinkVariant} className="min-h-screen flex items-center text-center min-w-full justify-center bg-primary text-white absolute z-50">
             <div className=" p-8 rounded-lg shadow-md ">
                 <h1 className='text-3xl font-bold font-lato text-secondary-200'>Perdido na Fronteira dos Mundos</h1>
 
@@ -13,6 +15,6 @@ export default function NotFoundPage() {
                     Retornar à Base
                 </Link>
             </div>
-        </div>
+        </motion.div>
     );
 };

@@ -18,6 +18,7 @@ type descType = {
     title: string,
     text: string
 }
+export type BrandType = "max titanium" | "growth" | "probiotica" | "integralmédica" | "black skull"
 
 export interface ProductType {
     _id: string,
@@ -63,7 +64,7 @@ export interface UserType {
 
 export interface OrderType {
     extra: { change?: string, paymentMethod: "Dinheiro" | "Cartão de Crédito" | "Cartão de Débito" | "Pix" }
-    products: [{ productId: string, productQtd: number, coverPhoto: string, name: string ,productPrice:string}]
+    products: [{ productId: string, productQtd: number, coverPhoto: string, name: string, productPrice: string }]
     userId: string,
     orderId: string,
     productsIds: string[],

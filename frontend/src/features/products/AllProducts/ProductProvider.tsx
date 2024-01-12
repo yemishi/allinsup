@@ -61,7 +61,7 @@ export default function ProductProvider() {
         return [];
     }, [data]);
     
-    if (error) return <ErrorPage />
+    if (error) return <ErrorPage msg="Algo deu errado, tente novamente."/>
 
     return (
         <div className="w-full h-full justify-items-center pb-7 relative bg-primary-550 flex flex-col items-center">
@@ -69,7 +69,7 @@ export default function ProductProvider() {
             {isLoading && waitingProduct}
             {isFetchingNextPage && <span className=" w-11 h-11 py-3 border-4 border-y-transparent border-l-green-600 border-r-secondary-200 rounded-full animate-spin" />}
             {hasNextPage ? <div  ref={ref} /> : <div onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); }}
-                className="bg-primary-500 p-2  rounded-2xl text-secondary-500 w-3/6 mt-4 text-center">
+                className="bg-primary-500 p-2  rounded-2xl text-secondary-500 w-3/6 mt-4 text-center lg:text-lg lg:w-auto lg:p-4 lg:mt-6 lg:px-7">
                 <p className="font-bold cursor-pointer font-serif ">FIM DA LISTA</p>
             </div>}
         </div>

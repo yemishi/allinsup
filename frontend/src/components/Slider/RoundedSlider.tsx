@@ -23,8 +23,14 @@ export default function RoundedSlider({ children }: PropsType) {
             padding: '20px',
             background: '#1e1e1e',
             cursor: "grab"
+        },
+        breakpoints: {
+            1024: {
+                allowTouchMove: false,
+            }
         }
     }
+
     const brands: {
         "Max Titanium": "max titanium",
         "Growth": "growth",
@@ -48,7 +54,7 @@ export default function RoundedSlider({ children }: PropsType) {
                 const current = state.brandHome === brands[name] || state.brandHome === name
 
                 return <Slide key={name} onClick={() => dispatch({ type: "SET_BRAND_HOME", payload: brands[name] })} className={`max-w-[110px] group
-                !flex cursor-pointer items-center flex-col gap-3 hover:text-secondary-200 duration-200 font-lato text-sm md:max-w-[130px] ${current ? "text-secondary-200" : "text-white"}`}>
+                !flex cursor-pointer ml-auto items-center flex-col gap-3 hover:text-secondary-200 duration-200 font-lato text-sm md:max-w-[130px] ${current ? "text-secondary-200" : "text-white"}`}>
 
                     <div className={`h-[110px] w-[110px] overflow-hidden duration-200 bg-primary rounded-full border-2 
                        ${current ? "border-secondary-200 border-[3px]" : "border-primary-200  group-hover:border-secondary-200 group-hover:border-opacity-50 group-hover:border-[3px]"}`}>
