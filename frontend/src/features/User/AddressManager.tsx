@@ -112,7 +112,7 @@ export default function AddressManager() {
 
     return (
         <>
-            {state.addressOpen && <div onClick={handleClose} className="h-screen items-center absolute w-full backdrop-brightness-50 flex flex-col z-30 ">
+            {state.addressOpen && <div onClick={handleClose} className="h-screen items-center absolute w-full right-0 backdrop-brightness-50 flex flex-col z-30 ">
 
                 <DivDraggable setState={setIsExisting} initialDirection="100%" setDirectionDrag={setDirectionDrag} closeParent={() => dispatch({ type: "SET_ADDRESS_OPEN", payload: false })}
                     directionDrag={directionDrag} state={isExisting} >
@@ -121,7 +121,7 @@ export default function AddressManager() {
                         {logoCloseEvent(handleClose)}
 
                         <form onSubmit={handleSubmit} className="bg-primary-600 gap-8 w-full flex flex-col items-center p-3 pt-5 rounded-lg">
-                            <p className="font-anton text-xl font-semibold text-secondary-100">Endereço de entrega</p>
+                            <p className="font-anton text-xl font-semibold">Endereço de entrega</p>
 
                             {errors.cep && <p className="text-red-400  font-anton font-bold ">{errors.cep}</p>}
 

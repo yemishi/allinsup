@@ -1,6 +1,7 @@
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { logoCloseEvent } from "../utils/helpers";
+import { blinkVariant, logoCloseEvent } from "../utils/helpers";
 import { useEffect } from "react";
+import {motion} from "framer-motion"
 
 export default function DashboardAdmin() {
     const location = useLocation()
@@ -17,7 +18,7 @@ export default function DashboardAdmin() {
     }, [])
 
     return (
-        <div className="flex flex-col gap-4">
+        <motion.div animate="animate" initial="initial" exit="exit" variants={blinkVariant} transition={{duration:0.2}} className="flex flex-col gap-4">
             <header className="w-full p-2 bg-primary-600">
                 {logoCloseEvent(() => navigate('/'))}
             </header>
@@ -27,6 +28,6 @@ export default function DashboardAdmin() {
                     to={'/dashboard-admin/orders'}>encomendas</Link>
             </div>
             <Outlet />
-        </div>
+        </motion.div>
     )
 }

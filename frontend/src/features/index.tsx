@@ -21,8 +21,9 @@ import CreateProduct from "./Dashboard/Products/CreateProduct";
 import Footer from "./Footer/Footer";
 import Loading from "./Loading";
 import ErrorPage from "./Error/ErrorPage";
+import BurgerMenu from "./Menu/BurgerMenu";
 
 export {
-    CollectionRounded, ErrorPage, Loading, Footer, PurchaseSummary, MoneyMethod, Steps, Payment, Address, Review, Cart, Header, User, HighlightProducts,
+    CollectionRounded, BurgerMenu, ErrorPage, Loading, Footer, PurchaseSummary, MoneyMethod, Steps, Payment, Address, Review, Cart, Header, User, HighlightProducts,
     ProductSliderGrid, DashboardOrders, DashboardProducts, Products, SearchProduct, ProductInfo, RemoveProduct, CreateProduct, EditProduct
 }

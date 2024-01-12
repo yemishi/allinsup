@@ -1,4 +1,4 @@
-import { logoCloseEvent } from "../utils/helpers"
+import { blinkVariant, logoCloseEvent } from "../utils/helpers"
 import { useNavigate, useLocation, Outlet, Link } from "react-router-dom"
 import { Steps } from "../features"
 import { parseLocalCurrency, totalPrice } from "../utils"
@@ -7,7 +7,7 @@ import { MoneyMethod, PurchaseSummary } from "../features"
 import { useEffect, useState } from "react"
 import { axiosRequest, toast } from "../components"
 import { QueryClient, QueryClientProvider } from "react-query"
-
+import { motion } from "framer-motion"
 
 export default function Checkout() {
     const { state, dispatch } = useGlobalState()
@@ -83,7 +83,7 @@ export default function Checkout() {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <div className="w-full h-screen  flex gap-2 flex-col relative">
+            <motion.div variants={blinkVariant} animate="animate" initial="initial" exit="exit" transition={{duration:0.2}} className="w-full h-screen  flex gap-2 flex-col relative">
 
                 <header className="flex justify-between items-center text-white bg-primary-600 p-4 ">
 
@@ -104,7 +104,7 @@ export default function Checkout() {
 
                 <Steps />
                 <Outlet />
-                <div className="sticky bottom-0 mt-auto  grid border-primary-500 border-t grid-cols-2 w-full font-anton">
+                <div className="sticky bottom-0 mt-auto lg:text-xl grid border-primary-500 border-t grid-cols-2 w-full font-anton">
                     <span className="p-4 text-secondary-600 bg-primary font-bold">{parseLocalCurrency(totalPrice(state.cart))}</span>
                     {!location.pathname.includes('payment') ? <Link className="bg-secondary-600 p-4 text-center text-white" to={handleNext()}>Continuar</Link> :
                         <button onClick={handleFinishCheckout} className={`${!state.paymentMethod && "pointer-events-none"} bg-secondary-600 p-4 text-center text-white`}>
@@ -113,7 +113,7 @@ export default function Checkout() {
                 </div>
                 {moneyState && <MoneyMethod setPurchaseOpen={setPurchaseOpen} setMoneyState={setMoneyState} />}
                 {purchaseOpen && <PurchaseSummary />}
-            </div >
+            </motion.div >
         </QueryClientProvider>
     )
 }

@@ -1,4 +1,4 @@
-import { SetStateAction,  useState } from "react"
+import { SetStateAction, useState } from "react"
 import AllProducts from "./components/AllProducts"
 import { ProductType } from "../../../types"
 import { NewProductType } from "./types"
@@ -19,7 +19,7 @@ export default function EditProduct() {
     const [form, setForm] = useState<ProductType | undefined>()
     return (
         <div className="flex aa flex-col gap-5 h-screen w-full">
-            <div className="relative w-4/5 self-center mt-5">
+            <div className="relative w-4/5 self-center mt-5 lg:w-3/6">
                 <input type="text" className={inputClass} value={query} onChange={(e) => setQuery(e.target.value)} placeholder=" " required />
                 <label className={labelClass}>pesquisa</label>
             </div>

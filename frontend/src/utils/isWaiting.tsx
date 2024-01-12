@@ -1,5 +1,5 @@
 export const waitingProduct = <div className="w-full h-full !flex flex-wrap justify-center  px-1 gap-4 py-3 font-lato text-sm" >
-    {[null, null].map((_, index) => (
+    {[null, null,null,null,null,null,null].map((_, index) => (
 
         <div key={index} className="!flex hover:shadow-lightOn duration-300  flex-col
         flex-1 min-w-[165px] max-w-[250px] pb-2 text-white md bg-primary-500 p-1 gap-2 rounded-lg">

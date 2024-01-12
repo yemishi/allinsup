@@ -7,15 +7,15 @@ export default function Review() {
     return (
         <div>
             <table className="flex items-center justify-center w-full">
-                <tbody className="flex flex-col gap-5 pt-4 w-full  rounded md:grid md:grid-cols-2 ">
+                <tbody className="flex flex-col gap-5 pt-4 w-full  rounded md:grid md:grid-cols-2 lg:w-[80%]">
                     {state.cart.map((product) => {
                         const { amount, coverPhoto, updatedName, flavor, sizeProduct } = product
                         const totalPrice = totalPriceSingle(product)
 
                         return <tr key={`${updatedName}_${flavor}_${sizeProduct}`} className="text-gray-200 flex overflow-hidden gap-5 pr-2 
-                        w-full border-b border-primary-200 bg-primary-550 border">
+                        w-full border-b border-primary-200 bg-primary-550 border lg:text-lg">
                             <td className="flex items-center bg-white p-2 rounded-md  justify-center min-w-[40%] max-w-[40%]">
-                                <img className="bg-white h-36 align-middle object-contain" src={coverPhoto} alt={parseAlt(coverPhoto)} />
+                                <img className="bg-white h-36 align-middle object-contain lg:h-44" src={coverPhoto} alt={parseAlt(coverPhoto)} />
                             </td>
                             
                             <td className="w-[55%]">

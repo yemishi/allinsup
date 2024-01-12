@@ -37,12 +37,12 @@ export default function RemoveProduct() {
 
             <AllProducts query={query} action="Remover" setForm={setForm} setVisible={setVisible} />
 
-            {visible && <div onClick={() => setVisible(false)} className="w-full h-full flex justify-center absolute backdrop-brightness-50">
+            {visible && <div onClick={() => setVisible(false)} className="w-full max-w-[1523px]  h-full flex justify-center fixed backdrop-brightness-50">
                 <motion.div initial={{ y: "-100%" }} animate={{ y: 0 }} onClick={(e) => e.stopPropagation()} className=" w-full bg-primary sticky top-0 h-40 text-white items-center
                  pt-3 flex flex-col">
                     <span className="flex flex-col gap-6 items-center">
-                        <p className="font-anton font-semibold ">Calma la meu patrão🖐️</p>
-                        <p className="font-lato text-lg">Deseja realmente deletar o produto ??</p>
+                        <p className="font-anton font-semibold lg:text-lg">Calma la meu patrão🖐️</p>
+                        <p className="font-lato text-lg lg:text-xl">Deseja realmente deletar o produto ??</p>
                     </span>
                     <span className="mt-auto flex gap-2 w-full ">
                         <button onClick={() => setVisible(false)} className="p-2 font-lato flex-1 font-bold bg-sky-700 rounded-tr-lg">Não</button>

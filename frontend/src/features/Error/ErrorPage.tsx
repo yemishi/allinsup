@@ -1,6 +1,6 @@
 import { reloadPage } from "../../utils";
 
-export default function ErrorPage() {
+export default function ErrorPage({ msg, subTitle, action }: { msg: string, subTitle?: string, action?: () => void }) {
 
     return <div className="flex flex-col items-center gap-2 py-6 h-full  w-full text-gray-200">
         <svg className="w-20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -14,11 +14,12 @@ export default function ErrorPage() {
             </g>
 
         </svg>
-        <h1 className="text-xl mt-4 font-anton font-semibold text-center px-6">Não conseguimos buscar seus pedidos 😞</h1>
+
+        <h1 className="text-xl mt-4 font-anton font-semibold text-center px-6">{msg}</h1>
 
         <span className="my-10 w-full self-center flex flex-col gap-4 items-center">
-            <p className="font-lato font-thin text-gray-400">Tente recarregar a pagina!</p>
-            <button onClick={reloadPage} className="self-center bg-primary-200 p-2 font-anton font-bold rounded-md px-4">Recarregar</button>
+            <p className="font-lato font-thin text-gray-400">{subTitle ? subTitle : "Tente recarregar a pagina!"}</p>
+            <button onClick={action ? action : reloadPage} className="self-center bg-primary-200 p-2 font-anton font-bold rounded-md px-4">Clique aqui</button>
         </span>
     </div>
 }

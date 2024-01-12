@@ -17,8 +17,8 @@ export default function Payment() {
     }
 
     return (
-        <div className="flex flex-col gap-2 text-gray-200 p-2 mt-10">
-            <h2 className="font-lato text-xl ml-3 font-semibold text-secondary-100">Método de Pagamento</h2>
+        <div className="flex flex-col gap-2 text-gray-200 p-2 mt-10 lg:w-[80%] self-center">
+            <h2 className="font-lato text-xl ml-3 font-semibold">Método de Pagamento</h2>
             <div className="flex flex-col gap-3 text-gray-200 p-2 pb-6 pt-4 md:grid md:grid-cols-2">
                 {methods.map((method) => {
                     const current = state.paymentMethod === method

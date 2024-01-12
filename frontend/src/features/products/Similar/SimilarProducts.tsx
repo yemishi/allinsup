@@ -12,7 +12,7 @@ export default function SimilarProduct({ q, title }: { q: string, title: string 
 
     return <div className="flex flex-col gap-4 w-full mt-3">
         <span className="border-l-4 border-secondary-600 flex items-center justify-between ">
-            <h3 className="font-lato font-semibold text-lg ml-1">{title}</h3>
+            <h3 className="font-lato font-semibold text-lg ml-1 lg:text-2xl">{title}</h3>
         </span>
         {data && data.length !== 0 && <ProductSliderGrid children={data} />}
     </div>

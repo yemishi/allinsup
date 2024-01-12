@@ -20,20 +20,25 @@ export const slideOptions = (array: OptionsArrayType[], selectedState: SelectedS
         style: {
             width: "100%",
         },
+        breakpoints:{
+           768:{
+            navigation:true,
+           }
+        }
     };
 
     return (
         <div className="flex gap-2 flex-col border-b pb-3 border-opacity-30 border-white">
             <span className="gap-1 flex font-lato">
-                <p className="font-thin">{title}</p>
-                <p className="text-secondary-200">{array[state][selected]}</p>
+                <p className="font-thin lg:text-xl lg:font-semibold">{title}</p>
+                <p className="lg:hidden text-secondary-200">{array[state][selected]}</p>
             </span>
             <Slider settings={settingsOptions}>
                 {(array).map((e, i) => {
                     const item = e[selected]
                     return (
                         <Slide key={`${e}-${i}`} className={`!w-auto`} onClick={() => setState(i)}>
-                            <div className={`!w-auto border-2 cursor-pointer text-sm md:text-base ${classActive(state, i)} font-semibold p-2 rounded-lg font-lato`}>
+                            <div className={`!w-auto border-2 cursor-pointer text-sm md:text-base lg:text-lg ${classActive(state, i)} font-semibold p-2 rounded-lg font-lato`}>
                                 <p>{item}</p>
                             </div>
                         </Slide>
