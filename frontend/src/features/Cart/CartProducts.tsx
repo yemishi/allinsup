@@ -10,7 +10,6 @@ export default function CartProducts() {
     return (
         <div className=" flex flex-col p-3 font-anton ">
 
-
             {state.cart.map((product) => {
                 const { name, coverPhoto, price, promotion, amount, category, _id, flavor, sizeProduct, updatedName } = product
 
@@ -21,7 +20,7 @@ export default function CartProducts() {
                         </div>
                     </Link>
 
-                    <div className="flex flex-col text-sm  w-full">
+                    <div className="flex flex-col text-sm lg:text-lg w-full">
 
                         <p className="hover:text-secondary-500 duration-300">{updatedName}</p>
                         <button onClick={() => dispatch({ type: "REMOVE_PRODUCT", payload: product })} className="absolute top-2 right-0 cursor-pointer self-start">
@@ -30,16 +29,16 @@ export default function CartProducts() {
 
                         <p>Qtd:{amount}</p>
 
-                        <div className="flex justify-between mt-auto items-end ">
-                            <p className="text-secondary-500 font-bold text-lg">{parseLocalCurrency(promotion ? promotion : price)}</p>
-                            <span className="flex border-gray-600 p-2 rounded-lg gap-2 border absolute right-0 ">
+                        <div className="flex justify-between mt-auto items-end">
+                            <p className="text-secondary-500 font-bold text-lg lg:text-xl">{parseLocalCurrency(promotion ? promotion : price)}</p>
+                            <span className="flex border-gray-600 p-2 rounded-lg gap-2 border absolute right-0">
 
                                 <button onClick={() => dispatch({ type: "DECREMENT_AMOUNT", payload: { amount: 1, product } })} className="w-5">
-                                    <svg className="stroke-white hover:stroke-secondary-text-secondary-500 duration-300" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"> <path d="M6 12L18 12" ></path> </g></svg>
+                                    <svg className="stroke-white lg:stroke-[3px] hover:stroke-secondary-text-secondary-500 duration-300" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier" ></g><g id="SVGRepo_iconCarrier"> <path d="M6 12L18 12" ></path> </g></svg>
                                 </button>
 
                                 <input onChange={(event) => dispatch({ type: "UPDATE_PRODUCT_AMOUNT", payload: { amount: parseInt(event.target.value) || 1, product } })} min={1} inputMode="decimal" type="number" name="amountItem"
-                                    className="bg-transparent w-6 outline-none text-center placeholder:text-white" value={amount} placeholder={String(amount)} />
+                                    className="bg-transparent w-6 lg:w-10 outline-none text-center placeholder:text-white" value={amount} placeholder={String(amount)} />
 
                                 <button onClick={() => dispatch({ type: "INCREMENT_AMOUNT", payload: { amount: 1, product } })} className="w-5">
                                     <svg className="stroke-white fill-white hover:stroke-secondary-text-secondary-500 hover:fill-secondary-text-secondary-500 duration-300" viewBox="-3 0 19 19" xmlns="http://www.w3.org/2000/svg" ><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"><path d="M12.711 9.182a1.03 1.03 0 0 1-1.03 1.03H7.53v4.152a1.03 1.03 0 0 1-2.058 0v-4.152H1.318a1.03 1.03 0 1 1 0-2.059h4.153V4.001a1.03 1.03 0 0 1 2.058 0v4.152h4.153a1.03 1.03 0 0 1 1.029 1.03z"></path></g></svg>

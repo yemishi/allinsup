@@ -118,7 +118,7 @@ export default function ProductInfo({ product, q }: { product: ProductType, q: s
 
             {minTablet && <Slider settings={thumbSettings}>
                 {photos.map((e, i) => (
-                    <Slide key={`${e}_${i}`} className="!h-16 !w-full bg-white rounded-lg sticky top-0 p-1">
+                    <Slide key={`${e}_${i}`} className="!h-16 cursor-pointer !w-full bg-white rounded-lg sticky top-0 p-1">
                         <img src={e} alt={parseAlt(e)} className="object-contain w-full h-full p-2 hover:scale-105 duration-300 " />
                     </Slide>
                 ))}

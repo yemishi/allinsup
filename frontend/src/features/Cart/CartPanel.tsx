@@ -107,7 +107,7 @@ export default function CartPanel({ isExisting, setIsExisting, handleClose }: Pr
     return (
 
         <DivDraggable onScroll={onScroll} directionDrag={directionDrag} state={isExisting} setState={setIsExisting} setDirectionDrag={setDirectionDrag}
-            initialDirection={"100%"} closeParent={() => dispatch({ type: "SET_CART_OPEN", payload: false })}>
+            initialDirection={"100%"} classAddition="" closeParent={() => dispatch({ type: "SET_CART_OPEN", payload: false })}>
             <motion.div
                 variants={stickyVariant} transition={{ type: "spring", damping: 10, stiffness: 100 }}
                 animate={headerPosition ? "sticky" : 'noSticky'} onClick={() => setHeaderPosition(!headerPosition)}
@@ -125,7 +125,7 @@ export default function CartPanel({ isExisting, setIsExisting, handleClose }: Pr
                     </div>
                 </div>
 
-                <div className="flex text-sm bg-primary-700 p-2 absolute left-0 rounded-r-lg -bottom-8 gap-2 items-center">
+                <div className="flex text-sm lg:text-lg bg-primary-700 p-2 absolute left-0 rounded-r-lg -bottom-8 gap-2 items-center">
                     <p>TOTAL ({totalAmount(state.cart)} items)</p>
                     <p className="text-secondary-500 font-bold text-lg">{parseLocalCurrency(totalPrice(state.cart))}</p>
                 </div>

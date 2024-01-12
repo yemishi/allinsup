@@ -2,8 +2,10 @@ import { motion } from 'framer-motion'
 import { Dispatch } from 'react'
 import { toast } from '../../components'
 import loginRequest from './services/axios.config'
+import { useGlobalState } from '../../App'
 
-export default function DeleteUser({ setDeleteUser, setIsAuth }: { setDeleteUser: Dispatch<React.SetStateAction<boolean>>, setIsAuth: Dispatch<React.SetStateAction<boolean>> }) {
+export default function DeleteUser({ setDeleteUser }: { setDeleteUser: Dispatch<React.SetStateAction<boolean>> }) {
+    const { dispatch } = useGlobalState()
     const handleDelete = async () => {
         try {
             const response = await loginRequest.deleteUser();
@@ -13,7 +15,7 @@ export default function DeleteUser({ setDeleteUser, setIsAuth }: { setDeleteUser
                 error: "Não foi possível deletar as informações do usuário"
             });
             localStorage.removeItem("tel")
-            setIsAuth(false);
+            dispatch({ type: "SET_LOGIN", payload: false })
             setDeleteUser(false)
         } catch (error) {
             toast.error("Ocorreu um erro ao deletar o usuário");
