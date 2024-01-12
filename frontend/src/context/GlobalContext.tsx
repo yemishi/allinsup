@@ -13,6 +13,7 @@ interface GlobalState {
     paymentInfo: PaymentInfoType,
     brandHome: string;
     cartOpen: boolean;
+    isLogged: boolean;
     userOpen: boolean;
     burgerOpen: boolean;
     addressOpen: boolean;
@@ -24,6 +25,7 @@ type Action =
     | { type: 'SET_BURGER_OPEN'; payload: boolean }
     | { type: 'SET_USER_OPEN'; payload: boolean }
     | { type: 'SET_ADDRESS_OPEN'; payload: boolean }
+    | { type: 'SET_LOGIN'; payload: boolean }
     | { type: 'ADD_PRODUCT'; payload: ProductType }
     | { type: 'REMOVE_PRODUCT'; payload: CartType }
     | { type: 'INCREMENT_AMOUNT' | 'DECREMENT_AMOUNT' | 'UPDATE_PRODUCT_AMOUNT'; payload: { product: CartType; amount: number } }
@@ -36,6 +38,7 @@ type Action =
 
 const initialState: GlobalState = {
     cart: [],
+    isLogged: localStorage.getItem("tel") ? true : false,
     burgerOpen: false,
     paymentInfo: { extra: { paymentMethod: "", change: "" }, isPix: false, wppMsg: "" },
     brandHome: "Diversas",
@@ -53,6 +56,8 @@ const reducer = (state: GlobalState, action: Action): GlobalState => {
             return { ...state, burgerOpen: action.payload };
         case 'SET_USER_OPEN':
             return { ...state, userOpen: action.payload };
+        case 'SET_LOGIN':
+            return { ...state, isLogged: action.payload };
         case 'SET_ADDRESS_OPEN':
             return { ...state, addressOpen: action.payload };
         case "SET_BRAND_HOME":
