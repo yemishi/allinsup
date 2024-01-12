@@ -11,15 +11,16 @@ export default function BurgerMenu() {
     const { state, dispatch } = useGlobalState()
     const [directionDrag, setDirectionDrag] = useState<"100%" | "-100%">("-100%")
     const [isExisting, setIsExisting] = useState<boolean>(true);
-    const navigate = useNavigate()
 
-    const [isLogged, setIsLogged] = useState<boolean>(localStorage.getItem('tel') ? true : false)
+
+    const navigate = useNavigate()
     const [deleteUser, setDeleteUser] = useState<boolean>(false)
 
     const variantsParent = {
         open: { opacity: 1 },
         exit: { opacity: 0, transition: { delay: 0.3 } }
     }
+
     const closeBurger = () => dispatch({ type: "SET_BURGER_OPEN", payload: false })
 
     const closeEvent = () => {
@@ -31,14 +32,14 @@ export default function BurgerMenu() {
     }
     const login = () => {
 
-        if (!isLogged) {
+        if (!state.isLogged) {
             dispatch({ type: "SET_USER_OPEN", payload: true })
             closeBurger()
-            setIsLogged(true)
             return
         }
         localStorage.removeItem("tel")
-        setIsLogged(false)
+        dispatch({ type: "RESET_CART" })
+        dispatch({ type: "SET_LOGIN", payload: false })
         toast.warn("Usuario desconectado")
 
     }
@@ -54,7 +55,7 @@ export default function BurgerMenu() {
                         <p className="mt-auto font-semibold text-lg font-anton">Pegue um atalho</p>
 
                         <div className="ml-auto mb-auto   flex gap-1 ">
-                            <p className="font-anton text-base mt-auto  self-center">{isLogged ? "Sair" : "Entrar"}</p>
+                            <p className="font-anton text-base mt-auto  self-center">{state.isLogged ? "Sair" : "Entrar"}</p>
                             <button className="w-7 self-center" onClick={login}>
                                 <svg className="stroke-[4px] stroke-white" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" stroke="#000000" fill="none"><g id="SVGRepo_bgCarrier"></g><g id="SVGRepo_tracerCarrier"  ></g><g id="SVGRepo_iconCarrier"><circle cx="32" cy="18.14" r="11.14"></circle><path d="M54.55,56.85A22.55,22.55,0,0,0,32,34.3h0A22.55,22.55,0,0,0,9.45,56.85Z"></path></g></svg>      </button>
                         </div>
@@ -77,7 +78,7 @@ export default function BurgerMenu() {
                         <h2 className="text-base font-anton font-semibold self-end">Excluir perfil</h2>
                     </div>
                 </DivDraggable>
-                {deleteUser && <DeleteUser setDeleteUser={setDeleteUser} setIsAuth={setIsLogged} />}
+                {deleteUser && <DeleteUser setDeleteUser={setDeleteUser} />}
             </motion.div>}
         </>
     )
