@@ -30,20 +30,21 @@ export default function EditProductPanel({ form, setForm, setVisible }: {
             const { _id } = form as ProductType
             await axiosRequest.updateProduct(_id, form as ProductType)
             toast.success("produto atualizado com sucesso!")
-            setVisible(false)
+            { setVisible(false), document.body.style.overflow = "auto" }
         } catch (error) {
             toast.error("algo deu errado :(")
         }
     }
     return (
-        <motion.div onClick={() => setVisible(false)} className="flex max-w-[1523px] flex-col w-full fixed h-full backdrop-brightness-50 " variants={variantsParent}
+        <motion.div onAnimationStart={() => document.body.style.overflow = "hidden"}
+            onClick={() => { setVisible(false), document.body.style.overflow = "auto" }} className="flex max-w-[1523px] flex-col w-full fixed h-full backdrop-brightness-50 " variants={variantsParent}
             animate={open ? 'open' : 'exit'}>
 
             <DivDraggable directionDrag={directionDrag} initialDirection="-100%" classAddition="md:w-full" setDirectionDrag={setDirectionDrag}
-                setState={setOpen} state={open} closeParent={() => setVisible(false)} >
+                setState={setOpen} state={open} closeParent={() => { setVisible(false), document.body.style.overflow = "auto" }} >
                 <form onSubmit={handleSubmit} className="w-full text-gray-300  font-anton flex flex-col pb-2 pt-6 bg-primary-600 items-center gap-6" >
 
-                    <button onClick={(e) => { e.preventDefault(), setVisible(false) }}
+                    <button onClick={(e) => { e.preventDefault(), setVisible(false), document.body.style.overflow = "auto" }}
                         className="hidden md:block absolute top-0 right-0 w-11 h-11 font-anton font-bold text-lg lg:text-xl border-t border-r
                                   border-primary bg-primary-500 text-rose-600 rounded-bl-lg ">X</button>
 

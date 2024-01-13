@@ -26,18 +26,19 @@ export default function AllOrders({ query }: { query: string }) {
         {
             retry: 5,
             getNextPageParam: (lastPage, allPages) => {
-                return lastPage.length ? allPages.length + 1 : undefined
+                return lastPage.orders.length ? allPages.length + 1 : undefined
             },
         }
     )
     const orders = useMemo(() => {
         if (data) {
-            return data.pages.reduce((acc: OrderType[], page: OrderType[]) => {
-                return [...acc, ...page];
+            return data.pages.reduce((acc: OrderType[], page: { totalOrders: number, orders: OrderType[] }) => {
+                return [...acc, ...page.orders];
             }, []);
         }
         return [];
     }, [data]);
+
     useEffect(() => {
         if (!isLoading && hasNextPage) {
             observer.current = new IntersectionObserver((entries) => {
@@ -52,7 +53,6 @@ export default function AllOrders({ query }: { query: string }) {
         }
     }, [isLoading, hasNextPage, isFetchingNextPage])
 
-
     const handleEdit = (orderId: string) => {
         setOrderId(orderId)
         setIsEdit(true)
@@ -60,17 +60,17 @@ export default function AllOrders({ query }: { query: string }) {
     if (isLoading) return <Loading />
     if (error) return <ErrorPage msg="Algo deu errado!" />
     const listStyle = "w-full justify-between  pb-2 0 px-2"
-
     return (
 
         <div className="flex flex-col items-center text-gray-200 p-4 gap-4 w-full">
-            <p className="text-lg font-montserrat font-bold text-secondary-200 lg:text-2xl">{`Total de encomendas: ${orders.length}`}</p>
-            {orders.slice().reverse().map((order) => {
+            <p className="text-lg font-montserrat font-bold text-secondary-200 lg:text-2xl">{`Total de encomendas: ${data?.pages[0].totalOrders}`}</p>
+            {orders.map((order, i) => {
                 const { extra, orderId, price, products, userId, address, status, purchaseDate } = order
                 const { name, cep, complement, houseNumber, tel, address: houseAddress } = address
                 const { paymentMethod, change } = extra
 
-                return <div className="w-full lg:text-lg justify-between bg-primary-600 items-center flex gap-1 border border-primary-200 flex-col p-3 rounded-md " key={`${orderId}_${userId}`}>
+                return <div className="w-full lg:text-lg justify-between bg-primary-600 items-center flex gap-1 border border-primary-200 flex-col p-3 rounded-md "
+                    key={`${orderId}_${userId}_${i}`}>
                     <h2 className="text-lg lg:text-xl font-montserrat font-semibold py-3 text-sky-300">Informações do usuario</h2>
 
                     {divList("Número do pedido:", orderId, listStyle)}

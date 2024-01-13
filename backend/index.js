@@ -156,8 +156,10 @@ app.get('/ordersSearch', async (req, res) => {
 
         const skip = (parsedPage - 1) * (parsedLimit ? parsedLimit : 10)
 
-        const orders = await Order.find().skip(skip).limit(parsedLimit || 10)
-        return res.status(200).json(q ? searchOrders(orders, q) : orders)
+        const orders = await Order.find().sort({ purchaseDate: -1 }).skip(skip).limit(parsedLimit || 10)
+        const totalOrders = await Order.countDocuments()
+
+        return res.status(200).json({ totalOrders, orders: q ? searchOrders(orders, q) : orders })
 
     } catch (error) {
         return res.status(400).json("algo deu errado")
@@ -181,7 +183,7 @@ app.get('/productInfo', async (req, res) => {
 
         if (!product) return res.status(404).send("product not found")
 
-        return res.status(200).send(productInfo(product, flavor, size))
+        return res.status(200).send(productInfo(product, flavor.replace(/_/g, " "), size.replace(/_/g, " ")))
     } catch (error) {
         return res.status(401).send("aaaaaaa")
     }
@@ -216,10 +218,10 @@ app.post('/newOrder', async (req, res) => {
     console.log('aaaaa')
     try {
         const { price, products, extra, tel } = req.body;
-        console.log(tel,'aaaaa')
+        console.log(tel, 'aaaaa')
 
         if (products.length === 0) return res.status(401).json("Sem produto no carrinho.")
-            const user = await User.findOne({ tel });
+        const user = await User.findOne({ tel });
 
         if (!user) {
             return res.status(404).json("Usuário não encontrado.");
@@ -279,12 +281,14 @@ app.delete("/productDelete/:productId", async (req, res) => {
 
 
 app.post('/orders', async (req, res) => {
-    const { tel } = req.body 
+    const { tel } = req.body
+    const { page } = req.query
+
     try {
         if (!tel) return res.status(404).json()
         const user = await User.findOne({ tel })
-
-        const orders = await Order.find({ userId: user._id })
+        const skip = (page - 1) * 10
+        const orders = await Order.find({ userId: user._id }).sort({ purchaseDate: -1 }).skip(skip).limit(10)
 
         return res.status(200).json(orders)
 
