@@ -17,7 +17,6 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
 
         style: {
             background: 'linear-gradient(transparent,#161616)',
-            cursor: children && children?.length > 2 ? "grab" : "",
             width: '100%',
             bottom: 0,
             zIndex: 10,
@@ -37,11 +36,10 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
                 slidesPerView: 3.3,
             },
             1024: {
-                allowTouchMove: false,
                 slidesPerView: 3.6,
             },
             1200: {
-                allowTouchMove: false,
+
                 slidesPerView: 4.7
             }
         }
@@ -64,7 +62,7 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
                 return <Slide key={`${_id}_${updatedName}`} className='group !flex rounded-xl text-sm bg-primary-500 font-lato 
                     pb-4 min-h-[310px] md:min-h-[370px] lg:min-h-[400px] text-white flex-col justify-between md:text-base lg:text-lg'>
 
-                    <Link  className='bg-white flex items-center justify-center rounded-t-xl p-4' to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`}>
+                    <Link className='bg-white flex items-center justify-center rounded-t-xl p-4' to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`}>
                         <img src={coverPhoto} className='self-center group-hover:scale-110 duration-200 w-full h-[140px] md:h-[170px] lg:h-[180px] object-contain' alt={parseAlt(coverPhoto)} />
 
                     </Link>
