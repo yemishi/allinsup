@@ -59,7 +59,7 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
                 const soldOff = ((amount && amount >= stock) || !stock)
                 const handleStyle = soldOff ? "group-hover:bg-[#c18203] bg-[#996600] pointer-events-none" : "bg-secondary hover:bg-secondary-800"
 
-                return <Slide key={`${_id}_${updatedName}`} className='group !flex rounded-xl text-sm bg-primary-500 font-lato 
+                return <Slide key={`${_id}_${updatedName}`} className='group border border-primary-200 !flex rounded-xl text-sm bg-primary-500 font-lato 
                     pb-4 min-h-[310px] md:min-h-[370px] lg:min-h-[400px] text-white flex-col justify-between md:text-base lg:text-lg'>
 
                     <Link className='bg-white flex items-center justify-center rounded-t-xl p-4' to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`}>

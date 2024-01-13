@@ -19,14 +19,13 @@ export default function ProductPanel() {
     const { data: product, isLoading, error } = useQuery(['product', flavor, size, _id], () => fetchProduct(flavor, size, _id as string), {
         retry: 2
     });
-
     if (isLoading) return <Loading />
     if (error) return <ErrorPage msg="Não foi possivel recuperar esse produto."/>
 
     return (
         <motion.div variants={blinkVariant} transition={{ duration: 0.2 }} initial="initial" animate="animate" exit="exit"
             className="flex flex-col items-center p-4">
-            {product && <ProductInfo product={product} q={"max creatina"} />}
+            {product && <ProductInfo product={product} q={product.category} />}
         </motion.div>
     )
 }

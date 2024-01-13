@@ -69,7 +69,8 @@ export default function PurchaseSummary() {
     };
 
     return (
-        <motion.div variants={blinkVariant} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }} className="w-full min-h-full items-center py-8 flex flex-col fixed backdrop-brightness-50 text-white bg-primary z-20 pb-0">
+        <motion.div variants={blinkVariant} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.2 }}
+         className="w-full max-w-[1523px] h-full items-center py-8 flex flex-col fixed backdrop-brightness-50 text-white bg-primary z-20 pb-0">
             <span className="flex flex-col items-center gap-3 px-11  text-center">
                 <svg version="1.1" className="fill-none w-20 lg:w-24 border-2 rounded-full border-secondary-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" fill="#000000"><g id="SVGRepo_bgCarrier" ></g><g id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <circle className="fill-[#25AE88];" cx="25" cy="25" r="25"></circle> <polyline style={{ strokeWidth: '2px' }} className="fill-none stroke-secondary-600 " points=" 38,15 22,33 12,25 "></polyline> </g></svg>
                 <p className="font-anton text-secondary-600 text-lg font-thin">{data?.msg}</p>

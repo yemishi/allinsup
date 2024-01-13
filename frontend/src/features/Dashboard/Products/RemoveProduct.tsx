@@ -37,7 +37,7 @@ export default function RemoveProduct() {
 
             <AllProducts query={query} action="Remover" setForm={setForm} setVisible={setVisible} />
 
-            {visible && <div onClick={() => setVisible(false)} className="w-full max-w-[1523px]  h-full flex justify-center fixed backdrop-brightness-50">
+            {visible && <div onClick={() => setVisible(false)} className="w-full max-w-[1523px] h-full top-0 flex justify-center fixed backdrop-brightness-50">
                 <motion.div initial={{ y: "-100%" }} animate={{ y: 0 }} onClick={(e) => e.stopPropagation()} className=" w-full bg-primary sticky top-0 h-40 text-white items-center
                  pt-3 flex flex-col">
                     <span className="flex flex-col gap-6 items-center">
