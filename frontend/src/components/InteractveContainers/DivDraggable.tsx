@@ -41,7 +41,7 @@ export default function DivDraggable({ children, closeParent, onScroll, setState
 
     };
     return <>
-        <motion.div onScroll={onScroll} onClick={(e) => e.stopPropagation()} initial={{ x: initialDirection }} variants={variants}
+        <motion.div dragPropagation={false} onScroll={onScroll} onClick={(e) => e.stopPropagation()} initial={{ x: initialDirection }} variants={variants}
             animate={state ? "open" : 'close'}
             className={`h-full ${classAddition || ""}  self-end scrollBar w relative overflow-auto w-full min-[450px]:w-[450px] flex flex-col lg:min-w-[500px]
              bg-primary-700 text-white font-lato`}

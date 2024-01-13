@@ -17,7 +17,7 @@ export default function ProductGrid({ products }: PropsType) {
             const soldOff = (amount && amount >= stock) || !stock
 
             return <div key={`/${category}${_id}_${product.name}`} className="!flex hover:shadow-lightOn duration-300  flex-col
-            flex-1 min-w-[165px] max-w-[250px] md:min-w-[185px] lg:min-w-[250px] lg:max-w-[280px] lg:h-[342px]  text-white bg-primary-500 p-1 md:p-2 gap-2 pb-2 md:pb-3 md:gap-4 rounded-lg">
+            flex-1 min-w-[165px] max-w-[250px] md:min-w-[185px] border border-primary-200 lg:min-w-[250px] lg:max-w-[280px] lg:h-[342px]  text-white bg-primary-500 p-1 md:p-2 gap-2 pb-2 md:pb-3 md:gap-4 rounded-lg">
 
                 <div className="flex flex-col gap-2 h-full pb-1" >
 

@@ -1,8 +1,8 @@
-import { useEffect, useState, } from "react"
+import { useMemo } from "react"
 import { OrderType } from "../types"
 import { axiosRequest } from "../components"
 import { blinkVariant, divList } from "../utils"
-import { useQuery } from "react-query"
+import { useInfiniteQuery } from "react-query"
 import { Link } from "react-router-dom"
 import { ErrorPage, Loading } from "../features"
 import SimilarProduct from "../features/products/Similar/SimilarProducts"
@@ -11,33 +11,41 @@ import { motion } from "framer-motion"
 
 export default function Orders() {
     const tel = localStorage.getItem("tel")
-    const [orders, setOrders] = useState<OrderType[]>()
     const { dispatch } = useGlobalState()
 
 
-    const { data, isLoading } = useQuery(
-        "orders",
-        async () => {
-            const response = await axiosRequest.getOrders(tel as string);
+    const { data, isLoading, fetchNextPage, error, hasNextPage, isFetchingNextPage } = useInfiniteQuery(
+        ["orders"],
+        async ({ pageParam }) => {
+            console.log(pageParam)
+            const response = await axiosRequest.getOrders(tel as string, pageParam);
             return response.data;
         },
         {
             retry: 2,
             retryDelay: 100,
+            getNextPageParam: (lastPage, allPages) => {
+                return lastPage.length ? allPages.length + 1 : undefined
+            },
         }
     );
 
-    useEffect(() => {
+    if (error) return <ErrorPage msg="Algo deu errado por aqui" />
+
+    const orders = useMemo(() => {
         if (data) {
-            setOrders(data);
+            return data.pages.reduce((acc: OrderType[], page: OrderType[]) => {
+                return [...acc, ...page]
+            })
         }
-    }, [data]);
+    }, [data])
 
     const errorProps = {
         msg: "É preciso estar logado antes para acessar essa pagina!",
         action: () => dispatch({ type: "SET_USER_OPEN", payload: true }),
         subTitle: "Inicie uma sessão"
     }
+
     if (isLoading) return <Loading />
 
 
@@ -45,7 +53,7 @@ export default function Orders() {
         <motion.div animate="animate" initial="initial" exit="exit" variants={blinkVariant} transition={{ duration: 0.2 }} className="flex flex-col items-center p-4 text-white gap-5 w-full">
             <h1 className="text-xl mt-4 self-baseline font-anton font-semibold md:text-2xl lg:text-3xl">Meus pedidos</h1>
             {orders && orders.length > 0 ? <div className="flex flex-col md:grid md:grid-cols-2 w-full gap-6 ">
-                {orders.slice().reverse().map((order, index) => {
+                {orders.map((order, index) => {
                     const { orderId, price, purchaseDate, status } = order
                     return <div key={`${order}_${index}`} className="p-4 border font-lato text-gray-200 flex w-full rounded bg-primary-550 
                         border-gray-600 lg:text-lg ">
@@ -68,6 +76,11 @@ export default function Orders() {
                 </p>
 
             </div> : <ErrorPage {...errorProps} />)}
+            {isFetchingNextPage && <div className="h-full fixed top-0  w-full">
+                <Loading />
+            </div>}
+            {hasNextPage && <button className="font-lato border-2 lg:mt-8 lg:font-anton lg:px-12 border-primary-200 bg-primary-600 px-4
+             rounded-md text-base font-semibold lg:text-xl py-3  mt-4 hover:bg-primary-500 duration-300" onClick={() => fetchNextPage()}>Ver mais</button>}
             <SimilarProduct title="Continue comprando" q="" />
         </motion.div>
     )

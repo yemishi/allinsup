@@ -36,7 +36,7 @@ interface OrderProducts {
 }
 
 interface OrderData {
-    data: OrderType[]
+    data: { orders: OrderType[], totalOrders: number }
 }
 
 const apiEndPoints = {
@@ -54,7 +54,7 @@ const apiEndPoints = {
 
     getUser: () => '/user',
     newOrder: () => '/newOrder',
-    getOrders: () => '/orders',
+    getOrders: (page: number) => `/orders?page=${page}`,
     updateOrder: () => '/updateOrder',
     orderInfo: (orderId: string) => `/orderInfo?orderId=${orderId}`,
     adminGetOrders: () => '/admin-orders',
@@ -79,8 +79,8 @@ const axiosRequest = {
 
     getUser: (tel: string = ""): Promise<DataUserType> => axiosInstance.post(apiEndPoints.getUser(), { tel }),
 
-    newOrder: (price: string, products: OrderProducts[], extra: { paymentMethod: string, change: string | boolean },tel:string): Promise<newOrderType> => axiosInstance.post(apiEndPoints.newOrder(), { price, products, extra, tel }),
-    getOrders: (tel:string): Promise<DataOrders> => axiosInstance.post(apiEndPoints.getOrders(), { tel }),
+    newOrder: (price: string, products: OrderProducts[], extra: { paymentMethod: string, change: string | boolean }, tel: string): Promise<newOrderType> => axiosInstance.post(apiEndPoints.newOrder(), { price, products, extra, tel }),
+    getOrders: (tel: string, page: number): Promise<DataOrders> => axiosInstance.post(apiEndPoints.getOrders(page), { tel }),
     adminGetOrders: (): Promise<DataOrders> => axiosInstance.get(apiEndPoints.adminGetOrders()),
     updateOrder: (orderId: string, updatedOrder: UpdateOrderType): Promise<string> => axiosInstance.patch(apiEndPoints.updateOrder(), { orderId, updatedOrder }),
     orderInfo: (orderId: string): Promise<DataOrder> => axiosInstance.post(apiEndPoints.orderInfo(orderId), { tel }),

@@ -14,17 +14,15 @@ export interface OptionsArrayType {
 export const slideOptions = (array: OptionsArrayType[], selectedState: SelectedState) => {
     const classActive = (count: number, index: number) => count === index ? "border-secondary-200" : "opacity-50 border-white";
     const { selected, setState, state, title } = selectedState;
+    const minLaptop = window.matchMedia("(min-width:1024px)").matches
+
     const settingsOptions: SliderProps = {
         spaceBetween: 20,
         slidesPerView: 'auto',
         style: {
             width: "100%",
         },
-        breakpoints:{
-           768:{
-            navigation:true,
-           }
-        }
+
     };
 
     return (
@@ -33,18 +31,31 @@ export const slideOptions = (array: OptionsArrayType[], selectedState: SelectedS
                 <p className="font-thin lg:text-xl lg:font-semibold">{title}</p>
                 <p className="lg:hidden text-secondary-200">{array[state][selected]}</p>
             </span>
-            <Slider settings={settingsOptions}>
+
+            {minLaptop ? <div className="w-full flex-wrap hidden lg:flex gap-4">
+                {(array).map((e, i) => {
+                    const item = e[selected]
+                    return (
+                        <div key={`${e}-${i}`} className={`!w-auto`} onClick={() => setState(i)}>
+                            <div className={`!w-auto border-2 cursor-pointer text-lg ${classActive(state, i)} font-semibold p-2 rounded-lg font-lato`}>
+                                <p>{item}</p>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div> : <Slider settings={settingsOptions}>
                 {(array).map((e, i) => {
                     const item = e[selected]
                     return (
                         <Slide key={`${e}-${i}`} className={`!w-auto`} onClick={() => setState(i)}>
-                            <div className={`!w-auto border-2 cursor-pointer text-sm md:text-base lg:text-lg ${classActive(state, i)} font-semibold p-2 rounded-lg font-lato`}>
+                            <div className={`!w-auto border-2 cursor-pointer text-sm md:text-base  ${classActive(state, i)} font-semibold p-2 rounded-lg font-lato`}>
                                 <p>{item}</p>
                             </div>
                         </Slide>
                     );
                 })}
-            </Slider>
+            </Slider>}
+
         </div>
     );
 };

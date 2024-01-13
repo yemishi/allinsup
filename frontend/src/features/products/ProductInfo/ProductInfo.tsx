@@ -12,11 +12,13 @@ import Swiper from "swiper";
 export default function ProductInfo({ product, q }: { product: ProductType, q: string }) {
     const navigate = useNavigate()
     const { dispatch, state } = useGlobalState()
-    const [variantIndex, setVariantIndex] = useState<number>(0)
-    const [sizeIndex, setSizeIndex] = useState<number>(0)
+    const findVariantIndex = product.variants.find((e) => e.isSelected === true)
+    const findSizeIndex = findVariantIndex && findVariantIndex.sizeDetails.findIndex((e) => e.isSelected === true)
+    const [variantIndex, setVariantIndex] = useState<number>(findVariantIndex && product.variants.indexOf(findVariantIndex) || 0)
+    const [sizeIndex, setSizeIndex] = useState<number>(findSizeIndex || 0)
     const { _id, sizeDetails, variants, flavor, name, photos, price, sizeProduct, desc, stock, updatedName, promotion } = productDetails(product, state.cart, variantIndex, sizeIndex)
     const [amount, setAmount] = useState<number>(1)
-    const [activeThumb, setActiveThumb] = useState<null | Swiper>()
+    const [activeThumb, setActiveThumb] = useState<Swiper>()
 
     product.updatedName = `${name} ${flavor} ${sizeProduct}`
 
