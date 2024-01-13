@@ -10,7 +10,7 @@ export default function Login() {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [directionDrag, setDirectionDrag] = useState<'100%' | "-100%">('-100%')
     const [isExiting, setIsExiting] = useState(true);
-    const { dispatch,state } = useGlobalState()
+    const { dispatch } = useGlobalState()
 
     const handlePhoneInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -62,7 +62,7 @@ export default function Login() {
 
     const phoneNumberPattern = isAdmin ? "\\(75\\) 8 \\d{4}-\\d{4}" : "\\(\\d{2}\\) 9 \\d{4}-\\d{4}";
 
-    const inputStyle = `block py-2.5 ps-6 pe-0  text-sm md:text-base lg:text-xl text-white bg-transparent border-0 border-b-2  border-gray-300 appearance-none
+    const inputStyle = `block py-2.5 ps-6 pe-0 text-sm md:text-base lg:text-xl text-white bg-transparent border-0 border-b-2  border-gray-300 appearance-none
      dark:focus:border-secondary-500 focus:outline-none focus:ring-0 focus:border-secondary-600 peer`
 
     const labelStyle = `absolute text-sm md:text-base lg:text-xl text-white text-opacity-50 duration-300 transform -translate-y-6 scale-75 top-3 pointer-events-none origin-[0] 
@@ -70,7 +70,7 @@ export default function Login() {
     peer-focus:scale-75 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto`
 
     return (<motion.div onClick={handleClose} animate={isExiting ? { opacity: 1 } : { opacity: 0, transition: { delay: 0.3 } }} className="w-full z-30 h-screen
-     overflow-hidden fixed top-0 lg:flex lg:justify-center lg:items-start  backdrop-brightness-50 backdrop-blur-sm" >
+     overflow-hidden fixed top-0 left-0 lg:flex lg:justify-center lg:items-start  backdrop-brightness-50 backdrop-blur-sm" >
 
         <div className="flex h-full md:hidden">
             <DivDraggable classAddition="py-3 gap-7" initialDirection="-100%" directionDrag={directionDrag} setState={setIsExiting} state={isExiting}

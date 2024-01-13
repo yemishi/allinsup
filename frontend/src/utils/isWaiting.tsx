@@ -11,8 +11,6 @@ export const waitingProduct = <div className="w-full h-full !flex flex-wrap just
                 <span className="h-[20px] rounded-md animate-pulse bg-gray-600 px-7 py-3" />
                 <span className="h-[20px] rounded-md animate-pulse bg-gray-600  px-6 py-4" />
             </div>
-
-
         </div>
 
     ))}

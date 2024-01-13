@@ -67,9 +67,8 @@ export default function ProductInfo({ product, q }: { product: ProductType, q: s
     const settings: SliderProps = {
         spaceBetween: 40,
         slidesPerView: 1,
-        thumbs: {
-            swiper: activeThumb,
-        },
+        ...(activeThumb && activeThumb.destroyed !== undefined && activeThumb.destroyed !== null && !activeThumb.destroyed && { thumbs: { swiper: activeThumb } }),
+
         style: {
             padding: '14px',
             borderRadius: '8px',
@@ -86,8 +85,8 @@ export default function ProductInfo({ product, q }: { product: ProductType, q: s
             768: {
                 effect: "fade"
             },
-            1024:{
-                allowTouchMove:false
+            1024: {
+                allowTouchMove: false
             }
         }
     };

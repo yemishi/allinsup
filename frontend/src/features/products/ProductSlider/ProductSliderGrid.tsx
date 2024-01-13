@@ -40,9 +40,9 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
                 allowTouchMove: false,
                 slidesPerView: 3.6,
             },
-            1200:{
+            1200: {
                 allowTouchMove: false,
-                slidesPerView:4.7
+                slidesPerView: 4.7
             }
         }
     }
@@ -64,10 +64,10 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
                 return <Slide key={`${_id}_${updatedName}`} className='group !flex rounded-xl text-sm bg-primary-500 font-lato 
                     pb-4 min-h-[310px] md:min-h-[370px] lg:min-h-[400px] text-white flex-col justify-between md:text-base lg:text-lg'>
 
-                    <Link className='bg-white flex items-center justify-center rounded-t-xl p-4' to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`}>
+                    <Link  className='bg-white flex items-center justify-center rounded-t-xl p-4' to={`/${encodeURIComponent(category)}/${urlReplace(`${name}-${flavor}-${sizeProduct}`)}/${_id}`}>
                         <img src={coverPhoto} className='self-center group-hover:scale-110 duration-200 w-full h-[140px] md:h-[170px] lg:h-[180px] object-contain' alt={parseAlt(coverPhoto)} />
-                    </Link>
 
+                    </Link>
                     <h3 className='font-bold px-2 truncate-2-lines '>{updatedName}</h3>
 
                     <div className='flex justify-between text-secondary-200 font-bold px-2'>
@@ -90,7 +90,7 @@ export default function ProductSliderGrid({ children }: { children: ProductType[
                                 <path d="M2 3L2.26121 3.09184C3.5628 3.54945 4.2136 3.77826 4.58584 4.32298C4.95808 4.86771 4.95808 5.59126 4.95808 7.03836V9.76C4.95808 12.7016 5.02132 13.6723 5.88772 14.5862C6.75412 15.5 8.14857 15.5 10.9375 15.5H12M16.2404 15.5C17.8014 15.5 18.5819 15.5 19.1336 15.0504C19.6853 14.6008 19.8429 13.8364 20.158 12.3075L20.6578 9.88275C21.0049 8.14369 21.1784 7.27417 20.7345 6.69708C20.2906 6.12 18.7738 6.12 17.0888 6.12H11.0235M4.95808 6.12H7" /> </g>
                         </svg>
 
-                       
+
                         <p>{`${soldOff ? 'ESGOTADO' : 'ADICIONAR'}`}</p>
 
                     </button>
