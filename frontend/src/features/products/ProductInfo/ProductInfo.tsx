@@ -16,7 +16,9 @@ export default function ProductInfo({ product, q }: { product: ProductType, q: s
     const findSizeIndex = findVariantIndex && findVariantIndex.sizeDetails.findIndex((e) => e.isSelected === true)
     const [variantIndex, setVariantIndex] = useState<number>(findVariantIndex && product.variants.indexOf(findVariantIndex) || 0)
     const [sizeIndex, setSizeIndex] = useState<number>(findSizeIndex || 0)
+
     const { _id, sizeDetails, variants, flavor, name, photos, price, sizeProduct, desc, stock, updatedName, promotion } = productDetails(product, state.cart, variantIndex, sizeIndex)
+    
     const [amount, setAmount] = useState<number>(1)
     const [activeThumb, setActiveThumb] = useState<Swiper>()
 
@@ -42,7 +44,7 @@ export default function ProductInfo({ product, q }: { product: ProductType, q: s
         if (!stock) return toast.error("Produto fora do estoque")
         if (amount > stock) return toast.error("Não foi possível adicionar o produto. A quantidade pedida não está disponível.")
         else {
-            dispatch({ type: "INCREMENT_AMOUNT", payload: { amount, product: product.toCart } })
+            dispatch({ type: "UPDATE_PRODUCT_AMOUNT", payload: { amount, product: product.toCart } })
         }
     }
     const flashPurchase = () => {
