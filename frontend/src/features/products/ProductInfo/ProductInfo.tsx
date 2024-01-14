@@ -21,7 +21,6 @@ export default function ProductInfo({ product, q }: { product: ProductType, q: s
     const [activeThumb, setActiveThumb] = useState<Swiper>()
 
     product.updatedName = `${name} ${flavor} ${sizeProduct}`
-
     const valueSave = (Number(promotion) - Number(price))
     const handleAmount = (e: number) => {
         if (e >= stock) e = stock
@@ -43,7 +42,7 @@ export default function ProductInfo({ product, q }: { product: ProductType, q: s
         if (!stock) return toast.error("Produto fora do estoque")
         if (amount > stock) return toast.error("Não foi possível adicionar o produto. A quantidade pedida não está disponível.")
         else {
-            dispatch({ type: "UPDATE_PRODUCT_AMOUNT", payload: { amount, product: product.toCart } })
+            dispatch({ type: "INCREMENT_AMOUNT", payload: { amount, product: product.toCart } })
         }
     }
     const flashPurchase = () => {
@@ -138,7 +137,7 @@ export default function ProductInfo({ product, q }: { product: ProductType, q: s
 
             <div className="flex flex-col gap-4 md:gap-6  md:min-w-[38%] lg:w-[35%] md:max-w-[28%]">
 
-                {minTablet && <h1 className="font-lato text-xl text-white font-medium md:text-2xl lg:text-3xl" onClick={() => setVariantIndex((1))}>{updatedName}</h1>}
+                {minTablet && <h1 className="font-lato text-xl text-white font-medium md:text-2xl lg:text-3xl overflow-hidden" onClick={() => setVariantIndex((1))}>{updatedName}</h1>}
 
                 <span className="flex gap-3 items-center md:gap-0">
                     <span className="flex flex-col">

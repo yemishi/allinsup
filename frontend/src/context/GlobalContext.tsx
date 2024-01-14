@@ -103,7 +103,6 @@ const reducer = (state: GlobalState, action: Action): GlobalState => {
 
         case 'INCREMENT_AMOUNT':
             const { product, amount } = action.payload;
-
             const foundProduct = state.cart.find(
                 (detail) => detail._id === product._id && detail.updatedName === product.updatedName
             );
@@ -144,8 +143,12 @@ const reducer = (state: GlobalState, action: Action): GlobalState => {
             };
         case 'UPDATE_PRODUCT_AMOUNT':
             const { product: updateProduct, amount: target } = action.payload;
+            if (action.payload.amount <= 0) {
+                toast.error("algo deu errado, tente novamente")
+                return state
+            }
             const productInCart = state.cart.find((e) => e.updatedName === updateProduct.updatedName && e._id === updateProduct._id)
-
+            console.log(action.payload)
             const updatedCart = () => {
                 if (!productInCart) {
                     const updatedProduct = {
@@ -222,7 +225,9 @@ const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({ children 
 
                 try {
                     const response = await axiosRequest.productInfo(flavor, sizeProduct, _id);
-                    const sizeSelected = response.data.variants.find((item) => item.isSelected === true)?.sizeDetails.find((item) => item.isSelected === true);
+                    const variantSelected = response.data.variants.find((variant) => variant.isSelected === true)
+                    const sizeSelected = variantSelected?.sizeDetails.find((size) => size.isSelected === true);
+                    console.log(variantSelected)
 
                     if (sizeSelected) {
                         const { price, stock } = sizeSelected;
@@ -243,6 +248,7 @@ const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({ children 
                     }
                 } catch (error) {
                     toast.warn("Não foi possivel recuperar alguns items do seu carrinho.");
+                    console.log(error)
                     return null;
                 }
             };

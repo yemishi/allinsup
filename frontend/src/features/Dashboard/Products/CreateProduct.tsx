@@ -24,10 +24,19 @@ export default function CreateProduct() {
         setForm({ ...form, [name]: name === "brand" ? value.toLowerCase() : value })
     }
 
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+
+        for (let i = 0; i < form.variants.length - 1; i++) {
+            for (let j = i + 1; j < form.variants.length; j++) {
+                if (form.variants[i].flavor === form.variants[j].flavor) {
+                    toast.error("Duas variantes têm o mesmo nome. Por favor, altere isso.");
+                    return;
+                }
+            }
+        }
         form.variants.map((e) => {
+
             if (e.photos.length === 0) {
                 e.photos.push("https://smithcodistributing.com/wp-content/themes/hello-elementor/assets/default_product.png")
             }
