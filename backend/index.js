@@ -83,22 +83,22 @@ app.delete('/delete-user', async (req, res) => {
         return res.status(400).json("ocorreu algum erro ao deletar sua conta.")
     }
 })
+
 app.get('/products', async (req, res) => {
     try {
-        const { q, page = 1, limit } = req.query;
-        const parsedPage = parseInt(page);
-        const parsedLimit = parseInt(limit);
+        const { q, page = 1 } = req.query;
+        const skip = (page - 1) * 10
+        let productsQuery = await Product.find();
 
-        const skip = (parsedPage - 1) * (parsedLimit ? parsedLimit : 10);
+        if (q) {
+            productsQuery = search(productsQuery, q);
+        }
 
+        const slicedProducts = productsQuery.slice(skip, skip + (10));
 
-        const products = await Product.find().skip(skip).limit(parsedLimit || 10);
-
-        return res.status(200).json(q ? search(products, q) : products);
-    }
-
-    catch (error) {
-        ;
+        return res.status(200).json(slicedProducts);
+    } catch (error) {
+        console.error(error);
         res.status(500).json({ message: 'Internal server error.' });
     }
 });

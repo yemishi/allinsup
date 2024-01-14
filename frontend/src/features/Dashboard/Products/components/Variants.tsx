@@ -101,6 +101,13 @@ export default function Variants({ form, setForm }: PropsType) {
         const updatedVariants = form.variants.filter((_, index) => index !== variantIndex)
         setForm({ ...form, variants: updatedVariants })
     }
+
+    const addNewSize = (variantIndex: number) => {
+        const updatedVariants = [...form.variants]
+        updatedVariants[variantIndex].sizeDetails.push({ price: 0, sizeHighlight: false, sizeProduct: "", stock: 1 })
+        setForm({ ...form, variants: updatedVariants })
+    }
+
     return (
         form.variants.map((variant, variantIndex) => {
             const { flavor, photos } = variant
@@ -176,16 +183,18 @@ export default function Variants({ form, setForm }: PropsType) {
                             {promotion && <p className="absolute right-0 top-0">{parseLocalCurrency(Number(promotion))}</p>}
                         </div>
 
-                        <div className="w-4/6 flex gap-2 md:font-bold ">
+                        <div className="w-full flex gap-2 md:font-bold items-center">
                             <span onClick={(e) => { e.preventDefault(), handleSizeProduct(variantIndex, sizeIndex, "sizeHighlight", !sizeHighlight) }}
                                 className={`p-3 cursor-pointer rounded-full border-2 duration-300 border-primary-400 ${sizeHighlight ? "bg-secondary-200 border-secondary-300 shadow-lightOn" : "bg-primary"}`} />
                             <p>Destaque</p>
+                            <button className="h-8 w-8 ml-auto bg-primary border border-primary-300 font-anton font-bold text-lg rounded-full" onClick={(e) => {
+                                e.preventDefault(), addNewSize(variantIndex)
+                            }}>+</button>
                         </div>
-
                     </div>
                 })}
 
-            </div>
+            </div >
         })
     )
 }

@@ -23,6 +23,7 @@ export default function SearchProduct({ query }: { query: string }) {
             },
         }
     )
+    console.log(data)
 
     useEffect(() => {
         if (!isLoading && hasNextPage) {
