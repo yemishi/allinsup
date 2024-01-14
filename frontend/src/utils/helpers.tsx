@@ -42,7 +42,7 @@ export const productDetails = (product: ProductType, cart: CartType[], variantIn
     product.toCart = {
         _id, coverPhoto: photos[0], flavor, name, updatedName: `${name} ${flavor} ${sizeProduct}`, price, sizeProduct, stock, promotion, amount: 0, category
     }
-
+   
     const amount: number | undefined = cart.find((detail) => detail._id === _id && detail.flavor === flavor && detail.sizeProduct === sizeProduct)?.amount
     const urlName = `${name}-${flavor}-${sizeProduct}`
     return {
