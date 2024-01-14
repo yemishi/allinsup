@@ -148,7 +148,7 @@ const reducer = (state: GlobalState, action: Action): GlobalState => {
                 return state
             }
             const productInCart = state.cart.find((e) => e.updatedName === updateProduct.updatedName && e._id === updateProduct._id)
-            console.log(action.payload)
+
             const updatedCart = () => {
                 if (!productInCart) {
                     const updatedProduct = {
@@ -227,7 +227,6 @@ const GlobalContextProvider: React.FC<GlobalContextProviderProps> = ({ children 
                     const response = await axiosRequest.productInfo(flavor, sizeProduct, _id);
                     const variantSelected = response.data.variants.find((variant) => variant.isSelected === true)
                     const sizeSelected = variantSelected?.sizeDetails.find((size) => size.isSelected === true);
-                    console.log(variantSelected)
 
                     if (sizeSelected) {
                         const { price, stock } = sizeSelected;

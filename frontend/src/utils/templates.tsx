@@ -29,8 +29,9 @@ export const slideOptions = (array: OptionsArrayType[], selectedState: SelectedS
         <div className="flex gap-2 flex-col border-b pb-3 border-opacity-30 border-white">
             <span className="gap-1 flex font-lato">
                 <p className="font-thin lg:text-xl lg:font-semibold">{title}</p>
-                <p className="lg:hidden text-secondary-200">{array[state][selected]}</p>
             </span>
+
+            <p className="lg:hidden text-secondary-200">{array[state] ? array[state][selected] : array[0][selected]}</p>
 
             {minLaptop ? <div className="w-full flex-wrap hidden lg:flex gap-4">
                 {(array).map((e, i) => {
