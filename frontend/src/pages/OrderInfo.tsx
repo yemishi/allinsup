@@ -186,7 +186,7 @@ export default function OrderInfo() {
                 <dl className="flex flex-col gap-3 p-4">
                     {divList("Encomenda N°:", String(orderId))}
                     {divList("Data da compra:", purchaseDate)}
-                    {divList("Valor:", price)}
+                    {divList("Valor pago:", price)}
                     {divList("Situação atual:", status)}
                     {divList("Metodo de pagamento:", paymentMethod)}
                 </dl>
