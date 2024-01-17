@@ -59,7 +59,7 @@ export default function MoneyMethod({ setMoneyState, setPurchaseOpen }: {
        peer-focus:scale-75 peer-focus:-translate-y-7`
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={() => setMoneyState(false)} className="w-full h-full fixed backdrop-brightness-50 z-20 flex justify-center items-center">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} onClick={() => setMoneyState(false)} className="w-full h-full fixed self-center backdrop-brightness-50 z-20 flex justify-center items-center">
             <div onClick={(e) => e.stopPropagation()} className="bg-primary text-gray-200 md:gap-11 w-11/12 md:w-auto h-3/6 md:h-auto rounded-lg text-center gap-2 flex flex-col p-5">
 
                 <h2 className="text-xl font-anton font-semibold px-3">Você escolheu pagar em dinheiro</h2>
