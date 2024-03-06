@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require('mongoose');
 
+
 const cors = require('cors');
 const { search, productInfo, updateStock, generateOrderNumber, searchOrders } = require('./utils/index');
 const { User, Product, Order } = require('./models');
