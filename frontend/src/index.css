@@ -1,8 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 
-html,
 body {
   height: 100%;
   margin: 0;
@@ -10,19 +10,12 @@ body {
   width: 100%;
   background-color: #161616;
   position: relative;
+  color: white;
+  font-family: "PT Sans", sans-serif;
 }
-
 
 ::selection {
   background: none;
-}
-
-
-
-svg {
-  -webkit-tap-highlight-color: blanchedalmond;
-  user-select: none;
-  outline: none;
 }
 
 input::-webkit-outer-spin-button,
@@ -68,7 +61,6 @@ input::-webkit-inner-spin-button {
   }
 }
 
-
 .swiper-pagination-bullet {
   background-color: #8f8f8f !important;
 }
@@ -76,7 +68,6 @@ input::-webkit-inner-spin-button {
 .swiper-pagination-bullet-active {
   background-color: #161616cb !important;
 }
-
 
 .swiper-button-prev::after,
 .swiper-button-next::after {
@@ -86,7 +77,6 @@ input::-webkit-inner-spin-button {
   color: rgb(255, 255, 255);
   font-size: 35px !important;
   font-weight: 600;
-
 }
 
 .swiper-button-prev,
@@ -112,7 +102,7 @@ input::-webkit-inner-spin-button {
 .swiper-button-next {
   right: 0 !important;
 }
-.swiper-slide-thumb-active{
+.swiper-slide-thumb-active {
   border: 2px solid rgb(212, 110, 15) !important;
 }
 

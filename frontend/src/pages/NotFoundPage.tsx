@@ -1,21 +1,34 @@
-import { Link } from 'react-router-dom';
-import { blinkVariant } from '../utils';
-import { motion } from "framer-motion"
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { blinkVariant } from "../utils/helpers";
 
 export default function NotFoundPage() {
-    return (
-        <motion.div animate="animate" exit="exit" initial="initial" transition={{ duration: 0.2 }} variants={blinkVariant} className="h-screen 
-        flex items-center text-center w-full bg-primary justify-center text-white absolute self-center z-50">
-            <div className=" p-8 rounded-lg shadow-md ">
-                <h1 className='text-3xl font-bold font-lato text-secondary-200'>Perdido na Fronteira dos Mundos</h1>
+  return (
+    <motion.div
+      animate="animate"
+      exit="exit"
+      initial="initial"
+      variants={blinkVariant}
+      className="h-screen flex items-center text-center w-full bg-primary justify-center text-white absolute self-center z-50"
+    >
+      <div className="px-5 rounded-lg shadow-md flex flex-col">
+        <h1 className="text-3xl font-bold font-lato text-secondary-200 md:text-4xl">
+          Lost in the Abyss: 404 Error
+        </h1>
 
-                <p className="text-gray-500 px-6 my-6">
-                    Algo deu errado! O portal para a página solicitada foi encerrado por forças desconhecidas. Talvez seja hora de voltar para casa.
-                </p>
-                <Link to="/" className="bg-primary-400 font-anton text-gray-200 hover:bg-primary-500 duration-200 font-bold py-3 px-5 rounded">
-                    Retornar à Base
-                </Link>
-            </div>
-        </motion.div>
-    );
-};
+        <p className="text-white text-opacity-60 px-6 my-6 max-w-3xl md:text-lg lg:text-xl">
+          Oops! Looks like you've stumbled into uncharted territory. Navigate
+          back to safety or embark on a new journey from our homepage. Adventure
+          awaits!
+        </p>
+        <Link
+          to="/"
+          className="bg-white bg-opacity-75 text-black font-anton hover:bg-opacity-50 active:bg-opacity-100 duration-200 font-bold 
+          py-3 px-5 md:text-lg rounded self-center mt-4"
+        >
+          Back to home
+        </Link>
+      </div>
+    </motion.div>
+  );
+}

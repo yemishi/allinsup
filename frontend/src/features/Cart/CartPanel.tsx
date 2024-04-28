@@ -1,144 +1,81 @@
-import { motion, } from "framer-motion"
-import { useState, useRef, Dispatch, useEffect } from "react"
-import CartProducts from "./CartProducts"
-import { useNavigate } from "react-router-dom"
-import { DivDraggable, axiosRequest, toast } from "../../components"
-import { totalPrice, totalAmount, parseLocalCurrency, stickyVariant } from "../../utils/"
+import { motion } from "framer-motion";
+import { useState, useRef } from "react";
 
-import { useGlobalState } from "../../App"
-import { CartType } from "../../types"
+import { DivDraggable } from "../../components";
+import { useCart, useTempOverlay } from "../../context/Provider";
+import { CartType } from "../../types/response";
+import { stickyVariant } from "../../utils/helpers";
+import { RxExit } from "react-icons/rx";
+
+import CartProducts from "./CartProducts";
+import Checkout from "../Checkout/Checkout";
 
 interface PropsType {
-    isExisting: boolean;
-    setIsExisting: Dispatch<React.SetStateAction<boolean>>;
-    handleClose: () => void
+  onClose: () => void;
+  cart: CartType[];
 }
 
-export default function CartPanel({ isExisting, setIsExisting, handleClose }: PropsType) {
-    const navigate = useNavigate()
-    const [directionDrag, setDirectionDrag] = useState<"100%" | "-100%">('100%')
-    const { dispatch, state } = useGlobalState()
+export default function CartPanel({ onClose }: PropsType) {
+  const { cart } = useCart();
+  const { setChildren, close } = useTempOverlay();
 
-    const [headerPosition, setHeaderPosition] = useState<boolean>(false)
-    const initialScrollValue = useRef<number>(0);
+  const [headerPosition, setHeaderPosition] = useState<boolean>(false);
+  const initialScrollValue = useRef<number>(0);
 
-    useEffect(() => {
-        const savedCart = localStorage.getItem('cart');
+  const onScroll = (e: React.UIEvent<HTMLDivElement>): void => {
+    const target = e.target as HTMLDivElement;
+    const { scrollTop } = target;
 
-        if (savedCart) {
-            const savedProducts = JSON.parse(savedCart) as CartType[];
-            let isChanged = false;
-
-            const fetchDataForProduct = async (product: CartType) => {
-                const { _id, flavor, sizeProduct, amount, price: savedPrice } = product;
-
-                try {
-                    const response = await axiosRequest.productInfo(flavor, sizeProduct, _id);
-                    const sizeSelected = response.data.variants.find((item) => item.isSelected === true)?.sizeDetails.find((item) => item.isSelected === true);
-
-                    if (sizeSelected) {
-                        const { price, stock } = sizeSelected;
-
-                        if (stock === 0) return null;
-                        if (price !== savedPrice || amount > stock) {
-                            isChanged = true;
-                        }
-
-                        product.stock = stock;
-                        product.price = price;
-
-                        if (amount > stock) {
-                            product.amount = stock;
-                        }
-
-                        return product;
-                    }
-                } catch (error) {
-                    toast.warn("Não foi possivel recuperar alguns items do seu carrinho.");
-                    return null;
-                }
-            };
-
-            const updateCart = async () => {
-                const updatedProductsPromises = savedProducts.map((product) => fetchDataForProduct(product));
-                const updatedProducts = await Promise.all(updatedProductsPromises);
-
-                if (isChanged) {
-                    toast.warn('Houve alterações em alguns produtos em seu carrinho. Já atualizamos para você.');
-                }
-
-                dispatch({ type: "UPDATE_CART", payload: updatedProducts.filter((product) => product !== null) as CartType[] });
-                localStorage.setItem("cart", JSON.stringify(updatedProducts.filter((product) => product !== null)))
-            };
-
-            updateCart();
-        }
-    }, []);
-
-    const onScroll = (e: React.UIEvent<HTMLDivElement>): void => {
-        const target = e.target as HTMLDivElement;
-        const { scrollTop } = target;
-
-        if (scrollTop > initialScrollValue.current) {
-            setHeaderPosition(false);
-        } else {
-            setHeaderPosition(true);
-        }
-        initialScrollValue.current = scrollTop;
-    };
-
-    const sendOrder = async () => {
-        try {
-            const tel = localStorage.getItem("tel") as string
-
-            if (tel) {
-                navigate("/checkout/address")
-                dispatch({ type: "SET_CART_OPEN", payload: false })
-            } else {
-                dispatch({ type: "SET_USER_OPEN", payload: true })
-                toast.warning("É preciso fazer login antes")
-            }
-        } catch (error) {
-            toast.error("Oops algo deu errado, tente novamente.")
-
-        }
+    if (scrollTop > initialScrollValue.current) {
+      setHeaderPosition(false);
+    } else {
+      setHeaderPosition(true);
     }
+    initialScrollValue.current = scrollTop;
+  };
 
-    return (
+  const next = async () => setChildren(<Checkout onClose={close} />);
+  return (
+    <DivDraggable
+      onScroll={onScroll}
+      className="ml-auto md:border-l md:border-primary-200 md:rounded-l-lg"
+      initialDirection={"100%"}
+      closeParent={onClose}
+    >
+      <motion.div
+        variants={stickyVariant}
+        transition={{ type: "spring", damping: 10, stiffness: 100 }}
+        animate={headerPosition ? "sticky" : "noSticky"}
+        onClick={() => setHeaderPosition(!headerPosition)}
+        className="w-full flex top-0 justify-between z-10 flex-col p-5 h-[83px] bg-secondary rounded-b-xl"
+      >
+        <div className="flex w-full justify-between">
+          <span className="mt-auto font-bold text-xl">shopping cart</span>
 
-        <DivDraggable onScroll={onScroll} directionDrag={directionDrag} state={isExisting} setState={setIsExisting} setDirectionDrag={setDirectionDrag}
-            initialDirection={"100%"} classAddition="" closeParent={() => dispatch({ type: "SET_CART_OPEN", payload: false })}>
-            <motion.div
-                variants={stickyVariant} transition={{ type: "spring", damping: 10, stiffness: 100 }}
-                animate={headerPosition ? "sticky" : 'noSticky'} onClick={() => setHeaderPosition(!headerPosition)}
-                className="w-full flex top-0 justify-between z-10 flex-col p-5 h-[83px] bg-secondary rounded-b-xl">
-
-                <div className="flex w-full justify-between">
-
-                    <p className="mt-auto font-bold text-xl">Carrinho de Compras</p>
-
-                    <div onClick={handleClose} className="w-7 self-end">
-                        <svg className="stroke-white hover:stroke-black cursor-pointer " viewBox="0 0 15 15" fill="none"
-                            xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" ></g>
-                            <g id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <path d="M3 1C2.44771 1 2 1.44772 2 2V13C2 13.5523 2.44772 14 3 14H10.5C10.7761 14 11 13.7761 11 13.5C11 13.2239 10.7761 13 10.5 13H3V2L10.5 2C10.7761 2 11 1.77614 11 1.5C11 1.22386 10.7761 1 10.5 1H3ZM12.6036 4.89645C12.4083 4.70118 12.0917 4.70118 11.8964 4.89645C11.7012 5.09171 11.7012 5.40829 11.8964 5.60355L13.2929 7H6.5C6.22386 7 6 7.22386 6 7.5C6 7.77614 6.22386 8 6.5 8H13.2929L11.8964 9.39645C11.7012 9.59171 11.7012 9.90829 11.8964 10.1036C12.0917 10.2988 12.4083 10.2988 12.6036 10.1036L14.8536 7.85355C15.0488 7.65829 15.0488 7.34171 14.8536 7.14645L12.6036 4.89645Z"
-                            ></path> </g></svg>
-                    </div>
-                </div>
-
-                <div className="flex text-sm lg:text-lg bg-primary-700 p-2 absolute left-0 rounded-r-lg -bottom-8 gap-2 items-center">
-                    <p>TOTAL ({totalAmount(state.cart)} items)</p>
-                    <p className="text-secondary-500 font-bold text-lg">{parseLocalCurrency(totalPrice(state.cart))}</p>
-                </div>
-            </motion.div>
-            {state.cart.length > 0 ? <CartProducts /> : <div className="p-5 mt-3"><p>O seu carrinho está vazio</p></div>}
-            <div className="sticky mt-auto  bg-primary bottom-0 w-full flex justify-center items-center py-4 px-2">
-                <button onClick={() => sendOrder()} className="bg-secondary-600 cursor-pointer
-                 text-white font-lato py-4 px-6 text-sm font-semibold rounded-xl">FINALIZAR COMPRA</button>
-
-            </div>
-        </DivDraggable >
-
-
-    )
-
+          <button onClick={onClose} className="cursor-pointer self-end">
+            <RxExit className="hover:text-black w-7 h-7 stroke-1" />
+          </button>
+        </div>
+      </motion.div>
+      {cart.length > 0 ? (
+        <CartProducts />
+      ) : (
+        <div className="p-5 mt-3">
+          <span>Your cart is empty</span>
+        </div>
+      )}
+      <div className="sticky mt-auto bottom-0 w-full flex justify-center items-center py-4 px-2">
+        <button
+          onClick={next}
+          className={`${
+            cart.length === 0
+              ? "opacity-50 pointer-events-none bg-white text-black"
+              : "bg-secondary-600 cursor-pointer"
+          }    font-lato py-4 px-6 text-sm font-semibold rounded-xl`}
+        >
+          CONTINUE
+        </button>
+      </div>
+    </DivDraggable>
+  );
 }
