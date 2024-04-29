@@ -7,7 +7,7 @@ import {
   DetailsType,
 } from "../types/response";
 
-export const stickyVariant: Variants = {
+const stickyVariant: Variants = {
   sticky: {
     top: 0,
     position: "sticky",
@@ -19,11 +19,13 @@ export const stickyVariant: Variants = {
     transition: { type: "spring", damping: 200, stiffness: 100 },
   },
 };
+const blinkVariant = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+};
 
-export const findInArray = (
-  array: DetailsType[] | VariantType[],
-  index?: number
-) => {
+const findInArray = (array: DetailsType[] | VariantType[], index?: number) => {
   if (index) return { value: array[index], index };
   else
     return {
@@ -35,7 +37,7 @@ export const findInArray = (
     };
 };
 
-export const productDetails = (
+const productDetails = (
   product: ProductType,
   cart?: CartType[],
   variantIndex?: number,
@@ -80,8 +82,4 @@ export const productDetails = (
   };
 };
 
-export const blinkVariant = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0 },
-};
+export { productDetails, blinkVariant, stickyVariant };

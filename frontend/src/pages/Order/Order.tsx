@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { motion } from "framer-motion";
-import { Image, axiosRequest } from "../../components";
+import axiosRequest from "../../services/axios.config";
 import { IoMdArrowDropup } from "react-icons/io";
 import { DivList } from "../../components/ui/DivList";
 import { parseLocalCurrency, parseToDate } from "../../utils/formatting";
 import Track from "../../components/ui/Track";
 import NotFoundPage from "../NotFoundPage";
 import { blinkVariant } from "../../utils/helpers";
+import { Image } from "../../components";
 
 export default function Order() {
   const { orderId } = useParams();

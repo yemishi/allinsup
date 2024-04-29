@@ -64,7 +64,7 @@ export default function ProductForm({
       sizeDetails: [
         {
           price: 22.22,
-          size: "20ml",
+          size: "20g",
           stock: 10,
         },
       ],
@@ -100,7 +100,7 @@ export default function ProductForm({
   };
   return (
     <form
-      className="w-full h-full  flex flex-col pt-4 px-4 gap-2 overflow-x-hidden"
+      className="w-full h-full flex flex-col pt-4 px-4 gap-2 overflow-x-hidden"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="font-montserrat text-center text-2xl lg:text-3xl font-semibold mb-6 relative ">

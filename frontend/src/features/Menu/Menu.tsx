@@ -1,4 +1,4 @@
-import { DivDraggable, axiosRequest, toast } from "../../components";
+import axiosRequest from "../../services/axios.config";
 
 import { FaHouseChimney } from "react-icons/fa6";
 import { MdAdminPanelSettings } from "react-icons/md";
@@ -17,6 +17,8 @@ import SessionForm from "../../components/form/user/SessionForm";
 import { updateToken } from "../../services/axios.config";
 import Button from "../../components/ui/Button,";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import { DivDraggable } from "../../components";
 
 export default function Menu() {
   const { setChildren, close } = useTempOverlay();

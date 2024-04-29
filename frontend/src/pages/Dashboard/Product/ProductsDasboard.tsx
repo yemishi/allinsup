@@ -7,11 +7,13 @@ import {
 import Button from "../../../components/ui/Button,";
 import { useTempOverlay } from "../../../context/Provider";
 import ProductForm from "../../../components/form/product/ProductForm";
-import { DivDraggable, axiosRequest, toast } from "../../../components";
+import axiosRequest from "../../../services/axios.config";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import { productDetails } from "../../../utils/helpers";
+import { toast } from "react-toastify";
+import { DivDraggable } from "../../../components";
 
 interface VariantData extends Omit<VariantType, "photos"> {
   photos: [];

@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { DivDraggable, axiosRequest, toast } from "../../../components";
+import axiosRequest from "../../../services/axios.config";
 import { OrderType } from "../../../types/response";
 
 import Track from "../../../components/ui/Track";
 import { parseLocalCurrency } from "../../../utils/formatting";
+import { toast } from "react-toastify";
+import { DivDraggable } from "../../../components";
 
 interface PropsType {
   onClose: () => void;

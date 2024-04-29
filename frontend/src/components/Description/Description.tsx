@@ -75,6 +75,7 @@ export default function Description({ updateDesc, desc, ...props }: PropsType) {
                       disabled={!updateDesc}
                       autoFocus={false}
                       value={title}
+                      placeholder={title}
                       onChange={(e) =>
                         handleDescChange(index, "title", e.target.value)
                       }
@@ -90,6 +91,7 @@ export default function Description({ updateDesc, desc, ...props }: PropsType) {
                     <EditableText
                       disabled={!updateDesc}
                       autoFocus={false}
+                      placeholder={text}
                       value={text}
                       onChange={(e) =>
                         handleDescChange(index, "text", e.target.value)

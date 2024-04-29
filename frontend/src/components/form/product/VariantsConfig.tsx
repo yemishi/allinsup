@@ -61,6 +61,7 @@ export default function VariantsConfig({
               autoFocus={false}
               id={`flavor_${index}`}
               className="text-2xl lg:text-3xl self-center line-clamp-2 text-center w-[80%]"
+              placeholder={flavor}
               value={flavor}
               onChange={(e) => updateName(e.target.value, index)}
             />

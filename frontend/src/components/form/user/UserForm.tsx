@@ -2,7 +2,7 @@ import { z } from "zod";
 import { UserType } from "../../../types/response";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { axiosRequest, toast } from "../..";
+import axiosRequest from "../../../services/axios.config";
 import { HTMLAttributes, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 
@@ -10,6 +10,7 @@ import DivDraggable from "../../ui/DivDraggable";
 import Input from "../../ui/Input";
 import EditableText from "../../ui/EditableText";
 import Button from "../../ui/Button,";
+import { toast } from "react-toastify";
 
 interface PropsType extends HTMLAttributes<HTMLDivElement> {
   userInfo: Omit<UserType, "password">;

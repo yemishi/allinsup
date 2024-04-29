@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { axiosRequest, toast } from "../../components";
+import axiosRequest from "../../services/axios.config";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import { redirect } from "react-router-dom";
@@ -14,6 +14,7 @@ import UserForm from "../../components/form/user/UserForm";
 import ErrorPage from "../Error/ErrorPage";
 import PaymentMethod from "./PaymentMethod";
 import Summary from "./Summary";
+import { toast } from "react-toastify";
 
 export default function Checkout({ onClose }: { onClose: () => void }) {
   const { cart, updateCart } = useCart();

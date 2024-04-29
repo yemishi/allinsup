@@ -58,6 +58,7 @@ export default function DetailsConfig({
               className="text-secondary-300"
               flexRow
               value={size}
+              placeholder={size}
               onChange={(e) => {
                 const { value } = e.target;
                 const updated = [...details];
@@ -71,7 +72,8 @@ export default function DetailsConfig({
               label="Price:"
               flexRow
               className="text-secondary-300"
-              value={parseLocalCurrency(price)}
+              placeholder={parseLocalCurrency(Number(price))}
+              value={parseLocalCurrency(Number(price))}
               onChange={(e) => {
                 const { value } = e.target;
                 const numberValue = Number(value.replace(/[^0-9.-]+/g, ""));
@@ -86,6 +88,7 @@ export default function DetailsConfig({
               type="number"
               className="text-secondary-300"
               flexRow
+              placeholder={String(stock)}
               value={String(stock)}
               onChange={(e) => {
                 const updated = [...details];
@@ -123,10 +126,7 @@ export default function DetailsConfig({
                 {promotion ? (
                   <EditableText
                     autoFocus={false}
-                    value={promotion.toLocaleString("en-US", {
-                      style: "currency",
-                      currency: "USD",
-                    })}
+                    value={parseLocalCurrency(Number(promotion))}
                     onChange={(e) => {
                       const updated = [...details];
                       const { value } = e.target;

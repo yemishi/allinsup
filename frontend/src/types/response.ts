@@ -22,7 +22,7 @@ interface ProductType {
   category: string;
   brand: string;
   variants: VariantType[];
-  error: false;
+  error?: false;
 }
 
 interface UserType {

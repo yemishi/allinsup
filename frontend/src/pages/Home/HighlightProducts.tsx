@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { axiosRequest } from "../../components";
+import axiosRequest from "../../services/axios.config";
 import ProductSlider from "../../components/Slider/ProductSlider";
 import { CartType } from "../../types/response";
 import ProductSliderSkeleton from "../../components/Slider/ProductSliderSkeleton";

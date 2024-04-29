@@ -1,5 +1,6 @@
 import { AnimatePresence, MotionProps, PanInfo, motion } from "framer-motion";
 import { HTMLAttributes, ReactNode, useState, Fragment } from "react";
+import isMobile from "../../utils/isMobile";
 
 type HTMLMotionDivProps = Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -31,7 +32,7 @@ export default function DivDraggable({
   ...props
 }: PropsType) {
   const { className, ...rest } = props;
-  const minTablet = window.matchMedia("(min-width: 768px)");
+  const minTablet = !isMobile();
   const [isActive, setIsActive] = useState(true);
   const [directionDrag, setDirectionDrag] = useState<"100%" | "-100%">(
     initialDirection
@@ -80,7 +81,7 @@ export default function DivDraggable({
               : ""
           } flex flex-col overflow-y-auto`}
           transition={{ type: "just" }}
-          {...(!minTablet.matches && {
+          {...(!minTablet && {
             drag: disableDrag ? false : "x",
             onDragEnd,
             onDrag,

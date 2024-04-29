@@ -2,7 +2,7 @@ import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { blinkVariant } from "../../utils/helpers";
 import { motion } from "framer-motion";
 import { useQuery } from "react-query";
-import { axiosRequest } from "../../components";
+import axiosRequest from "../../services/axios.config";
 import NotFoundPage from "../NotFoundPage";
 
 export default function Dashboard() {

@@ -7,7 +7,9 @@ import { IoCloseSharp } from "react-icons/io5";
 import { updateToken } from "../../../services/axios.config";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button,";
-import { axiosRequest, toast } from "../..";
+import axiosRequest  from "../../../services/axios.config";
+import { toast } from "react-toastify";
+
 
 interface FormProps extends HTMLAttributes<HTMLFormElement> {
   onClose: () => void;
@@ -39,7 +41,6 @@ export default function SignInForm({
     formState: { errors },
     handleSubmit,
   } = useForm<RegisterInputsType>({ resolver: zodResolver(FormSchema) });
-console.log(isLoading)
   const onSubmit: SubmitHandler<RegisterInputsType> = async (values) => {
     setIsLoading(true);
     await FormSchema.parseAsync(values);
@@ -78,6 +79,7 @@ console.log(isLoading)
         disabled={isLoading}
         autoComplete="email"
         error={errors.email?.message}
+        name="email"
         type="email"
         label="Email"
         id="email"
@@ -90,6 +92,7 @@ console.log(isLoading)
         error={errors.password?.message}
         isPassword={true}
         label="Password"
+        name="password"
         id="password"
         placeholder="muscle123"
       />

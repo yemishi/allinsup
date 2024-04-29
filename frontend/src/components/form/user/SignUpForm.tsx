@@ -4,8 +4,9 @@ import Button from "../../ui/Button,";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { axiosRequest, toast } from "../..";
 import { IoCloseSharp } from "react-icons/io5";
+import axiosRequest from "../../../services/axios.config";
+import { toast } from "react-toastify";
 
 interface FormProps extends HTMLAttributes<HTMLFormElement> {
   onClose: () => void;
@@ -76,6 +77,7 @@ export default function SignUpForm({
         disabled={isLoading}
         error={errors.name?.message}
         label="Name"
+        name="name"
         id="name"
         placeholder="Mr muscle"
       />
@@ -86,6 +88,7 @@ export default function SignUpForm({
         error={errors.email?.message}
         type="email"
         label="Email"
+        name="email"
         id="email"
         placeholder="mrMuscle@gamil.com"
       />
@@ -96,6 +99,7 @@ export default function SignUpForm({
         error={errors.password?.message}
         isPassword={true}
         label="Password"
+        name="password"
         id="password"
         placeholder="muscle123"
       />

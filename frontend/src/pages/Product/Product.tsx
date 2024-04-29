@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { axiosRequest } from "../../components";
+import axiosRequest from "../../services/axios.config";
 
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa";
