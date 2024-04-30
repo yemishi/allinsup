@@ -1,4 +1,5 @@
 import { InputHTMLAttributes, forwardRef, useState } from "react";
+import { parseLocalCurrency } from "../../utils/formatting";
 
 interface PropsType extends InputHTMLAttributes<HTMLInputElement> {
   value?: string | number;
@@ -7,26 +8,30 @@ interface PropsType extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   labelClass?: string;
   containerClass?: string;
-  autoFocus?: boolean;
   disabled?: boolean;
+  asCurrency?: boolean;
 }
 
 const EditableText = forwardRef<HTMLInputElement, PropsType>((props, ref) => {
-  const [isInput, setIsInput] = useState(false);
   const {
     id,
     placeholder,
     className,
     value,
     label,
+    asCurrency,
     flexRow,
     labelClass,
     error,
     containerClass,
-    autoFocus,
     disabled,
+    type,
+    onBlur,
     ...rest
   } = props;
+
+  const [isInput, setIsInput] = useState(false);
+
   const defaultFont = className?.includes("font-")
     ? ""
     : "font-lato font-semibold";
@@ -37,29 +42,38 @@ const EditableText = forwardRef<HTMLInputElement, PropsType>((props, ref) => {
   const Input = (
     <input
       ref={ref}
-      type="text"
-      placeholder={placeholder}
-      autoFocus={autoFocus !== undefined ? autoFocus : true}
+      type={type || "text"}
+      autoFocus
       value={value}
+      placeholder={
+        asCurrency ? parseLocalCurrency(Number(placeholder)) : placeholder
+      }
       id={id}
-      onBlur={() => setIsInput(false)}
+      onBlur={(e) => {
+        setIsInput(false);
+        if (onBlur) onBlur(e);
+      }}
       className={`${defaultFont} ${defaultSize} ${
         className ? className : ""
-      } bg-transparent outline-none`}
+      } bg-transparent outline-none h-max w-max`}
       {...rest}
     />
   );
+
   const Component = () =>
-    !isInput && !disabled ? (
+    isInput && !disabled ? (
       Input
     ) : (
       <span
         className={`${defaultFont} ${defaultSize} ${
           className ? className : ""
-        }`}
+        } `}
         onClick={() => setIsInput(true)}
       >
-        {value || placeholder}
+        {asCurrency
+          ? parseLocalCurrency(Number(value)) ||
+            parseLocalCurrency(Number(placeholder))
+          : value || placeholder}
       </span>
     );
   return (

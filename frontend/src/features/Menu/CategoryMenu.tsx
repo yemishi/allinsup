@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 export default function CategoryMenu({ onClose }: { onClose: () => void }) {
-  const categories = ["whey", "creatine", "pre-workout", "Vitamins & Minerals"];
+  const categories = ["whey", "creatine", "pre-workout"];
   return (
     <div className="pt-3">
       <h2 className="ml-3 text-lg md:text-xl mb-2 text-sky-300">

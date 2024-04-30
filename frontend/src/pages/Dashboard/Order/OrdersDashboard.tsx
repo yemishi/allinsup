@@ -26,7 +26,10 @@ export default function OrdersDashboard() {
     url: `order/admin?query=${query || ""}`,
   });
 
-  if (isLoading) return <div>loadings...</div>;
+  if (isLoading)
+    return (
+      <img src="/loading.svg" className="self-center" alt="loading icon" />
+    );
   const edit = (order: OrderType) => {
     setChildren(
       <EditOrder onSuccess={refetch} onClose={close} order={order} />

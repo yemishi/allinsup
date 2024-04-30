@@ -100,7 +100,6 @@ export default function Orders() {
         <ErrorPage {...errorProps} />
       )}
       <ProductsSimilar
-        query=""
         title="You may to like"
         cart={cart}
         updateCart={updateCart}

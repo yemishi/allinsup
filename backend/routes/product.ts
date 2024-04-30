@@ -12,8 +12,8 @@ router.get("/", async (req, res) => {
       page = 0,
       limit = 10,
       query = "",
-      brand = "",
-      category = "",
+      brand,
+      category,
     } = req.query;
     if (productId) {
       const product = await Product.findById(productId);
@@ -26,7 +26,6 @@ router.get("/", async (req, res) => {
         { "variants.sizeDetails.size": { $regex: query, $options: "i" } },
       ],
     } as any;
-
     if (brand) {
       filter.brand = { $regex: brand, $options: "i" };
     }

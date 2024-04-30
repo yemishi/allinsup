@@ -12,16 +12,16 @@ export default function ProductsSimilar({
   brand,
   title,
 }: {
-  query: string;
   cart: CartType[];
   updateCart: (updated: CartType[]) => void;
+  query?: string;
   category?: string;
   brand?: string;
   title?: string;
 }) {
   const { data } = useQuery({
     queryFn: () => axiosRequest.product.many(0, 10, query, brand, category),
-    queryKey: ["Product-similar", query],
+    queryKey: ["Product-similar", query, brand, category],
   });
   if (data?.error || !data)
     return (

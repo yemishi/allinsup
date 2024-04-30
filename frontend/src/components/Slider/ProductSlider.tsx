@@ -97,7 +97,7 @@ export default function ProductSlider({
                 className="group-hover:scale-110 duration-200 w-full h-[140px] md:h-[170px] lg:h-[180px] object-contain"
               />
             </Link>
-            <h3 className="font-bold px-2 truncate-2-lines">{name}</h3>
+            <span className="font-bold px-2 truncate-2-lines">{name}</span>
 
             <div className="flex justify-between text-secondary-200 font-bold px-2">
               {promotion && <p>{parseLocalCurrency(promotion)}</p>}
@@ -108,7 +108,7 @@ export default function ProductSlider({
                     : ""
                 } `}
               >
-                {parseLocalCurrency(price)}
+                {parseLocalCurrency(Number(price))}
               </p>
             </div>
             <button

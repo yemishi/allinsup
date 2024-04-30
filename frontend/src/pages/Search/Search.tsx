@@ -13,8 +13,10 @@ export default function Search() {
   const category = searchParams.get("category") as string;
   const { ref, values, hasNextPage, isFetchingNextPage } =
     useScrollQuery<ProductType>({
-      queryKey: ["products", "search-page", query],
-      url: `/product?query=${query}&brand=${brand}&category=${category}`,
+      queryKey: ["products", "search-page", query, brand, category],
+      url: `/product?query=${query}&brand=${brand || ""}&category=${
+        category || ""
+      }`,
     });
 
   return (

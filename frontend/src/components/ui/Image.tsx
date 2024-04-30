@@ -1,5 +1,5 @@
 import { HTMLAttributes, useState } from "react";
-
+import { LazyLoadImage } from "react-lazy-load-image-component";
 interface PropsType extends HTMLAttributes<HTMLImageElement> {
   src: string;
 }
@@ -12,7 +12,7 @@ export default function Image({ src, ...props }: PropsType) {
       : "!w-full !h-full";
   const duration = className?.includes("duration-") ? "" : "duration-150";
   const defaultObject = className?.includes("object-") ? "" : "object-cover";
-  
+
   const parseAlt = (imageUrl: string) => {
     const filename = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
     const filenameWithoutExtension = filename.split(".").slice(0, -1).join(" ");
@@ -25,16 +25,16 @@ export default function Image({ src, ...props }: PropsType) {
     return capitalizedText;
   };
   return (
-    <img
+    <LazyLoadImage
       {...rest}
+      src={src}
       onLoad={() => setIsLoading(false)}
-      src={isLoading ? "/loading.svg" : src}
       alt={parseAlt(src)}
       className={`${
         className ? className : ""
-      } ${defaultSIze} ${defaultObject} ${duration} ${
+      } ${defaultSIze} ${defaultObject} ${duration}  ${
         isLoading ? "blur-md" : ""
-      } `}
+      } duration-150`}
     />
   );
 }

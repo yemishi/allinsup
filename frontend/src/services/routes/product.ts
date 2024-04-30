@@ -19,9 +19,9 @@ const productRequest = (instance: AxiosInstance, baseUrl: string) => {
     > =>
       instance
         .get(
-          `${baseUrl}/product?page=${page || 0}&limit=${
-            limit || 10
-          }&query=${query}&category=${category}&brand=${brand}`
+          `${baseUrl}/product?page=${page || 0}&limit=${limit || 10}&query=${
+            query || ""
+          }&category=${category || ""}&brand=${brand || ""}`
         )
         .then((res) => res.data),
 

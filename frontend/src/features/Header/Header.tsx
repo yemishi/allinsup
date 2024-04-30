@@ -1,5 +1,5 @@
 import { memo, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { stickyVariant } from "../../utils/helpers";
@@ -8,11 +8,24 @@ import Menu from "../Menu/Menu";
 
 function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const brand = searchParams.get("brand")
+    ? `&brand=${searchParams.get("brand")}`
+    : "";
+
+  const category = searchParams.get("category")
+    ? `&category=${searchParams.get("category")}`
+    : "";
+
+  const isDashboard = location.pathname.toLowerCase().includes("/dashboard");
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFetch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchInput = e.target.value;
-    if (searchInput.length > 1) navigate(`/search?query=${searchInput}`);
+    if (searchInput.length > 1 || brand || category)
+      navigate(`/search?query=${searchInput}${brand}${category}`);
     else navigate("/");
   };
 
@@ -67,12 +80,14 @@ function Header() {
       </div>
 
       <input
-        onChange={handleFetch}
         ref={inputRef}
+        onChange={handleFetch}
         type="text"
         placeholder="What you looking for"
-        className="outline-none border-b placeholder:text-zinc-300 rounded-md p-2 text-white text-base w-[80%] lg:w-3/6 lg:text-xl bg-transparent
-         self-center focus:border-secondary-600"
+        className={`outline-none border-b placeholder:text-zinc-300 rounded-md p-2 text-white text-base w-[80%] lg:w-3/6 lg:text-xl bg-transparent
+         self-center focus:border-secondary-600 ${
+           isDashboard ? "hidden" : "inline"
+         }`}
       />
     </motion.header>
   );

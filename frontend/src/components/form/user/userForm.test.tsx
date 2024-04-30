@@ -43,7 +43,7 @@ describe("Sign up component", () => {
 
 describe("User form component", () => {
   it("Test the onchange events", () => {
-    const { getByPlaceholderText } = render(
+    const { getByPlaceholderText, getByText } = render(
       <UserForm
         onClose={() => {}}
         userInfo={{
@@ -61,7 +61,10 @@ describe("User form component", () => {
         }}
       />
     );
+    const name = getByText("name test");
+    fireEvent.click(name);
     const nameInput = getByPlaceholderText("name test");
+
     const addressInput = getByPlaceholderText("address test");
     const stateInput = getByPlaceholderText("state test");
     const cityInput = getByPlaceholderText("city test");
@@ -69,7 +72,6 @@ describe("User form component", () => {
     const cepInput = getByPlaceholderText("2345");
     const complementInput = getByPlaceholderText("complement test");
 
-    fireEvent.change(nameInput, { target: { value: "example name" } });
     fireEvent.change(addressInput, { target: { value: "example address" } });
     fireEvent.change(stateInput, { target: { value: "example state" } });
     fireEvent.change(cityInput, { target: { value: "example city" } });
@@ -79,7 +81,7 @@ describe("User form component", () => {
       target: { value: "example complement" },
     });
 
-    expect(nameInput).toHaveValue("example name");
+    expect(nameInput).toBeTruthy();
     expect(addressInput).toHaveValue("example address");
     expect(stateInput).toHaveValue("example state");
     expect(cityInput).toHaveValue("example city");

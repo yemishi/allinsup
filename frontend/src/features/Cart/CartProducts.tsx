@@ -36,7 +36,7 @@ export default function CartProducts() {
             key={`${product._id}_${name}_${price}`}
             className="flex overflow-hidden flex-row gap-3 h-[170px] border-b border-zinc-700 py-6 pb-5 relative"
           >
-            <Link className="!flex " to={`/product/${_id}`}>
+            <Link className="!flex" to={`/product/${_id}`}>
               <div
                 onClick={() => updateAmount(amount + 1, index)}
                 className="w-auto flex bg-white p-2 rounded-md"

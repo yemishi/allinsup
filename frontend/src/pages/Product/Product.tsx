@@ -34,6 +34,7 @@ export default function Product() {
 
   const { data, isLoading } = useQuery({
     queryFn: () => axiosRequest.product.single(_id as string),
+    cacheTime: 3000000,
   });
   if (isLoading)
     return (
@@ -173,26 +174,25 @@ export default function Product() {
                 variantCurrIndex={variantCurrIndex}
               />
             )}
-            <div className="flex md:flex-col gap-5 md:grid md:grid-cols-2">
+            <div className="flex md:flex-col gap-5 md:grid md:grid-cols-2 w-full">
               <div className="grid grid-cols-3 gap-4 border border-opacity-40 w-[40%] border-white px-4 py-2 justify-items-center rounded-md md:w-full">
                 <button
                   onClick={() => setCount(count - 1)}
                   className={` ${
-                    count - 1 < 0 && "pointer-events-none opacity-40"
-                  } p-1 `}
+                    count - 1 < 0 && "pointer-events-none  opacity-40"
+                  } p-1`}
                 >
                   <FaMinus className="!w-full !h-full " />
                 </button>
 
                 <EditableText
                   value={count}
-                  autoFocus={false}
                   placeholder={String(amount)}
                   onChange={changeCount}
                   inputMode="decimal"
                   type="number"
                   name="amount on cart"
-                  className={`text-center md:text-lg ${
+                  className={`text-center md:text-lg  ${
                     !count ? "opacity-40" : ""
                   }`}
                   containerClass="h-full w-full flex items-center justify-center"
@@ -253,11 +253,7 @@ export default function Product() {
       )}
       <Title>Product Information</Title>
       <Description desc={data.desc} />
-      <ProductsSimilar
-        cart={cart}
-        updateCart={updateCart}
-        query={data.category}
-      />
+      <ProductsSimilar title="You may to like" cart={cart} updateCart={updateCart} brand={data.brand} />
     </div>
   );
 }

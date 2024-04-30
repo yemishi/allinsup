@@ -19,6 +19,7 @@ export default function HighlightProducts({
     },
     {
       retry: 5,
+      refetchOnWindowFocus: false,cacheTime:3000000 
     }
   );
 

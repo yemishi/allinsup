@@ -35,7 +35,7 @@ export default function VariantsConfig({
 }: PropsType) {
   const updateName = (value: string, index: number) => {
     const updatedVariants = [...variants];
-    updatedVariants[index].flavor = value || `Variant ${index + 1}`;
+    updatedVariants[index].flavor = value;
     updateVariants(updatedVariants);
   };
 
@@ -58,11 +58,14 @@ export default function VariantsConfig({
         return (
           <div key={`${variant}_${index}`} className="space-y-4 p-4 relative">
             <EditableText
-              autoFocus={false}
               id={`flavor_${index}`}
               className="text-2xl lg:text-3xl self-center line-clamp-2 text-center w-[80%]"
               placeholder={flavor}
               value={flavor}
+              onBlur={(e) => {
+                if (!e.target.value)
+                  updateName(flavor || `flavor ${index + 1}`, index);
+              }}
               onChange={(e) => updateName(e.target.value, index)}
             />
 

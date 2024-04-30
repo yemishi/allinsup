@@ -19,7 +19,7 @@ const handleImage_1 = require("../firebase/handleImage");
 const router = (0, express_1.default)();
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { productId, page = 0, limit = 10, query = "", brand = "", category = "", } = req.query;
+        const { productId, page = 0, limit = 10, query = "", brand, category, } = req.query;
         if (productId) {
             const product = yield models_1.Product.findById(productId);
             return res.json(product);

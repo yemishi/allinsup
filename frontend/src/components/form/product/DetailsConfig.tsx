@@ -3,7 +3,7 @@ import EditableText from "../../ui/EditableText";
 import { DetailsType } from "../../../types/response";
 import Button from "../../ui/Button,";
 import { LuDelete } from "react-icons/lu";
-import { parseLocalCurrency } from "../../../utils/formatting";
+
 interface PropsType {
   details: DetailsType[];
   updateDetails: (details: DetailsType[]) => void;
@@ -18,7 +18,7 @@ export default function DetailsConfig({
   const add = () => {
     const update: DetailsType[] = [
       ...details,
-      { price: 2222, size: "20ml", stock: 10 },
+      { price: 22, size: "20ml", stock: 10 },
     ];
     updateDetails(update);
   };
@@ -53,7 +53,6 @@ export default function DetailsConfig({
             </div>
 
             <EditableText
-              autoFocus={false}
               label="Size:"
               className="text-secondary-300"
               flexRow
@@ -68,26 +67,24 @@ export default function DetailsConfig({
             />
 
             <EditableText
-              autoFocus={false}
               label="Price:"
               flexRow
+              asCurrency
               className="text-secondary-300"
-              placeholder={parseLocalCurrency(Number(price))}
-              value={parseLocalCurrency(Number(price))}
+              placeholder={String(price)}
+              value={price}
+              type="number"
               onChange={(e) => {
-                const { value } = e.target;
-                const numberValue = Number(value.replace(/[^0-9.-]+/g, ""));
                 const updated = [...details];
-                details[sizeIndex].price = numberValue;
+                details[sizeIndex].price = Number(e.target.value);
                 updateDetails(updated);
               }}
             />
             <EditableText
-              autoFocus={false}
               label="Stock:"
+              flexRow
               type="number"
               className="text-secondary-300"
-              flexRow
               placeholder={String(stock)}
               value={String(stock)}
               onChange={(e) => {
@@ -122,25 +119,22 @@ export default function DetailsConfig({
               >
                 Promotion?
               </span>
-              <span className="text-secondary-300">
-                {promotion ? (
-                  <EditableText
-                    autoFocus={false}
-                    value={parseLocalCurrency(Number(promotion))}
-                    onChange={(e) => {
-                      const updated = [...details];
-                      const { value } = e.target;
-                      const numberValue = Number(
-                        value.replace(/[^0-9.-]+/g, "")
-                      );
-                      details[sizeIndex].promotion = numberValue;
-                      updateDetails(updated);
-                    }}
-                  />
-                ) : (
-                  "No"
-                )}
-              </span>
+
+              {promotion ? (
+                <EditableText
+                  value={promotion}
+                  asCurrency
+                  type="number"
+                  className="text-secondary-300"
+                  onChange={(e) => {
+                    const updated = [...details];
+                    details[sizeIndex].promotion = Number(e.target.value);
+                    updateDetails(updated);
+                  }}
+                />
+              ) : (
+                <span className="text-secondary-300"> No</span>
+              )}
             </span>
           </div>
         );

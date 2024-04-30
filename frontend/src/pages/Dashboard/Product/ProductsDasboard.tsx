@@ -39,7 +39,10 @@ export default function ProductsDashboard() {
     queryKey: ["dashboard-products", query],
     url: `/product?query=${query || ""}`,
   });
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <img src="/loading.svg" className="self-center" alt="loading icon" />
+    );
 
   const deleteProduct = async (productId: string) => {
     const fetchData = async () => {
