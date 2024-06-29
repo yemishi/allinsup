@@ -12,6 +12,7 @@ import ErrorPage from "../../features/Error/ErrorPage";
 import SessionForm from "../../components/form/user/SessionForm";
 import { blinkVariant } from "../../utils/helpers";
 import { parseLocalCurrency } from "../../utils/formatting";
+import { Image } from "../../components";
 
 export default function Orders() {
   const {
@@ -28,7 +29,8 @@ export default function Orders() {
   });
   const { cart, updateCart } = useCart();
   const { setChildren, close } = useTempOverlay();
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return <Image src="/loading.svg" className="h-40 w-40 ml-auto mr-auto" />;
 
   const errorProps = {
     msg: "You must be logged first for see your orders",

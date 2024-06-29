@@ -1,8 +1,9 @@
 import { HTMLAttributes, useState } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+
 interface PropsType extends HTMLAttributes<HTMLImageElement> {
   src: string;
 }
+
 export default function Image({ src, ...props }: PropsType) {
   const [isLoading, setIsLoading] = useState(true);
   const { className, ...rest } = props;
@@ -16,7 +17,6 @@ export default function Image({ src, ...props }: PropsType) {
   const parseAlt = (imageUrl: string) => {
     const filename = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
     const filenameWithoutExtension = filename.split(".").slice(0, -1).join(" ");
-
     const formattedText = filenameWithoutExtension.replace(/[-_]/g, " ");
     const capitalizedText = formattedText.replace(/\b\w/g, (char) =>
       char.toUpperCase()
@@ -25,16 +25,16 @@ export default function Image({ src, ...props }: PropsType) {
     return capitalizedText;
   };
   return (
-    <LazyLoadImage
-      {...rest}
+    <img
       src={src}
-      onLoad={() => setIsLoading(false)}
       alt={parseAlt(src)}
+      onLoad={() => setIsLoading(false)}
       className={`${
         className ? className : ""
-      } ${defaultSIze} ${defaultObject} ${duration}  ${
+      }  ${defaultSIze} ${defaultObject} ${duration} ${
         isLoading ? "blur-md" : ""
-      } duration-150`}
+      }`}
+      {...rest}
     />
   );
 }

@@ -22,7 +22,7 @@ export default function Order() {
     queryFn: () => axiosRequest.order.single(orderId as string),
     queryKey: [orderId],
   });
-  if (isLoading) return <div>loading...</div>;
+  if (isLoading) return  <Image src="/loading.svg" className="h-40 w-40 ml-auto mr-auto" />;
   if (!data || data.error) return <NotFoundPage />;
 
   const { products, purchaseDate, status, _id, totalPaid, method } = data;
