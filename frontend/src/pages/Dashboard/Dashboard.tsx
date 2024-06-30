@@ -13,8 +13,13 @@ export default function Dashboard() {
     queryFn: () => axiosRequest.user.info(),
     queryKey: ["user-info", "dashboard"],
   });
+  if (isLoading)
+    return (
+      <div>
+        <img className="ml-auto mr-auto" src="/loading.svg" />
+      </div>
+    );
 
-  if (isLoading) return <div>Loading....</div>;
   if (data?.error || !data?.isAdmin) return <NotFoundPage />;
 
   const productPath = location.pathname.toLowerCase().includes("/products");

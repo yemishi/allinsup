@@ -94,7 +94,7 @@ export default function SignUpForm({
         label="Email"
         name="email"
         id="email"
-        placeholder="mrMuscle@gamil.com"
+        placeholder="mrMuscle@gmail.com"
       />
       <Input
         {...register("password")}

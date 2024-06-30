@@ -16,7 +16,7 @@ export default function SessionForm({
   onSignUpSuccess?: () => void;
 }) {
   const [count, setCount] = useState(0);
-  const popStyle = `max-h-[700px] max-w-xl  ${
+  const popStyle = `min-[768px]:h-[700px] max-w-xl ${
     isSubPop ? "bg-none" : "md:border md:border-primary-200"
   }`;
   return (
@@ -26,7 +26,7 @@ export default function SessionForm({
           key="sign-in form"
           changeOpacity
           disableDrag={isSubPop}
-          className="flex justify-center bg-none self-center"
+          className="flex justify-center bg-none self-center max"
           closeParent={onClose}
           initialDirection="-100%"
           removeAnimatePresence

@@ -11,7 +11,7 @@ import axiosRequest from "../../../services/axios.config";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
-import { productDetails } from "../../../utils/helpers";
+import { enableScroll, productDetails } from "../../../utils/helpers";
 import { toast } from "react-toastify";
 import { DivDraggable } from "../../../components";
 
@@ -28,6 +28,9 @@ export default function ProductsDashboard() {
   const query = searchParams.get("q") as string;
 
   const { setChildren, close } = useTempOverlay();
+  const closePopUp = () => {
+    enableScroll(), close();
+  };
   const {
     values: products,
     isLoading,
@@ -48,7 +51,7 @@ export default function ProductsDashboard() {
     const fetchData = async () => {
       const { error, message } = await axiosRequest.product.delete(productId);
       if (error) return toast.error(message);
-      toast.success(message), refetch(), close();
+      toast.success(message), refetch(), closePopUp();
     };
     setChildren(<DeleteProduct fetchData={fetchData} close={close} />);
   };
@@ -63,11 +66,11 @@ export default function ProductsDashboard() {
         toast.error(message);
         return;
       }
-      toast.success(message), close(), refetch();
+      toast.success(message), closePopUp(), refetch();
     };
     setChildren(
-      <DivDraggable maxMd initialDirection="100%" closeParent={close}>
-        <ProductForm action={fetchData} onClose={close} />
+      <DivDraggable maxMd initialDirection="100%" closeParent={closePopUp}>
+        <ProductForm action={fetchData} onClose={closePopUp} />
       </DivDraggable>
     );
   };
@@ -98,7 +101,7 @@ export default function ProductsDashboard() {
       <DivDraggable maxMd initialDirection="100%" closeParent={close}>
         <ProductForm
           action={fetchData}
-          onClose={close}
+          onClose={closePopUp}
           defaultValues={product}
         />
       </DivDraggable>
@@ -129,7 +132,7 @@ export default function ProductsDashboard() {
 
           return (
             <div
-              className="flex flex-col gap-3 w-full border border-primary-200 p-2 max-w-44  h-72 md:h-80 overflow-hidden min-w-[170px] bg-primary-550 rounded-lg md:min-w-[195px] md:max-w-[270px]"
+              className="flex flex-col gap-3 w-full max-w-[250px] border border-primary-200 p-2 max-w-44  h-72 md:h-80 overflow-hidden min-w-[170px] bg-primary-550 rounded-lg md:min-w-[195px] md:max-w-[270px]"
               key={`${product._id}_${name}`}
             >
               <div className=" h-40 md:h-48 flex p-2 bg-white rounded-lg">
@@ -144,6 +147,7 @@ export default function ProductsDashboard() {
                   {name}
                 </span>
               </div>
+
               <span className="mt-auto grid grid-cols-2 gap-2">
                 <Button
                   onClick={() => deleteProduct(product._id)}

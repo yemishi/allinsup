@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import useScrollQuery from "../../hooks/useInfiniteQuery";
@@ -11,7 +10,7 @@ import { TfiPackage } from "react-icons/tfi";
 import ErrorPage from "../../features/Error/ErrorPage";
 import SessionForm from "../../components/form/user/SessionForm";
 import { blinkVariant } from "../../utils/helpers";
-import { parseLocalCurrency } from "../../utils/formatting";
+import { parseLocalCurrency, parseToDate } from "../../utils/formatting";
 import { Image } from "../../components";
 
 export default function Orders() {
@@ -56,12 +55,6 @@ export default function Orders() {
           {orders.map((order, index) => {
             const { _id, purchaseDate, status, totalPaid, receivedDate } =
               order;
-            const date = new Date(purchaseDate);
-            const receive = receivedDate && new Date(receivedDate);
-            const receiveFormatted =
-              receive &&
-              `${receive.getMonth()}/${receive.getDay()}/${receive.getFullYear()}`;
-            const dateFormatted = `${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`;
             return (
               <div
                 key={`${order}_${index}`}
@@ -70,9 +63,12 @@ export default function Orders() {
               >
                 <dl className="w-full flex flex-col gap-1 md:gap-4">
                   <DivList dt="Order id:" dd={_id} />
-                  <DivList dt="Purchase date" dd={dateFormatted} />
-                  {receiveFormatted && (
-                    <DivList dt="Received date" dd={dateFormatted} />
+                  <DivList dt="Purchase date" dd={parseToDate(purchaseDate)} />
+                  {receivedDate && (
+                    <DivList
+                      dt="Received date"
+                      dd={parseToDate(receivedDate)}
+                    />
                   )}
                   <DivList
                     dt="Value paid"

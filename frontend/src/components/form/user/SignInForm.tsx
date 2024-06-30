@@ -87,7 +87,7 @@ export default function SignInForm({
         type="email"
         label="Email"
         id="email"
-        placeholder="mrMuscle@gamil.com"
+        placeholder="mrMuscle@gmail.com"
       />
       <Input
         {...register("password")}
