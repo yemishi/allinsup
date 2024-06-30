@@ -7,19 +7,20 @@ import { IoCloseSharp } from "react-icons/io5";
 import { updateToken } from "../../../services/axios.config";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button,";
-import axiosRequest  from "../../../services/axios.config";
+import axiosRequest from "../../../services/axios.config";
 import { toast } from "react-toastify";
 
-
 interface FormProps extends HTMLAttributes<HTMLFormElement> {
-  onClose: () => void;
   openSignUp: () => void;
+  onClose: () => void;
+  disableExit?: boolean;
   onSuccess?: () => void;
 }
 
 export default function SignInForm({
   onClose,
   openSignUp,
+  disableExit,
   onSuccess,
   ...props
 }: FormProps) {
@@ -70,10 +71,13 @@ export default function SignInForm({
         <span className="font-montserrat self-center text-3xl font-semibold mb-10">
           Sign in
         </span>
-        <button type="button" onClick={onClose}>
-          <IoCloseSharp className="h-8 w-8 top-0 right-0 absolute" />
-        </button>
+        {!disableExit && (
+          <button type="button" onClick={onClose}>
+            <IoCloseSharp className="h-8 w-8 top-0 right-0 absolute" />
+          </button>
+        )}
       </div>
+
       <Input
         {...register("email")}
         disabled={isLoading}

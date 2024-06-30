@@ -83,4 +83,5 @@ const productDetails = (
   };
 };
 
-export { productDetails, blinkVariant, stickyVariant };
+const enableScroll = () => (document.body.style.overflow = "");
+export { productDetails, blinkVariant, stickyVariant, enableScroll };

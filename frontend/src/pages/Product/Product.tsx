@@ -71,7 +71,7 @@ export default function Product() {
     if (amount) {
       const updated = cart.map((i) => {
         if (i._id === data._id && i.flavor === flavor && i.size === size)
-          i.amount += count;
+          i.amount = count;
         return i;
       });
       return updateCart(updated), setCount(0);
@@ -211,7 +211,7 @@ export default function Product() {
 
               <Button
                 disableBounce
-                onClick={() => toCart()}
+                onClick={toCart}
                 className={`${
                   !count ? "pointer-events-none opacity-60" : ""
                 } bg-secondary-600 w-[55%] rounded flex items-center justify-center gap-1  
@@ -253,7 +253,12 @@ export default function Product() {
       )}
       <Title>Product Information</Title>
       <Description desc={data.desc} />
-      <ProductsSimilar title="You may to like" cart={cart} updateCart={updateCart} brand={data.brand} />
+      <ProductsSimilar
+        title="You may to like"
+        cart={cart}
+        updateCart={updateCart}
+        brand={data.brand}
+      />
     </div>
   );
 }

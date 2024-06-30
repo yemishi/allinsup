@@ -3,7 +3,7 @@ const parseLocalCurrency = (e: number) =>
 
 const parseToDate = (d: Date) => {
   const date = new Date(d);
-  return `${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`;
+  return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
 };
 
 export { parseToDate, parseLocalCurrency };

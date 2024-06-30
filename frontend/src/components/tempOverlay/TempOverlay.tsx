@@ -8,6 +8,7 @@ export default function TempOverlay() {
   const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (event.target === event.currentTarget) {
       close();
+      document.body.style.overflow = "";
     }
   };
 

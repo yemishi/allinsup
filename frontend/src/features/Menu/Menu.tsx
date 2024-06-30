@@ -19,6 +19,7 @@ import Button from "../../components/ui/Button,";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { DivDraggable } from "../../components";
+import { enableScroll } from "../../utils/helpers";
 
 export default function Menu() {
   const { setChildren, close } = useTempOverlay();
@@ -77,7 +78,9 @@ export default function Menu() {
         isDelete={isDelete}
         upToAdmin={upToAdmin}
         login={openLogin}
-        onClose={close}
+        onClose={() => {
+          close(), enableScroll();
+        }}
       />
     );
 
@@ -99,7 +102,7 @@ const MenuPanel = ({
   upToAdmin: () => void;
   isDelete: () => void;
 }) => {
-  const { data, refetch } = useQuery({
+  const { data, refetch, isLoading } = useQuery({
     queryFn: () => axiosRequest.user.info(),
     queryKey: ["User-info"],
   });
@@ -115,21 +118,39 @@ const MenuPanel = ({
   return (
     <DivDraggable
       initialDirection="-100%"
-      className="mr-auto md:text-lg  md:rounded-r-lg md:border md:border-primary-200"
+      className="mr-auto md:text-lg md:rounded-r-lg md:border md:border-primary-200"
       closeParent={onClose}
     >
       <div className="w-full flex top-0 z-10 p-5 h-[83px] bg-secondary rounded-b-xl ">
-        <span className="mt-auto font-semibold text-lg font-anton md:text-xl">
-          {data?.error ? "Take a shortcut" : data?.name}
-        </span>
+        {isLoading ? (
+          <img
+            src="/loading.svg"
+            className="self-center w-20 h-20 brightness-150"
+          />
+        ) : (
+          <span className="mt-auto font-semibold text-lg font-anton md:text-xl">
+            {data?.error ? "Take a shortcut" : data?.name}
+          </span>
+        )}
 
-        <button onClick={handleLogin} className="ml-auto mb-auto   flex gap-1 ">
-          <p className="font-anton text-base md:text-lg mt-auto  self-center">
-            {data?.error ? "Sign in" : "Sign out"}
-          </p>
+        <span className="spin" />
+        {isLoading ? (
+          <img
+            src="/loading.svg"
+            className="self-center ml-auto w-20 h-20 brightness-150"
+          />
+        ) : (
+          <button
+            onClick={handleLogin}
+            className="ml-auto mb-auto   flex gap-1 "
+          >
+            <p className="font-anton text-base md:text-lg mt-auto  self-center">
+              {data?.error ? "Sign in" : "Sign out"}
+            </p>
 
-          <IoPersonOutline className="w-7 h-7 md:w-8 md:h-8" />
-        </button>
+            <IoPersonOutline className="w-7 h-7 md:w-8 md:h-8" />
+          </button>
+        )}
       </div>
 
       <div className="pt-2 flex flex-col items-center border-b-2 border-primary-200 w-full ">
@@ -138,24 +159,28 @@ const MenuPanel = ({
           <FaHouseChimney className="w-7 h-7 md:w-8 md:h-8 ml-auto" />
         </Link>
 
-        {!data?.error && (
-          <>
-            <Link to="/my-orders" onClick={onClose} className={linkClass}>
-              My orders
-              <GrNotes className="ml-auto h-7 w-7 md:w-8 md:h-8" />
-            </Link>
+        {isLoading ? (
+          <img src="/loading.svg" className="w-32 h-32" />
+        ) : (
+          !data?.error && (
+            <>
+              <Link to="/my-orders" onClick={onClose} className={linkClass}>
+                My orders
+                <GrNotes className="ml-auto h-7 w-7 md:w-8 md:h-8" />
+              </Link>
 
-            <button
-              onClick={() => {
-                if (data?.isAdmin) return navigate("/dashboard"), onClose();
-                upToAdmin();
-              }}
-              className={linkClass}
-            >
-              {data?.isAdmin ? "Dashboard" : "upgrade to admin account"}
-              <MdAdminPanelSettings className="ml-auto h-7 w-7 md:w-8 md:h-8" />
-            </button>
-          </>
+              <button
+                onClick={() => {
+                  if (data?.isAdmin) return navigate("/dashboard"), onClose();
+                  upToAdmin();
+                }}
+                className={linkClass}
+              >
+                {data?.isAdmin ? "Dashboard" : "upgrade to admin account"}
+                <MdAdminPanelSettings className="ml-auto h-7 w-7 md:w-8 md:h-8" />
+              </button>
+            </>
+          )
         )}
       </div>
       <CategoryMenu onClose={onClose} />
@@ -198,11 +223,19 @@ const DeleteUser = ({
         <Button
           disabled={isLoading}
           className="py-2 bg-primary"
-          onClick={close}
+          onClick={() => {
+            close(), enableScroll();
+          }}
         >
           No
         </Button>
-        <Button disabled={isLoading} onClick={fetchData} className="py-2">
+        <Button
+          disabled={isLoading}
+          onClick={() => {
+            fetchData(), enableScroll();
+          }}
+          className="py-2"
+        >
           Yes!
         </Button>
       </div>

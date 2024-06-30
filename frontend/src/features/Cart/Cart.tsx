@@ -6,7 +6,14 @@ import { LuShoppingCart } from "react-icons/lu";
 export default function Cart() {
   const { cart } = useCart();
   const { setChildren, close } = useTempOverlay();
-  const Cart = () => <CartPanel cart={cart} onClose={close} />;
+  const Cart = () => (
+    <CartPanel
+      cart={cart}
+      onClose={() => {
+        close(), (document.body.style.overflow = "");
+      }}
+    />
+  );
   const open = () => {
     setChildren(<Cart />);
   };

@@ -30,7 +30,7 @@ export default function Summary({
       </div>
       <table className="flex items-center justify-center w-full">
         <tbody className="flex flex-col gap-5 pt-4 w-full rounded  md:grid md:grid-cols-2 ">
-          {[...cart, ...cart, ...cart].map((product, index) => {
+          {cart.map((product, index) => {
             const { amount, coverPhoto, name, price } = product;
             const totalPrice = price * amount;
             return (

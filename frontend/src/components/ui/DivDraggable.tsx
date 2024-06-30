@@ -1,5 +1,11 @@
 import { AnimatePresence, MotionProps, PanInfo, motion } from "framer-motion";
-import { HTMLAttributes, ReactNode, useState, Fragment } from "react";
+import {
+  HTMLAttributes,
+  ReactNode,
+  useState,
+  Fragment,
+  useEffect,
+} from "react";
 import isMobile from "../../utils/isMobile";
 
 type HTMLMotionDivProps = Omit<
@@ -40,7 +46,7 @@ export default function DivDraggable({
 
   const onDragEnd = (_: any, info: PanInfo) => {
     if (info.offset.x < -150 || info.offset.x > 150) {
-      setIsActive(false);
+      setIsActive(false), (document.body.style.overflow = "");
       setTimeout(() => {
         closeParent && closeParent();
         setIsActive(true);
@@ -61,6 +67,11 @@ export default function DivDraggable({
       : "h-full w-full lg:min-w-[500px] min-[450px]:w-[450px]";
   const defaultBg = className?.includes("bg-") ? "" : "bg-primary-600";
   const Component = removeAnimatePresence ? Fragment : AnimatePresence;
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+  }, []);
+
   return (
     <Component>
       {isActive && (

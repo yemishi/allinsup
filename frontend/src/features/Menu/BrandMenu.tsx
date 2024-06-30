@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 export default function BrandMenu({ onClose }: { onClose: () => void }) {
   const brands = [
     "Meow Mettle",
-    "Vitality Max",
+    "Power up",
     "ZenZest",
     "Peak Potential",
     "Harmony Haven",

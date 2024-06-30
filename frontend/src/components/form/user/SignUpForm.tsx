@@ -11,12 +11,14 @@ import { toast } from "react-toastify";
 interface FormProps extends HTMLAttributes<HTMLFormElement> {
   onClose: () => void;
   openSignIn: () => void;
+  disableExit?: boolean;
   onSuccess?: () => void;
 }
 
 export default function SignUpForm({
   onClose,
   openSignIn,
+  disableExit,
   onSuccess,
   ...props
 }: FormProps) {
@@ -67,9 +69,11 @@ export default function SignUpForm({
         <span className="font-montserrat self-center text-3xl font-semibold mb-10">
           Sign up
         </span>
-        <button type="button" onClick={onClose}>
-          <IoCloseSharp className="h-8 w-8 top-0 right-0 absolute" />
-        </button>
+        {!disableExit && (
+          <button type="button" onClick={onClose}>
+            <IoCloseSharp className="h-8 w-8 top-0 right-0 absolute" />
+          </button>
+        )}
       </div>
       <Input
         {...register("name")}

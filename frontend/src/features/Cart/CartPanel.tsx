@@ -34,7 +34,6 @@ export default function CartPanel({ onClose }: PropsType) {
     initialScrollValue.current = scrollTop;
   };
 
-  const next = async () => setChildren(<Checkout onClose={close} />);
   return (
     <DivDraggable
       onScroll={onScroll}
@@ -66,7 +65,15 @@ export default function CartPanel({ onClose }: PropsType) {
       )}
       <div className="sticky mt-auto bottom-0 w-full flex justify-center items-center py-4 px-2">
         <button
-          onClick={next}
+          onClick={() =>
+            setChildren(
+              <Checkout
+                onClose={() => {
+                  close(), (document.body.style.overflow = "");
+                }}
+              />
+            )
+          }
           className={`${
             cart.length === 0
               ? "opacity-50 pointer-events-none bg-white text-black"

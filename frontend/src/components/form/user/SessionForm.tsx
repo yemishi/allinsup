@@ -6,36 +6,46 @@ const SignUpForm = lazy(() => import("./SignUpForm"));
 
 export default function SessionForm({
   onClose,
+  isSubPop,
   onSignInSuccess,
   onSignUpSuccess,
 }: {
   onClose: () => void;
+  isSubPop?: boolean;
   onSignInSuccess?: () => void;
   onSignUpSuccess?: () => void;
 }) {
   const [count, setCount] = useState(0);
+  const popStyle = `max-h-[700px] max-w-xl  ${
+    isSubPop ? "bg-none" : "md:border md:border-primary-200"
+  }`;
   return (
     <AnimatePresence mode="wait">
       {count === 0 && (
         <DivDraggable
           key="sign-in form"
           changeOpacity
-          className="flex justify-center bg-none"
+          disableDrag={isSubPop}
+          className="flex justify-center bg-none self-center"
           closeParent={onClose}
           initialDirection="-100%"
           removeAnimatePresence
         >
           <SignInForm
             onSuccess={onSignInSuccess}
-            className="max-h-[700px] max-w-xl md:border md:border-primary-200"
-            onClose={onClose}
+            className={popStyle}
+            disableExit={isSubPop}
+            onClose={() => {
+              onClose(), (document.body.style.overflow = "");
+            }}
             openSignUp={() => setCount(1)}
           />
         </DivDraggable>
       )}
       {count === 1 && (
         <DivDraggable
-          className="flex justify-center bg-none"
+          className="flex justify-center bg-none self-center"
+          disableDrag={isSubPop}
           key="sign-up form"
           changeOpacity
           closeParent={onClose}
@@ -43,9 +53,12 @@ export default function SessionForm({
           removeAnimatePresence
         >
           <SignUpForm
-            className="max-h-[700px] max-w-xl md:border md:border-primary-200"
+            className={popStyle}
+            disableExit={isSubPop}
             onSuccess={onSignUpSuccess}
-            onClose={onClose}
+            onClose={() => {
+              onClose(), (document.body.style.overflow = "");
+            }}
             openSignIn={() => setCount(0)}
           />
         </DivDraggable>

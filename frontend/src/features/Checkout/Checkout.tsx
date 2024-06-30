@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 
 export default function Checkout({ onClose }: { onClose: () => void }) {
   const { cart, updateCart } = useCart();
-  const { data, refetch } = useQuery({
+  const { data, refetch, isLoading } = useQuery({
     queryKey: ["user info"],
     queryFn: () => axiosRequest.user.info(),
   });
@@ -27,11 +27,15 @@ export default function Checkout({ onClose }: { onClose: () => void }) {
 
   const [step, setStep] = useState<number>(1);
   const [method, setMethod] = useState("");
-
+  if (isLoading) return <img src="/loading.svg" />;
   if (!data)
-    return <ErrorPage msg="We had a problem trying to access this feature." />;
+    return (
+      <div className="bg-primary rounded-md">
+        <ErrorPage msg="We had a problem trying to access this feature." />
+      </div>
+    );
 
-  if (data?.error) setStep(0);
+  if (data?.error && step !== 0) setStep(0);
   const totalPrice = cart.reduce(
     (prev, curr) => prev + curr.price * curr.amount,
     0
@@ -90,6 +94,7 @@ export default function Checkout({ onClose }: { onClose: () => void }) {
       redirect("/"),
       setIsFetching(false),
       updateCart([]),
+      (document.body.style.overflow = ""),
       onClose()
     );
   };
@@ -98,16 +103,26 @@ export default function Checkout({ onClose }: { onClose: () => void }) {
     step === 2 && !method ? "pointer-events-none opacity-50" : "";
 
   return (
-    <div className="w-full h-full overflow-x-hidden bg-primary-600 p-4 pb-8 flex flex-col max-h-[1000px] max-w-xl md:border md:border-primary-200 relative md:rounded-lg">
-      <div className="flex flex-col gap-2 mb-5">
+    <div
+      className="w-full h-full overflow-x-hidden bg-primary-600 p-4 pb-8 flex flex-col max-h-[1000px] max-w-xl md:border md:border-primary-200
+     relative md:rounded-lg "
+    >
+      <div className="flex flex-col gap-2 mb-5 ">
         <button onClick={onClose}>
           <IoIosClose className="w-7 h-7 md:w-10 md:h-10" />
         </button>
         <Steps setStep={setStep} step={step - 1} stepLength={3} />
       </div>
+
       <AnimatePresence mode="wait">
         {step === 0 && (
-          <SessionForm onSignInSuccess={refetch} onClose={() => setStep(1)} />
+          <SessionForm
+            isSubPop
+            onSignInSuccess={() => {
+              refetch(), setStep(1);
+            }}
+            onClose={() => setStep(1)}
+          />
         )}
         {step === 1 && !data?.error && (
           <Address
@@ -120,13 +135,16 @@ export default function Checkout({ onClose }: { onClose: () => void }) {
         )}
         {step === 3 && !data?.error && <Summary method={method} cart={cart} />}
       </AnimatePresence>
-      <Button
-        disabled={isFetching}
-        onClick={next}
-        className={`mt-auto self-center bg-secondary-600 px-7 md:text-lg ${disableNextAction}`}
-      >
-        {step === 3 ? "Complete purchase" : "Next"}
-      </Button>
+
+      {step !== 0 && (
+        <Button
+          disabled={isFetching}
+          onClick={next}
+          className={`mt-auto self-center bg-secondary-600 px-7 md:text-lg ${disableNextAction}`}
+        >
+          {step === 3 ? "Complete purchase" : "Next"}
+        </Button>
+      )}
       {isAddress && !data.error && (
         <UserForm
           className="z-20 absolute top-0 left-0 "
