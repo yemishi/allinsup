@@ -26,7 +26,6 @@ export default function SignUpForm({
   const { className, ...rest } = props;
   const [isLoading, setIsLoading] = useState(false);
   const defaultBg = className?.includes("bg-") ? "" : "bg-primary";
-
   const FormSchema = z.object({
     name: z
       .string()
@@ -54,15 +53,14 @@ export default function SignUpForm({
     );
     setIsLoading(false);
     if (error) return toast.error(message);
-    return toast.success(message), onClose(), onSuccess && onSuccess();
+    return openSignIn(), toast.success(message), onSuccess && onSuccess();
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={`${
-        className ? className : ""
-      } ${defaultBg} w-full h-full flex flex-col gap-3 p-4 `}
+      className={`${className ? className : ""
+        } ${defaultBg} w-full h-full flex flex-col gap-3 p-4 `}
       {...rest}
     >
       <div className="flex justify-center items-center relative">

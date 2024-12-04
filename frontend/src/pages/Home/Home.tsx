@@ -58,7 +58,7 @@ export default function Home() {
             <Slide
               key={`${name}_${index}`}
               className={`max-w-[110px] group
-                !flex cursor-pointer ml-auto items-center flex-col gap-3 hover:text-secondary-200 duration-200 font-lato text-sm md:max-w-[130px]
+                !flex cursor-pointer ml-auto items-center text-center flex-col gap-3 hover:text-secondary-200 duration-200 font-lato text-sm md:max-w-[130px]
                 m:font-semibold md:text-lg ${
                   query === name ? "text-secondary-200" : "text-white"
                 }`}
