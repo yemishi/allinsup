@@ -43,6 +43,21 @@ A complete e-commerce platform focusing on food and drink products. The project 
   ├── /backend 
 ```
 ## Screenshots
+Mobile
+<div style="display:flex;flex-wrap: wrap;gap:2px">
+  <img src="/frontend/public/screenshots/home-mob.png" alt="Home Page Mobile" width="300" />
+  <img src="/frontend/public/screenshots/order-mob.png" alt="Order Page Mobile" width="300" />
+  <img src="/frontend/public/screenshots/product-mob.png" alt="product Page Mobile" width="300" />
+</div>
+
+
+Desktop
+  
+  ![Home page desktop](/frontend/public/screenshots/home-desk.png)
+
+  ![Product page desktop](/frontend/public/screenshots/product-desk.png)
+  
+  ![Order page desktop](/frontend/public/screenshots/orders-desk.png)
 
 ## Setup 
 
