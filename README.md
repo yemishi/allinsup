@@ -39,5 +39,52 @@ A complete e-commerce platform focusing on food and drink products. The project 
 
 ## Project Structure 
 ```/protain-ecommerce
-  ├── /frontend       # React-based frontend application
+  ├── /frontend       
   ├── /backend 
+```
+## Screenshots
+
+## Setup 
+
+Follow the intrutions bellow to config and run in your local ambient
+
+### 1.Clone the repository
+
+```bash
+git clone https://github.com/yemishi/allinsup.git
+```
+### Navigate to the frontend and install dependencies
+cd protain-ecommerce/frontend
+npm install
+
+### Navigate to the backend and install dependencies
+cd ../backend
+npm install
+
+### Configure environment variables
+Create .env files in both frontend and backend directories based on the provided .env.example files.
+- Frontend .env example:VITE_API_URL=https://your-backend-url.com/api
+- Backend .env example: 
+JWT_SECRET="Your_jwt_secret"
+MONGODB_CONNECT_URL="Your_database_url"
+
+FIREBASE_KEY="Your_firebae_key"
+FIREBASE_DOMAIN="Your_firebase_domain"
+
+DEFAULT_PRODUCT_PHOTO="Your_product_photo_default_url"
+APP_URL="Your_app_url"
+
+### Run the project 
+frontend 
+ cd frontend
+ npm run dev
+backend 
+ cd backend
+ npm run dev
+### Access the project 
+ - Frontend: http://localhost:3000
+ - Backend: http://localhost:5000
+
+## Important Notes
+ Ensure both frontend and backend are running concurrently.
+ Never share sensitive environment variables like database connection strings or API keys.
