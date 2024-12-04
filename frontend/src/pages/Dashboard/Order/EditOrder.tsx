@@ -54,7 +54,7 @@ export default function EditOrder({
                 key={`${product}_${index}`}
                 className="flex md:p-4 md:border-t md:border-primary-200 relative bg-primary-500 w-full font-anton gap-4"
               >
-                <span className="w-32  p-2 bg-white  rounded-l-md h-28">
+                <span className="w-32 p-2 bg-white  rounded-l-md h-28">
                   <img
                     src={coverPhoto}
                     className="object-contain w-full h-full"
@@ -62,7 +62,7 @@ export default function EditOrder({
                   />
                 </span>
                 <span className="flex p-2 justify-between w-full items-center self-start">
-                  <p className="self-center  ">{name}</p>
+                  <p className="self-center">{name}</p>
                   <p className="text-secondary-200 font-bold self-start">{`${qtd}x`}</p>
                 </span>
                 <p className="bottom-0 right-0 absolute text-secondary-600 font-bold p-2 bg-primary rounded-tl-lg">
