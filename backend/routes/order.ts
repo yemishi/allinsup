@@ -98,7 +98,7 @@ router.post("/", authToken, async (req, res) => {
     const userData = await User.findOne({ email });
 
     if (!userData) return res.json({ error: true, message: "User not found." });
-    const updated = await updateCart(products, userData._id);
+    const updated = await updateCart(products, userData._id as string);
 
     if (updated.length > 0)
       return res.json({
