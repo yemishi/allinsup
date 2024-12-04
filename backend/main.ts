@@ -10,7 +10,7 @@ dotenv.config();
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.APP_URL,
+    origin: "*",
   })
 );
 app.use("/api", routes);
