@@ -27,7 +27,10 @@ export default function Checkout() {
                 const response = await axios.get(`${import.meta.env.VITE_API_URL}/stripe/confirm-payment?session_id=${sessionId}&token=${token}`).then((res) => res.data);
                 if (response.success) {
                     setIsVerified(true);
-                    if (cart.length > 0) await createOrder(cart, response.method, setLoading, undefined, updateCart)
+                    if (cart.length > 0) {
+                        setLoading(true)
+                        await createOrder(cart, response.method, setLoading, undefined, updateCart)
+                    }
                 }
                 else {
                     setIsVerified(false);
