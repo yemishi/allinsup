@@ -102,6 +102,7 @@ export default function ProductSlider({
             <div className="flex justify-between text-secondary-200 font-bold px-2">
               {promotion && <p>{parseLocalCurrency(promotion)}</p>}
               <p
+              onClick={()=>console.log(price)}
                 className={`${
                   promotion
                     ? "text-white text-xs line-through self-end lg:text-base"

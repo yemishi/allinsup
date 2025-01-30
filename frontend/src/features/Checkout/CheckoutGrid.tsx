@@ -14,7 +14,8 @@ import UserForm from "../../components/form/user/UserForm";
 import ErrorPage from "../Error/ErrorPage";
 import PaymentMethod from "./PaymentMethod";
 import Summary from "./Summary";
-import { toast } from "react-toastify";
+import stripeCheckout from "./StripeCheckout";
+import { createOrder } from "./helpers";
 
 export default function Checkout({ onClose }: { onClose: () => void }) {
   const { cart, updateCart } = useCart();
@@ -36,71 +37,22 @@ export default function Checkout({ onClose }: { onClose: () => void }) {
     );
 
   if (data?.error && step !== 0) setStep(0);
-  const totalPrice = cart.reduce(
-    (prev, curr) => prev + curr.price * curr.amount,
-    0
-  );
   const next = async () => {
     if (step !== 3) return setStep(step + 1);
-    setIsFetching(true);
-    const transformedCart = cart.map((item) => ({
-      productId: item._id,
-      name: item.name,
-      flavor: item.flavor,
-      size: item.size,
-      coverPhoto: item.coverPhoto,
-      price: item.price,
-      qtd: item.amount,
-    }));
-    const response = await axiosRequest.order.create(
-      transformedCart,
-      totalPrice,
-      method
-    );
-
-    if (response.error && response.isUpdate) {
-      const updatedCart = cart.filter((product) => {
-        const { _id, flavor, size } = product;
-        const findProduct = response.updated.find(
-          (i) => i._id === _id && i.flavor === flavor
-        );
-        if (!findProduct) return product;
-        if (
-          findProduct.removed === "product" ||
-          findProduct.removed === "variant"
-        )
-          return;
-
-        const findSize = response.updated.find(
-          (i) => i._id === _id && i.flavor === flavor && i.size === size
-        );
-        if (!findSize) return product;
-        if (findSize.removed === "size") return;
-        const { updatedPrice, updatedStock } = findSize;
-        return {
-          ...product,
-          price: updatedPrice || product.price,
-          stock: updatedStock || product.stock,
-        };
-      });
-      updateCart(updatedCart);
-      return toast.warn(response.message), setIsFetching(false);
-    }
-    if (response.error) {
-      return toast.error(response.message), setIsFetching(false);
-    }
-    return (
-      toast.success(response.message),
-      redirect("/"),
-      setIsFetching(false),
-      updateCart([]),
-      (document.body.style.overflow = ""),
+    if (method === "paypal" || method === "card") return await (stripeCheckout({ method, cart }))
+    const onFinally = () => {
+      setIsFetching(false)
+      updateCart([])
+      redirect("/")
       onClose()
-    );
+      document.body.style.overflow = ""
+    }
+    createOrder(cart, method, setIsFetching, onFinally, updateCart)
+
   };
 
   const disableNextAction =
-    step === 2 && !method ? "pointer-events-none opacity-50" : "";
+    (step === 2 && !method) || (step === 1 && !data.error && !data.address) ? "pointer-events-none opacity-50" : "";
 
   return (
     <div

@@ -50,7 +50,7 @@ export default function Address({
               onClick={toggleForm}
               className="cursor-pointer underline underline-offset-4 leading-4 self-center font-lato font-semibold "
             >
-              Add one
+              Add address
             </button>
           </div>
         )}

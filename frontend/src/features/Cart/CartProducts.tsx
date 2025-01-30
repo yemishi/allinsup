@@ -34,7 +34,7 @@ export default function CartProducts() {
         return (
           <div
             key={`${product._id}_${name}_${price}`}
-            className="flex overflow-hidden flex-row gap-3 h-[170px] border-b border-zinc-700 py-6 pb-5 relative"
+            className="flex overflow-hidden flex-row gap-3 h-[170px] border-b pr-3 border-zinc-700 py-6 pb-5 relative"
           >
             <Link className="!flex" to={`/product/${_id}`}>
               <div
@@ -71,9 +71,8 @@ export default function CartProducts() {
                 <span className="flex border-gray-600 p-2 rounded-lg gap-2 border absolute right-0">
                   <button
                     onClick={() => updateAmount(amount - 1, index)}
-                    className={`w-5 md:w-8 ${
-                      amount - 1 < 1 ? "pointer-events-none opacity-50" : ""
-                    }`}
+                    className={`w-5 md:w-8 ${amount - 1 < 1 ? "pointer-events-none opacity-50" : ""
+                      }`}
                   >
                     <FiMinus className="!h-full !w-full" />
                   </button>
@@ -91,9 +90,8 @@ export default function CartProducts() {
 
                   <button
                     onClick={() => updateAmount(amount + 1, index)}
-                    className={`w-5 md:w-8 ${
-                      amount + 1 > stock ? "pointer-events-none opacity-50" : ""
-                    }`}
+                    className={`w-5 md:w-8 ${amount + 1 > stock ? "pointer-events-none opacity-50" : ""
+                      }`}
                   >
                     <IoIosAdd className="!w-full !h-full" />
                   </button>

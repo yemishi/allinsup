@@ -6,13 +6,12 @@ interface PropsType {
 }
 
 export default function PaymentMethod({ method, setMethod }: PropsType) {
-  const methods: (
-    | "Cash on Delivery"
-    | "Credit Card"
-    | "Debit Card"
-    | "PayPal"
-  )[] = ["Cash on Delivery", "Credit Card", "Debit Card", "PayPal"];
-
+  const methods: ("paypal" | "card" | "cashOnDelivery")[] = ["paypal", "card", "cashOnDelivery"];
+  const methodMap = {
+    "cashOnDelivery": "Cash on Delivery",
+    "card": "Card",
+    "paypal": "PayPal",
+  }
   return (
     <DivDraggable
       initialDirection="100%"
@@ -32,17 +31,16 @@ export default function PaymentMethod({ method, setMethod }: PropsType) {
               key={`${item}_${index}`}
               onClick={() => setMethod(item)}
               className={`flex font-lato rounded-lg cursor-pointer  
-                    font-medium gap-3 p-4 items-center border bg-primary duration-200 w-full ${
-                      isActivated
-                        ? "border-secondary-300"
-                        : "border-opacity-30 border-white"
-                    }`}
+                    font-medium gap-3 p-4 items-center border bg-primary duration-200 w-full ${isActivated
+                  ? "border-secondary-300"
+                  : "border-opacity-30 border-white"
+                }`}
             >
               <span
                 className={`p-4 md:p-5 rounded-full border-2 duration-200 border-primary-400 
                       ${isActivated ? "bg-secondary-500" : ""}`}
               />
-              <p className="font-anton md:text-lg">{item}</p>
+              <p className="font-anton md:text-lg">{methodMap[item]}</p>
 
               <span className="ml-auto">
                 <div className="w-8 h-8 md:w-11 md:h-11"></div>

@@ -8,7 +8,7 @@ import { stickyVariant } from "../../utils/helpers";
 import { RxExit } from "react-icons/rx";
 
 import CartProducts from "./CartProducts";
-import Checkout from "../Checkout/Checkout";
+import Checkout from "../Checkout/CheckoutGrid";
 
 interface PropsType {
   onClose: () => void;
