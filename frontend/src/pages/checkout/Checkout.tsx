@@ -44,7 +44,7 @@ export default function Checkout() {
         };
 
         verifyPayment();
-    }, [location]);
+    }, []);
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-[rgb(30,30,30)] text-gray-200 p-6">
