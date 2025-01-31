@@ -56,9 +56,10 @@ export default function Checkout() {
                     <h2 className={`text-xl sm:text-2xl font-bold ${status === "success" ? "text-green-400" : "text-red-400"}`}>{message}</h2>
                     <p className="text-sm sm:text-base text-gray-400 mt-2">{status === "success" ? "Your purchase has been processed successfully." : "We couldn't confirm your payment. Please try again."}</p>
                 </div>}
-
-                <Button disabled={status === "loading"} className="bg-secondary-500 text-white py-2 px-6 rounded-lg mt-6 transition duration-300 hover:bg-secondary-600 focus:outline-none">
+                <Button className="bg-secondary-500 text-white py-2 px-6 rounded-lg mt-6 transition duration-300 
+                hover:bg-secondary-600 focus:outline-none">
                     <Link to={"/"}>Go Home</Link>
+
                 </Button>
             </div>
         </div >

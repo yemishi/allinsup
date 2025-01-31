@@ -20,6 +20,8 @@ function Header() {
 
   const isDashboard = location.pathname.toLowerCase().includes("/dashboard");
 
+  const isCheckout = location.pathname.toLowerCase().includes("/checkout");
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFetch = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +58,7 @@ function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
+  if (isCheckout) return <></>
   return (
     <motion.header
       variants={stickyVariant}
@@ -85,9 +87,8 @@ function Header() {
         type="text"
         placeholder="What you looking for"
         className={`outline-none border-b placeholder:text-zinc-300 rounded-md p-2 text-white text-base w-[80%] lg:w-3/6 lg:text-xl bg-transparent
-         self-center focus:border-secondary-600 ${
-           isDashboard ? "hidden" : "inline"
-         }`}
+         self-center focus:border-secondary-600 ${isDashboard ? "hidden" : "inline"
+          }`}
       />
     </motion.header>
   );
