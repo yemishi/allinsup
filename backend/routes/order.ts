@@ -80,6 +80,7 @@ router.get("/admin", authToken, async (req, res) => {
 });
 
 router.post("/", authToken, async (req, res) => {
+  console.log("creating order...")
   try {
     const { products, totalPaid, method } = req.body as {
       products: {
@@ -105,7 +106,7 @@ router.post("/", authToken, async (req, res) => {
         error: true,
         isUpdate: true,
         updated,
-        message: "Some items in your cart have had an updated.",
+        message: "Some items in your cart have been updated.",
       });
 
     const productPromises = products.map(

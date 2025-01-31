@@ -8,7 +8,6 @@ import { useCart } from "../../context/Provider";
 import { Image, Slide, Slider, SliderProps } from "../../components";
 import { useState } from "react";
 import { blinkVariant } from "../../utils/helpers";
-import StripeCheckout from "../../features/Checkout/StripeCheckout";
 
 export default function Home() {
   const { cart, updateCart } = useCart();

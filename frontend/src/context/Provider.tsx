@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 import { CartType } from "../types/response";
-import { Elements } from '@stripe/react-stripe-js';
 
 const queryClient = new QueryClient();
 

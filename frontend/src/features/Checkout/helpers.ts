@@ -60,9 +60,10 @@ export async function stripeCheckout({ method, cart, onSuccess }: { cart: CartTy
 }
 
 
-export async function createOrder(cart: CartType[], method: string, setLoading: React.Dispatch<React.SetStateAction<boolean>>, onFinally?: () => void,
+export async function createOrder(cart: CartType[], method: string, setLoading?: React.Dispatch<React.SetStateAction<boolean>>, onFinally?: () => void,
     updateCart?: (updatedCart: CartType[]) => void, onFailed?: () => void) {
-    setLoading(true)
+    if (!cart.length) return
+    if (setLoading) setLoading(true)
     const transformedCart = cart.map((item) => ({
         productId: item._id,
         name: item.name,
@@ -90,38 +91,44 @@ export async function createOrder(cart: CartType[], method: string, setLoading: 
         method = mappedMethod
     );
 
-    if (response.error && response.isUpdate) {
-        const updatedCart = cart.filter((product) => {
-            const { _id, flavor, size } = product;
-            const findProduct = response.updated.find(
-                (i) => i._id === _id && i.flavor === flavor
-            );
-            if (!findProduct) return product;
-            if (
-                findProduct.removed === "product" ||
-                findProduct.removed === "variant"
-            )
-                return;
-
-            const findSize = response.updated.find(
-                (i) => i._id === _id && i.flavor === flavor && i.size === size
-            );
-            if (!findSize) return product;
-            if (findSize.removed === "size") return;
-            const { updatedPrice, updatedStock } = findSize;
-            return {
-                ...product,
-                price: updatedPrice || product.price,
-                stock: updatedStock || product.stock,
-            };
-        });
-        if (updateCart) updateCart(updatedCart)
-        return toast.warn(response.message), setLoading(false);
-    }
     if (response.error) {
-        if (onFailed) onFailed()
-        return toast.error(response.message), setLoading(false);
+        if (response.isUpdate) {
+            const updatedCart = cart.filter((product) => {
+                const { _id, flavor, size } = product;
+                const findProduct = response.updated.find(
+                    (i) => i._id === _id && i.flavor === flavor
+                );
+                if (!findProduct) return product;
+                if (
+                    findProduct.removed === "product" ||
+                    findProduct.removed === "variant"
+                )
+                    return;
+
+                const findSize = response.updated.find(
+                    (i) => i._id === _id && i.flavor === flavor && i.size === size
+                );
+                if (!findSize) return product;
+                if (findSize.removed === "size") return;
+                const { updatedPrice, updatedStock } = findSize;
+                return {
+                    ...product,
+                    price: updatedPrice || product.price,
+                    stock: updatedStock || product.stock,
+                };
+            });
+            if (updateCart) updateCart(updatedCart)
+            if (setLoading) setLoading(false)
+            toast.warn(response.message)
+            return
+        } else {
+            if (onFailed) onFailed()
+            if (setLoading) setLoading(false)
+            toast.error(response.message)
+            return
+        }
     }
+
     if (updateCart) updateCart([])
     if (onFinally) onFinally()
 }

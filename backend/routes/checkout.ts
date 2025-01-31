@@ -35,11 +35,13 @@ router.post("/checkout", async (req: any, res) => {
 router.get("/confirm-payment", async (req, res) => {
     const sessionId = req.query.session_id;
     const token = req.query.token as string;
-
     if (!sessionId || !token) return res.status(400).json({ success: false, message: "Missing queries", error: true })
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { method: string };
+        const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { method: string, exp: number };
+        if (decoded.exp < Date.now() / 1000) {
+            return res.status(401).json({ success: false, message: "session expired" });
+        }
         const session = await stripe.checkout.sessions.retrieve(sessionId as string);
 
         if (session.payment_status === "paid") {
