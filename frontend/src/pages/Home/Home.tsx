@@ -79,7 +79,7 @@ export default function Home() {
           );
         })}
       </Slider>
-      {values.length === 0 && query && (
+      {values.length === 0 && !isLoading && (
         <span className="text-xl font-semibold text-secondary-500 mt-4">No items available in this category.</span>
       )}
       <CardGrid isLoading={isLoading} products={values} />
