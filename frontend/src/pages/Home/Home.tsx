@@ -80,7 +80,7 @@ export default function Home() {
         })}
       </Slider>
       {values.length === 0 && !isLoading && (
-        <span className="text-xl font-semibold text-secondary-500 mt-4">No items available in this category.</span>
+        <span className="text-xl font-semibold text-secondary-500 mt-4">No products found for this brand.</span>
       )}
       <CardGrid isLoading={isLoading} products={values} />
       {!isFetchingNextPage && hasNextPage && <div ref={ref} />}
