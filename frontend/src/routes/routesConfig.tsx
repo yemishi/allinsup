@@ -9,9 +9,9 @@ import NotFoundPage from "../pages/NotFoundPage";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Product from "../pages/Product/Product";
-import ProductsDashboard from "../pages/Dashboard/Product/ProductsDasboard";
+import ProductsDashboard from "../pages/Dashboard/Product/ProductsDashboard";
 import OrdersDashboard from "../pages/Dashboard/Order/OrdersDashboard";
-import CheckoutPage from "../pages/Checkout/CheckoutPage";
+import Checkout from '../pages/Checkout/Checkout';
 
 
 export default function RoutesConfig() {
@@ -26,7 +26,7 @@ export default function RoutesConfig() {
 
         <Route path="/product/:_id" element={<Product />} />
         <Route path="/search" element={<Search />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/checkout" element={<Checkout />} />
 
         <Route path="dashboard" element={<Dashboard />}>
           <Route path="products" element={<ProductsDashboard />} />
