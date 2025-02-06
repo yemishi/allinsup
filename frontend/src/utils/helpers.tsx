@@ -26,6 +26,8 @@ const blinkVariant = {
 };
 
 const findInArray = (array: DetailsType[] | VariantType[], index?: number) => {
+
+  if (!Array.isArray(array)) return { value: array }
   if (index && array[index]) return { value: array[index], index };
   else
     return {
@@ -60,6 +62,7 @@ const productDetails = (
     value: DetailsType;
     index: number;
   };
+
   const amount =
     (cart &&
       cart.find(
@@ -76,6 +79,7 @@ const productDetails = (
     size,
     stock,
     promotion,
+    _id,
     amount,
     sizeCurrIndex,
     variantCurrIndex,

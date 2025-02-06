@@ -11,11 +11,13 @@ export default function search(products: ProductType[], query: string) {
 const deepSearch = (variants: VariantType[], query: string) => {
   const updatedVariants = variants.map((variant) => {
     if (variant.flavor.includes(query)) variant.isSelected = true;
-    variant.sizeDetails.map((details) => {
-      if (details.size.includes(query)) details.isSelected = true;
+    if (Array.isArray(variant.sizeDetails)) {
+      variant.sizeDetails.map((details) => {
+        if (details.size.includes(query)) details.isSelected = true;
 
-      return details;
-    });
+        return details;
+      })
+    };
     return variant;
   });
   return updatedVariants;

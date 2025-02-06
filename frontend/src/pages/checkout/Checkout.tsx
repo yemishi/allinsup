@@ -10,16 +10,27 @@ export default function Checkout() {
     const location = useLocation();
     const [{ message, status }, setData] = useState<{ status: "loading" | "success" | "failed", message: string }>({ status: "loading", message: "Verifying Payment..." })
     const { cart, updateCart } = useCart()
+    const [orderPlaced, setOrderPlaced] = useState(false);
 
     useEffect(() => {
-        if (cart.length === 0) return;
+        const handleBeforeUnload = () => {
+            if (orderPlaced) updateCart([]);
+        };
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, [orderPlaced]);
+
+    useEffect(() => {
+        if (cart.length === 0) return setData({ status: "failed", message: "Invalid session." });
 
         const verifyPayment = async () => {
             const queryParams = new URLSearchParams(location.search);
             const sessionId = queryParams.get("session_id");
             const token = queryParams.get("token");
             if (!sessionId || !token) {
-                setData({ status: "failed", message: "Session ID is missing." });
+                setData({ status: "failed", message: "Invalid session." });
                 return;
             }
 
@@ -28,7 +39,7 @@ export default function Checkout() {
                 if (response.success) {
                     setData({ status: "loading", message: "Creating order" });
                     await createOrder(cart, response.method, undefined, () => {
-                        updateCart([])
+                        setOrderPlaced(true)
                         setData({ status: "success", message: "Order received successfully." })
                     });
                 } else {
@@ -44,7 +55,7 @@ export default function Checkout() {
 
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-[rgb(30,30,30)] text-gray-200 p-6">
+        <div className="flex items-center justify-center min-h-screen text-gray-200 p-6">
             <div className="bg-[rgb(40,40,40)] p-8 sm:p-10 gap-4 flex flex-col items-center rounded-2xl shadow-xl max-w-md sm:max-w-lg w-full text-center border border-gray-700">
                 {status === "loading" ? (
                     <div className="flex flex-col items-center animate-pulse">

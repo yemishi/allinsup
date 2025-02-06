@@ -14,6 +14,7 @@ router.get("/", async (req, res) => {
       query = "",
       brand,
       category,
+      sort,
     } = req.query;
     if (productId) {
       const product = await Product.findById(productId);
@@ -31,11 +32,48 @@ router.get("/", async (req, res) => {
     }
     if (category) filter.category = { $regex: category, $options: "i" };
     const offset = Number(limit) * Number(page);
+
+
     const productsTotal = await Product.countDocuments(filter);
+    const hasMore = offset + Number(limit) < productsTotal;
+    if (sort) {
+      const sortDirection = sort === "asc" ? 1 : -1;
+
+      const productsData = await Product.aggregate([
+        { $match: filter },
+        { $unwind: "$variants" },
+        { $unwind: "$variants.sizeDetails" },
+        {
+          $addFields: {
+            priceToSort: {
+              $cond: {
+                if: { $gt: ["$variants.sizeDetails.promotion", 0] },
+                then: "$variants.sizeDetails.promotion",
+                else: "$variants.sizeDetails.price",
+              }
+            }
+          }
+        },
+        {
+          $group: {
+            _id: "$_id",
+            name: { $first: "$name" },
+            brand: { $first: "$brand" },
+            category: { $first: "$category" },
+            desc: { $first: "$desc" },
+            variants: { $push: "$variants" },
+            minPrice: { $min: "$priceToSort" },
+          }
+        },
+        { $sort: { minPrice: sortDirection } },
+        { $skip: offset },
+        { $limit: Number(limit) }
+      ]);
+      return res.json({ products: productsData, hasMore });
+    }
     const productsData = await Product.find(filter)
       .skip(offset)
       .limit(Number(limit));
-    const hasMore = offset + Number(limit) < productsTotal;
     const products = search(productsData, query as string) as ProductType[];
     return res.json({ products, hasMore });
   } catch (error) {

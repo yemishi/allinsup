@@ -85,7 +85,7 @@ function Header() {
         ref={inputRef}
         onChange={handleFetch}
         type="text"
-        placeholder="What you looking for"
+        placeholder="What you looking for?"
         className={`outline-none border-b placeholder:text-zinc-300 rounded-md p-2 text-white text-base w-[80%] lg:w-3/6 lg:text-xl bg-transparent
          self-center focus:border-secondary-600 ${isDashboard ? "hidden" : "inline"
           }`}
