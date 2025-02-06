@@ -6,7 +6,7 @@ import { createOrder } from "../../features/Checkout/helpers";
 import { useCart } from "../../context/Provider";
 
 
-export default function Checkout() {
+export default function CheckoutPage() {
     const location = useLocation();
     const [{ message, status }, setData] = useState<{ status: "loading" | "success" | "failed", message: string }>({ status: "loading", message: "Verifying Payment..." })
     const { cart, updateCart } = useCart()
