@@ -63,7 +63,7 @@ export default function Search() {
           </h1>
         </div>
 
-        {values.length > 0 && <div ref={divRef} className="text-lg relative flex items-center gap-2 self-start">
+        {values.length > 0 && <div ref={divRef} className="text-base md:text-lg relative flex items-center gap-2 self-start">
           Sort by
           <span
             onClick={() => setIsChose(!isChose)}
@@ -83,7 +83,7 @@ export default function Search() {
             >
               <li
                 onClick={() => setSortBy(null)}
-                className={`p-3 border-secondary-400 hover:border-l-4 rounded-l-md cursor-pointer ${!sortBy ? "border-l-2 text-secondary-400 font-semibold" : ""
+                className={`p-3 border-secondary-400 hover:border-l-4 rounded-tl-md cursor-pointer ${!sortBy ? "border-l-2 text-secondary-400 font-semibold" : ""
                   }`}
               >
                 Most relevant
