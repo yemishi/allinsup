@@ -56,14 +56,14 @@ export default function Search() {
       className="text-gray-200 overflow-hidden"
     >
       <div className="flex justify-between mt-7 px-2">
-        <div className="font-lato pl-1 text-xl border-l-4 h-fit border-secondary-600 font-medium">
+        <div className="font-lato pl-1 text-lg md:text-xl border-l-4 h-fit border-secondary-600 font-medium">
           <h1>
             Result of search:
             <br /> {query || brand || category}
           </h1>
         </div>
 
-        {values.length > 0 && <div ref={divRef} className="text-lg relative flex items-center gap-2">
+        {values.length > 0 && <div ref={divRef} className="text-lg relative flex items-center gap-2 self-start">
           Sort by
           <span
             onClick={() => setIsChose(!isChose)}
@@ -79,7 +79,7 @@ export default function Search() {
               initial={{ top: 20, opacity: 0 }}
               animate={{ top: 42, opacity: 1 }}
               className="absolute right-0 bg-slate-200 rounded-md w-36 lg:w-40 divide-y divide-black
-             text-black text-sm lg:text-base shadow-md shadow-black"
+             text-black text-sm lg:text-base shadow-md shadow-black z-30"
             >
               <li
                 onClick={() => setSortBy(null)}
