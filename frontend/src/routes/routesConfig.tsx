@@ -13,6 +13,7 @@ import ProductsDashboard from "../pages/Dashboard/Product/ProductsDasboard";
 import OrdersDashboard from "../pages/Dashboard/Order/OrdersDashboard";
 import Checkout from "../pages/Checkout/Checkout";
 
+
 export default function RoutesConfig() {
   const location = useLocation();
   return (
