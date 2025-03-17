@@ -1,6 +1,6 @@
 # **AllInSupplements**
 
-**AllInSupplements** is an e-commerce platform designed for purchasing supplements online. It features a smooth shopping experience with categories for products, a shopping cart, and a secure checkout process. This project is built using modern technologies like Next.js, Tailwind CSS, and TypeScript.
+**AllInSupplements** is an e-commerce platform designed for purchasing supplements online. It features a smooth shopping experience with categories for products, a shopping cart, and a secure checkout process. This project is built using modern technologies like React.js, Tailwind CSS, and TypeScript.
 
 ## **Table of Contents**
 
