@@ -33,14 +33,20 @@ The project uses the following technologies:
 
 ## **Screenshots**
 
-### Mobile
-![Home Page Mobile](frontend/public/screenshots/home-mob.png)
-![Product View](frontend/public/screenshots/product-mob.png)
-![Order Page Mobile](frontend/public/screenshots/order-mob.png)
+Mobile
+<div style="display:flex;flex-wrap: wrap;gap:2px">
+  <img src="frontend/public/screenshots/home-mob.png" alt="Home Page Mobile" width="300" />
+  <img src="frontend/public/screenshots/product-mob.png" alt="Product View" width="300" />
+  <img src="frontend/public/screenshots/order-mob.png" alt="Order Page Mobile" width="300" />
+</div>
 
-### Desktop
-![Home Page Desktop](frontend/public/screenshots/home-desk.png)  
-![Order Page Desktop](frontend/public/screenshots/orders-desk.png)
+
+Desktop
+
+  ![Home Page Desktop](frontend/public/screenshots/home-desk.png)
+  
+  ![Order Page Desktop](frontend/public/screenshots/orders-desk.png)
+  
 
 ## **Installation**
 
