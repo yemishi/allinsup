@@ -93,7 +93,7 @@ Create a `.env` file in both the **frontend** and **backend** directories with t
 ### Backend:
 - `MONGODB_CONNECT_URL`: MongoDB connection string
 - `JWT_SECRET`: JWT secret for authentication
-- `STRIPE_SECRET_KEY`: Stripe frontend secret key
+- `STRIPE_SECRET_KEY`: Stripe backend secret key
 - `APP_URL`: Frontend deploy URL
 - `DEFAULT_PRODUCT_PHOTO`: Default pic url for products
 - `FIREBASE_DOMAIN`: Firebase storage bucket URL
@@ -102,7 +102,7 @@ Create a `.env` file in both the **frontend** and **backend** directories with t
 
 ### Frontend:
 - `VITE_API_URL`: Backend API URL
-- `VITE_STRIPE_KEY`: Stripe backend secret key
+- `VITE_STRIPE_KEY`: Stripe frontend secret key
 
 ## **Testing**
 
