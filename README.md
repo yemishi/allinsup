@@ -21,8 +21,6 @@ The project uses the following technologies:
 - **Stripe** for payment processing
 - **Axios** for API requests
 
----
-
 ## **Features**
 
 - User authentication: Sign up, login, and user sessions.
@@ -31,8 +29,6 @@ The project uses the following technologies:
 - Payment gateway integration: Secure checkout using Stripe.
 - Responsive UI: Tailored for both mobile and desktop.
 - Real-time order tracking: View and track order status.
-
----
 
 ## **Installation**
 
@@ -85,14 +81,10 @@ Make sure you have the following tools installed on your local machine:
 
 Your app should now be running at `http://localhost:3000`.
 
----
-
 ## **Usage**
 
 - **Frontend**: The user interface is built with React and styled with Tailwind CSS. It features a home page, product pages, a cart page, and a checkout flow.
 - **Backend**: The backend is built with Express.js and connects to MongoDB to store product, order, and user data. Firebase is used for handling image uploads.
-
----
 
 ## **Environment Variables**
 
@@ -112,14 +104,11 @@ Create a `.env` file in both the **frontend** and **backend** directories with t
 - `VITE_API_URL`: Backend API URL
 - `VITE_STRIPE_KEY`: Stripe backend secret key
 
----
-
 ## **Testing**
 
-To run tests (if available):
+To run tests:
 
 ```bash
-# For the frontend (using Jest or another framework)
 cd frontend
 npm run test
 
