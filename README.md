@@ -6,6 +6,7 @@
 
 - [Technologies](#technologies)
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Environment Variables](#environment-variables)
@@ -29,6 +30,22 @@ The project uses the following technologies:
 - Payment gateway integration: Secure checkout using Stripe.
 - Responsive UI: Tailored for both mobile and desktop.
 - Real-time order tracking: View and track order status.
+
+## **Screenshots**
+
+Mobile
+<div style="display:flex;flex-wrap: wrap;gap:2px">
+  <img src="frontend/public/screenshots/home-mob.png" alt="Home Page Mobile" width="300" />
+  <img src="frontend/public/screenshots/product-mob.png" alt="Product View" width="300" />
+  <img src="frontend/public/screenshots/order-mob.png" alt="Order Page Mobile" width="300" />
+</div>
+
+
+Desktop
+
+  ![Home Page Desktop](frontend/public/screenshots/home-desk.png)
+  
+  ![Order Page Desktop](frontend/public/screenshots/orders-desk.png)
 
 ## **Installation**
 
