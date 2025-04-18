@@ -11,34 +11,35 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { useQuery } from "react-query";
 import { MdOutlineSort } from "react-icons/md";
-import { useTempOverlay } from "../../context/Provider";
 
 import SessionForm from "../../components/form/user/SessionForm";
 import { updateToken } from "../../services/axios.config";
 import Button from "../../components/ui/Button";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { toast } from "react-toastify";
 import { DivDraggable } from "../../components";
-import { enableScroll } from "../../utils/helpers";
+import Modal from "../../components/Modal";
 
 export default function Menu() {
-  const { setChildren, close } = useTempOverlay();
   const [isLoading, setIsLoading] = useState(false);
+  const [isModal, setIsModal] = useState<{ content: ReactNode; isLeft?: boolean } | false>(false);
 
+  const closeModal = () => setIsModal(false);
   const isDelete = () => {
     const fetchData = async () => {
       setIsLoading(true);
       const { error, message } = await axiosRequest.user.delete();
       setIsLoading(false);
       if (error) return toast.error(message);
-      toast.success(message), close();
+      toast.success(message), setIsModal(false);
     };
-    setChildren(
-      <DeleteUser close={close} fetchData={fetchData} isLoading={isLoading} />
-    );
+    setIsModal({
+      content: <DeleteUser onClose={closeModal} fetchData={fetchData} isLoading={isLoading} />,
+      isLeft: false,
+    });
   };
 
-  const UpgradeUser = () => (
+  const UpgradeUser = ({ onClose }: { onClose: () => void }) => (
     <motion.div
       initial={{ y: "-100%" }}
       animate={{ y: 0 }}
@@ -47,11 +48,7 @@ export default function Menu() {
     >
       <span className="text-xl font-bold">You really want to be a admin?</span>
       <div className="grid grid-cols-2 gap-2">
-        <Button
-          disabled={isLoading}
-          className="py-2 bg-primary"
-          onClick={close}
-        >
+        <Button disabled={isLoading} className="py-2 bg-primary" onClick={onClose}>
           No
         </Button>
         <Button disabled={isLoading} onClick={requestUpgrade} className="py-2">
@@ -66,28 +63,31 @@ export default function Menu() {
     const response = await axiosRequest.user.upgrade();
     setIsLoading(false);
     if (response.error) return toast.error(response.message);
-    return toast.success(response.message), close();
+    return toast.success(response.message), closeModal();
   };
 
-  const openLogin = () => setChildren(<SessionForm onClose={close} />);
+  const openLogin = () => setIsModal({ content: <SessionForm onClose={closeModal} />, isLeft: false });
 
-  const upToAdmin = () => setChildren(<UpgradeUser />);
-  const openMenu = () =>
-    setChildren(
-      <MenuPanel
-        isDelete={isDelete}
-        upToAdmin={upToAdmin}
-        login={openLogin}
-        onClose={() => {
-          close(), enableScroll();
-        }}
-      />
-    );
+  const upToAdmin = () => setIsModal({ content: <UpgradeUser onClose={closeModal} />, isLeft: false });
+
+  const openMenu = () => {
+    setIsModal({
+      content: <MenuPanel isDelete={isDelete} upToAdmin={upToAdmin} login={openLogin} onClose={closeModal} />,
+      isLeft: true,
+    });
+  };
 
   return (
-    <button onClick={openMenu} className="w-7 lg:w-10 relative">
-      <MdOutlineSort className="!w-full !h-full text-white hover:text-[#fb923c]" />
-    </button>
+    <>
+      <button onClick={openMenu} className="w-7 lg:w-10 relative">
+        <MdOutlineSort className="!w-full !h-full text-white hover:text-[#fb923c]" />
+      </button>
+      {isModal && (
+        <Modal className={!isModal.isLeft ? "mx-auto" : ""} onClose={closeModal}>
+          {isModal.content}
+        </Modal>
+      )}
+    </>
   );
 }
 
@@ -123,10 +123,7 @@ const MenuPanel = ({
     >
       <div className="w-full flex top-0 z-10 p-5 h-[83px] bg-secondary rounded-b-xl ">
         {isLoading ? (
-          <img
-            src="/loading.svg"
-            className="self-center w-20 h-20 brightness-150"
-          />
+          <img src="/loading.svg" className="self-center w-20 h-20 brightness-150" />
         ) : (
           <span className="mt-auto font-semibold text-lg font-anton md:text-xl">
             {data?.error ? "Take a shortcut" : data?.name}
@@ -135,15 +132,9 @@ const MenuPanel = ({
 
         <span className="spin" />
         {isLoading ? (
-          <img
-            src="/loading.svg"
-            className="self-center ml-auto w-20 h-20 brightness-150"
-          />
+          <img src="/loading.svg" className="self-center ml-auto w-20 h-20 brightness-150" />
         ) : (
-          <button
-            onClick={handleLogin}
-            className="ml-auto mb-auto   flex gap-1 "
-          >
+          <button onClick={handleLogin} className="ml-auto mb-auto   flex gap-1 ">
             <p className="font-anton text-base md:text-lg mt-auto  self-center">
               {data?.error ? "Sign in" : "Sign out"}
             </p>
@@ -191,9 +182,7 @@ const MenuPanel = ({
           onClick={isDelete}
           className="p-4 flex items-center w-full border-t-2 border-primary-200 cursor-pointer hover:bg-red-600 duration-200 mt-auto"
         >
-          <span className="text-base md:text-lg font-anton font-semibold self-end">
-            Delete account
-          </span>
+          <span className="text-base md:text-lg font-anton font-semibold self-end">Delete account</span>
         </button>
       )}
     </DivDraggable>
@@ -202,12 +191,12 @@ const MenuPanel = ({
 
 const DeleteUser = ({
   fetchData,
-  close,
+  onClose,
   isLoading,
 }: {
   isLoading: boolean;
   fetchData: () => void;
-  close: () => void;
+  onClose: () => void;
 }) => {
   return (
     <motion.div
@@ -216,26 +205,12 @@ const DeleteUser = ({
       transition={{ type: "just" }}
       className="p-6 pb-4 rounded-lg bg-primary-500 flex flex-col gap-14 border border-white border-opacity-50"
     >
-      <span className="text-xl font-bold">
-        You really want delete this product?
-      </span>
+      <span className="text-xl font-bold">You really want delete this product?</span>
       <div className="grid grid-cols-2 gap-2">
-        <Button
-          disabled={isLoading}
-          className="py-2 bg-primary"
-          onClick={() => {
-            close(), enableScroll();
-          }}
-        >
+        <Button disabled={isLoading} onClick={onClose} className="py-2 bg-primary">
           No
         </Button>
-        <Button
-          disabled={isLoading}
-          onClick={() => {
-            fetchData(), enableScroll();
-          }}
-          className="py-2"
-        >
+        <Button disabled={isLoading} onClick={fetchData} className="py-2">
           Yes!
         </Button>
       </div>

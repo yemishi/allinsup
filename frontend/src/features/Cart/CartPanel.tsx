@@ -1,14 +1,15 @@
 import { motion } from "framer-motion";
-import { useState, useRef } from "react";
+import { useState, useRef, ReactNode } from "react";
 
 import { DivDraggable } from "../../components";
-import { useCart, useTempOverlay } from "../../context/Provider";
+import { useCart } from "../../context/Provider";
 import { CartType } from "../../types/response";
 import { stickyVariant } from "../../utils/helpers";
 import { RxExit } from "react-icons/rx";
 
 import CartProducts from "./CartProducts";
 import Checkout from "../Checkout/CheckoutGrid";
+import Modal from "../../components/Modal";
 
 interface PropsType {
   onClose: () => void;
@@ -17,8 +18,8 @@ interface PropsType {
 
 export default function CartPanel({ onClose }: PropsType) {
   const { cart } = useCart();
-  const { setChildren, close } = useTempOverlay();
 
+  const [isModal, setIsModal] = useState<ReactNode | false>(false);
   const [headerPosition, setHeaderPosition] = useState<boolean>(false);
   const initialScrollValue = useRef<number>(0);
 
@@ -64,20 +65,11 @@ export default function CartPanel({ onClose }: PropsType) {
         </div>
       )}
       <div className="sticky mt-auto bottom-0 w-full flex justify-center items-center py-4 px-2">
+        {isModal && <Modal onClose={() => setIsModal(false)}>{isModal}</Modal>}
         <button
-          onClick={() =>
-            setChildren(
-              <Checkout
-                onClose={() => {
-                  close(), (document.body.style.overflow = "");
-                }}
-              />
-            )
-          }
+          onClick={() => setIsModal(<Checkout onClose={() => setIsModal(false)} />)}
           className={`${
-            cart.length === 0
-              ? "opacity-50 pointer-events-none bg-white text-black"
-              : "bg-secondary-600 cursor-pointer"
+            cart.length === 0 ? "opacity-50 pointer-events-none bg-white text-black" : "bg-secondary-600 cursor-pointer"
           }    font-lato py-4 px-6 text-sm font-semibold rounded-xl`}
         >
           CONTINUE

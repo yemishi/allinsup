@@ -1,7 +1,7 @@
-import { useTempOverlay } from "../../context/Provider";
+/* import { useTempOverlay } from "../../context/Provider";
 import React from "react";
 
-export default function TempOverlay() {
+ function TempOverlay() {
   const { children, className, close } = useTempOverlay();
   if (!children) return;
 
@@ -37,3 +37,4 @@ export default function TempOverlay() {
     </div>
   );
 }
+ */

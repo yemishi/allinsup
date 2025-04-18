@@ -2,17 +2,19 @@ import { useSearchParams } from "react-router-dom";
 import useScrollQuery from "../../../hooks/useInfiniteQuery";
 import { OrderType } from "../../../types/response";
 import { DivList } from "../../../components/ui/DivList";
-import { useTempOverlay } from "../../../context/Provider";
+
 import EditOrder from "./EditOrder";
 import Button from "../../../components/ui/Button";
+
 import { parseLocalCurrency } from "../../../utils/formatting";
 import { Image } from "../../../components";
+import { ReactNode, useState } from "react";
+import Modal from "../../../components/Modal";
 
 export default function OrdersDashboard() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q") as string;
-
-  const { close, setChildren } = useTempOverlay();
+  const [isModal, setIsModal] = useState<ReactNode | false>(false);
 
   const {
     isLoading,
@@ -26,47 +28,33 @@ export default function OrdersDashboard() {
     url: `order/admin?query=${query || ""}`,
   });
 
-  if (isLoading)
-    return (
-      <img src="/loading.svg" className="self-center" alt="loading icon" />
-    );
+  if (isLoading) return <img src="/loading.svg" className="self-center" alt="loading icon" />;
   const edit = (order: OrderType) => {
-    setChildren(
-      <EditOrder onSuccess={refetch} onClose={close} order={order} />
-    );
+    setIsModal(<EditOrder onSuccess={refetch} onClose={() => setIsModal(false)} order={order} />);
   };
 
   return (
     <div className="flex flex-col items-center text-gray-200 p-4 gap-4 md:gap-7 lg:gap-10 w-full">
       {orders.map((order, i) => {
-        const {
-          products,
-          userId,
-          address: userAddress,
-          status,
-          purchaseDate,
-          receivedDate,
-          user,
-          totalPaid,
-        } = order;
-        const { cep, city, state, complement, houseNumber, address } =
-          userAddress;
+        const { products, userId, address: userAddress, status, purchaseDate, receivedDate, user, totalPaid } = order;
+        const { cep, city, state, complement, houseNumber, address } = userAddress;
         const date = new Date(purchaseDate);
         const receive = receivedDate && new Date(receivedDate);
         const purchaseFormatted = `${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`;
-        const receivedFormatted =
-          receive &&
-          `${receive.getMonth()}/${receive.getDay()}/${receive.getFullYear()}`;
+        const receivedFormatted = receive && `${receive.getMonth()}/${receive.getDay()}/${receive.getFullYear()}`;
 
         return (
           <div
             className="w-full flex items-center lg:text-lg md:grid md:grid-cols-2 gap-5 bg-primary-600 border border-primary-200 flex-col p-3 rounded-md "
             key={`${order._id}_${userId}_${i}`}
           >
+            {isModal && (
+              <Modal className="mx-auto my-auto" onClose={() => setIsModal(false)}>
+                {isModal}
+              </Modal>
+            )}
             <div className="flex flex-col w-full gap-2 items-center">
-              <h2 className="text-lg lg:text-xl font-montserrat font-semibold py-3 text-sky-300">
-                User information
-              </h2>
+              <h2 className="text-lg lg:text-xl font-montserrat font-semibold py-3 text-sky-300">User information</h2>
               <DivList dt="Order id:" dd={order._id} />
               {!user?.isDeleted ? (
                 <>
@@ -85,13 +73,9 @@ export default function OrdersDashboard() {
               {complement && <DivList dt="Complement:" dd={complement} />}
               <DivList dt="Cep:" dd={cep} />
 
-              <h2 className="text-lg font-montserrat font-semibold py-3 text-sky-300">
-                Purchase details
-              </h2>
+              <h2 className="text-lg font-montserrat font-semibold py-3 text-sky-300">Purchase details</h2>
               <DivList dt="Purchase date:" dd={purchaseFormatted} />
-              {receivedFormatted && (
-                <DivList dt="Receive date:" dd={receivedFormatted} />
-              )}
+              {receivedFormatted && <DivList dt="Receive date:" dd={receivedFormatted} />}
 
               <DivList dt="Total paid:" dd={parseLocalCurrency(totalPaid)} />
 
@@ -113,10 +97,7 @@ export default function OrdersDashboard() {
                       className="flex gap-4 w-full justify-between border-b pb-2 border-primary-200 "
                     >
                       <span className="w-36 h-36 lg:w-40 lg:h-40">
-                        <Image
-                          className="object-contain p-2 bg-white rounded-lg"
-                          src={coverPhoto}
-                        />
+                        <Image className="object-contain p-2 bg-white rounded-lg" src={coverPhoto} />
                       </span>
                       <div className="flex flex-col gap-2 flex-1">
                         <p className="font-lato text-base lg:text-lg self-end font-semibold text-secondary-200">

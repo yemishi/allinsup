@@ -18,6 +18,10 @@ body {
   background: none;
 }
 
+.modal-backdrop {
+  @apply flex w-screen h-screen bg-black bg-opacity-60 z-50 top-0 left-0 fixed;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

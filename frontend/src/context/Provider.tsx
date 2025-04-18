@@ -25,14 +25,7 @@ export function useCart() {
   return context;
 }
 
-export function useTempOverlay() {
-  const context = useContext(TempOverlay);
 
-  if (!context) {
-    throw new Error("useTempOverlay must be used within a TempOverlayProvider");
-  }
-  return context;
-}
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const [content, setContent] = useState<React.ReactNode>();

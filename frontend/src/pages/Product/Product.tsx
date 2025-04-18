@@ -5,7 +5,7 @@ import axiosRequest from "../../services/axios.config";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa";
 import { RiShoppingCartLine } from "react-icons/ri";
-import { useCart, useTempOverlay } from "../../context/Provider";
+import { useCart } from "../../context/Provider";
 
 import checkDev from "../../utils/isMobile";
 import EditableText from "../../components/ui/EditableText";
@@ -21,16 +21,17 @@ import { productDetails } from "../../utils/helpers";
 import { parseLocalCurrency } from "../../utils/formatting";
 import NotFoundPage from "../NotFoundPage";
 import Description from "../../components/Description/Description";
+import Modal from "../../components/Modal";
 
 export default function Product() {
   const { _id } = useParams();
   const [count, setCount] = useState(0);
   const [variantIndex, setVariantIndex] = useState<number>();
   const [sizeIndex, setSizeIndex] = useState<number>();
+  const [isModal, setIsModal] = useState<ReactNode | false>(false);
 
   const isMobile = checkDev();
   const { cart, updateCart } = useCart();
-  const { setChildren, close } = useTempOverlay();
 
   const { data, isLoading } = useQuery({
     queryFn: () => axiosRequest.product.single(_id as string),
@@ -45,19 +46,8 @@ export default function Product() {
 
   if (!data || data?.error) return <NotFoundPage />;
 
-  const {
-    amount,
-    coverPhoto,
-    flavor,
-    name,
-    photos,
-    price,
-    promotion,
-    size,
-    stock,
-    variantCurrIndex,
-    sizeCurrIndex,
-  } = productDetails(data, cart, variantIndex, sizeIndex);
+  const { amount, coverPhoto, flavor, name, photos, price, promotion, size, stock, variantCurrIndex, sizeCurrIndex } =
+    productDetails(data, cart, variantIndex, sizeIndex);
 
   const changeCount = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -70,8 +60,7 @@ export default function Product() {
   const toCart = () => {
     if (amount) {
       const updated = cart.map((i) => {
-        if (i._id === data._id && i.flavor === flavor && i.size === size)
-          i.amount = count;
+        if (i._id === data._id && i.flavor === flavor && i.size === size) i.amount = count;
         return i;
       });
       return updateCart(updated), setCount(0);
@@ -106,23 +95,25 @@ export default function Product() {
   };
 
   const buyNow = () => {
-    const Component = () => <Checkout onClose={close} />;
-    toCart(), setChildren(<Component />), setCount(0);
+    const Component = () => <Checkout onClose={() => setIsModal(false)} />;
+    toCart(), setIsModal(<Component />), setCount(0);
   };
 
   const Title = ({ children }: { children: ReactNode }) => (
     <span className="border-l-4 border-secondary-600 flex items-center justify-between md:py-1 md:border-l-[6px] my-2 ">
-      <h2 className="font-lato font-semibold text-lg ml-1 md:text-xl first-letter:uppercase">
-        {children}
-      </h2>
+      <h2 className="font-lato font-semibold text-lg ml-1 md:text-xl first-letter:uppercase">{children}</h2>
     </span>
   );
 
   return (
     <div className="p-4 flex flex-col gap-4">
-      <h1 className="md:hidden first-letter:uppercase text-xl font-bold">
-        {name}
-      </h1>
+      {isModal && (
+        <Modal className="mx-auto my-auto" onClose={() => setIsModal(false)}>
+          {isModal}
+        </Modal>
+      )}
+
+      <h1 className="md:hidden first-letter:uppercase text-xl font-bold">{name}</h1>
       <div className="flex flex-col gap-6 pb-6 w-full p-4 bg-primary-500 rounded-md md:flex-row">
         <ProductImages photos={photos} />
 
@@ -133,20 +124,14 @@ export default function Product() {
           <span className="flex gap-3 items-center md:gap-0">
             <span className="flex flex-col">
               <span className="text-2xl lg:text-3xl font-bold text-secondary-500 font-lato">
-                {promotion
-                  ? parseLocalCurrency(promotion)
-                  : parseLocalCurrency(price)}
+                {promotion ? parseLocalCurrency(promotion) : parseLocalCurrency(price)}
               </span>
-              <span className="font-lato text-opacity-70 text-sm lg:text-lg text-white md:mt-1">
-                {perGram()}
-              </span>
+              <span className="font-lato text-opacity-70 text-sm lg:text-lg text-white md:mt-1">{perGram()}</span>
             </span>
 
             <div className="flex ml-3 mt-auto gap-4 md:mt-0 md:flex-col md:gap-2">
               {promotion && (
-                <p className="font-anton line-through font-semibold mt-auto">
-                  {parseLocalCurrency(price)}
-                </p>
+                <p className="font-anton line-through font-semibold mt-auto">{parseLocalCurrency(price)}</p>
               )}
               {promotion && (
                 <p className="bg-secondary-200 text-black font-semibold font-anton text-xs p-2 rounded-md mb-5 md:mb-0 md:text-sm md:p-1">
@@ -156,11 +141,7 @@ export default function Product() {
             </div>
           </span>
 
-          <div
-            className={`flex gap-4 justify-between md:flex-col md:gap-6 ${
-              stock === 0 && "grayscale"
-            }`}
-          >
+          <div className={`flex gap-4 justify-between md:flex-col md:gap-6 ${stock === 0 && "grayscale"}`}>
             {!isMobile && (
               <VariantOptions
                 sizeCurrIndex={sizeCurrIndex}
@@ -178,9 +159,7 @@ export default function Product() {
               <div className="grid grid-cols-3 gap-4 border border-opacity-40 w-[40%] border-white px-4 py-2 justify-items-center rounded-md md:w-full">
                 <button
                   onClick={() => setCount(count - 1)}
-                  className={` ${
-                    count - 1 < 0 && "pointer-events-none  opacity-40"
-                  } p-1`}
+                  className={` ${count - 1 < 0 && "pointer-events-none  opacity-40"} p-1`}
                 >
                   <FaMinus className="!w-full !h-full " />
                 </button>
@@ -192,18 +171,13 @@ export default function Product() {
                   inputMode="decimal"
                   type="number"
                   name="amount on cart"
-                  className={`text-center md:text-lg  ${
-                    !count ? "opacity-40" : ""
-                  }`}
+                  className={`text-center md:text-lg  ${!count ? "opacity-40" : ""}`}
                   containerClass="h-full w-full flex items-center justify-center"
                 />
 
                 <button
                   onClick={() => setCount(count + 1)}
-                  className={`${
-                    !stock ||
-                    (disableIncrement && "pointer-events-none opacity-40")
-                  } p-1`}
+                  className={`${!stock || (disableIncrement && "pointer-events-none opacity-40")} p-1`}
                 >
                   <FaPlus className="!w-full !h-full" />
                 </button>
@@ -253,12 +227,7 @@ export default function Product() {
       )}
       <Title>Product Information</Title>
       <Description desc={data.desc} />
-      <ProductsSimilar
-        title="You may to like"
-        cart={cart}
-        updateCart={updateCart}
-        brand={data.brand}
-      />
+      <ProductsSimilar title="You may to like" cart={cart} updateCart={updateCart} brand={data.brand} />
     </div>
   );
 }

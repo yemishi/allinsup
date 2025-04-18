@@ -1,11 +1,6 @@
 import useScrollQuery from "../../../hooks/useInfiniteQuery";
-import {
-  ProductFormType,
-  ProductType,
-  VariantType,
-} from "../../../types/response";
+import { ProductFormType, ProductType, VariantType } from "../../../types/response";
 import Button from "../../../components/ui/Button";
-import { useTempOverlay } from "../../../context/Provider";
 import ProductForm from "../../../components/form/product/ProductForm";
 import axiosRequest from "../../../services/axios.config";
 import { motion } from "framer-motion";
@@ -14,6 +9,8 @@ import { useSearchParams } from "react-router-dom";
 import { enableScroll, productDetails } from "../../../utils/helpers";
 import { toast } from "react-toastify";
 import { DivDraggable } from "../../../components";
+import { ReactNode, useState } from "react";
+import Modal from "../../../components/Modal";
 
 interface VariantData extends Omit<VariantType, "photos"> {
   photos: [];
@@ -26,10 +23,11 @@ type ProductEditType = Omit<ProductType, "variants"> & {
 export default function ProductsDashboard() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q") as string;
+  const [isModal, setIsModal] = useState<ReactNode | false>(false);
+  const closeModal = () => setIsModal(false);
 
-  const { setChildren, close } = useTempOverlay();
   const closePopUp = () => {
-    enableScroll(), close();
+    enableScroll(), closeModal();
   };
   const {
     values: products,
@@ -42,10 +40,7 @@ export default function ProductsDashboard() {
     queryKey: ["dashboard-products", query],
     url: `/product?query=${query || ""}`,
   });
-  if (isLoading)
-    return (
-      <img src="/loading.svg" className="self-center" alt="loading icon" />
-    );
+  if (isLoading) return <img src="/loading.svg" className="self-center" alt="loading icon" />;
 
   const deleteProduct = async (productId: string) => {
     const fetchData = async () => {
@@ -53,32 +48,27 @@ export default function ProductsDashboard() {
       if (error) return toast.error(message);
       toast.success(message), refetch(), closePopUp();
     };
-    setChildren(<DeleteProduct fetchData={fetchData} close={close} />);
+    setIsModal(<DeleteProduct fetchData={fetchData} close={closeModal} />);
   };
 
   const newProduct = () => {
     const fetchData = async (values: ProductFormType) => {
       await updatedVariantsPhotos(values);
-      const { error, message } = await axiosRequest.product.create(
-        values as any
-      );
+      const { error, message } = await axiosRequest.product.create(values as any);
       if (error) {
         toast.error(message);
         return;
       }
       toast.success(message), closePopUp(), refetch();
     };
-    setChildren(
+    setIsModal(
       <DivDraggable maxMd initialDirection="100%" closeParent={closePopUp}>
-        <ProductForm action={fetchData} onClose={closePopUp} />
+        <ProductForm action={fetchData} onClose={closeModal} />
       </DivDraggable>
     );
   };
   const editProduct = (product: ProductEditType, productId: string) => {
-    const fetchData = async (
-      form: ProductFormType,
-      photosDelete?: string[]
-    ) => {
+    const fetchData = async (form: ProductFormType, photosDelete?: string[]) => {
       const variants = await updatedVariantsPhotos(form, photosDelete);
       form.variants = variants as any;
       const updatedForm = {
@@ -97,13 +87,9 @@ export default function ProductsDashboard() {
       }
       toast.success(message), close(), refetch();
     };
-    setChildren(
+    setIsModal(
       <DivDraggable maxMd initialDirection="100%" closeParent={close}>
-        <ProductForm
-          action={fetchData}
-          onClose={closePopUp}
-          defaultValues={product}
-        />
+        <ProductForm action={fetchData} onClose={closePopUp} defaultValues={product} />
       </DivDraggable>
     );
   };
@@ -117,6 +103,11 @@ export default function ProductsDashboard() {
       >
         +
       </Button>
+      {isModal && (
+        <Modal className="mx-auto my-auto" onClose={closeModal}>
+          {isModal}
+        </Modal>
+      )}
       <div className="flex flex-wrap text-gray-200 gap-4 items-center justify-center">
         {products.map((product) => {
           const { coverPhoto, name } = productDetails(product);
@@ -136,16 +127,10 @@ export default function ProductsDashboard() {
               key={`${product._id}_${name}`}
             >
               <div className=" h-40 md:h-48 flex p-2 bg-white rounded-lg">
-                <img
-                  src={coverPhoto}
-                  className="w-full object-contain"
-                  alt=""
-                />
+                <img src={coverPhoto} className="w-full object-contain" alt="" />
               </div>
               <div className="w-full pl-2 pr-1">
-                <span className="font-lato font-semibold text-sm md:text-lg">
-                  {name}
-                </span>
+                <span className="font-lato font-semibold text-sm md:text-lg">{name}</span>
               </div>
 
               <span className="mt-auto grid grid-cols-2 gap-2">
@@ -172,13 +157,7 @@ export default function ProductsDashboard() {
   );
 }
 
-const DeleteProduct = ({
-  fetchData,
-  close,
-}: {
-  fetchData: () => void;
-  close: () => void;
-}) => {
+const DeleteProduct = ({ fetchData, close }: { fetchData: () => void; close: () => void }) => {
   return (
     <motion.div
       initial={{ y: "-100%" }}
@@ -186,9 +165,7 @@ const DeleteProduct = ({
       transition={{ type: "just" }}
       className="p-6 pb-4 rounded-lg bg-primary-500 flex flex-col gap-14"
     >
-      <span className="text-xl font-bold">
-        You really want delete this product?
-      </span>
+      <span className="text-xl font-bold">You really want delete this product?</span>
       <div className="grid grid-cols-2 gap-2">
         <Button className="py-2 bg-primary" onClick={close}>
           No
@@ -201,10 +178,7 @@ const DeleteProduct = ({
   );
 };
 
-const updatedVariantsPhotos = async (
-  form: ProductFormType,
-  photosDelete?: string[]
-) => {
+const updatedVariantsPhotos = async (form: ProductFormType, photosDelete?: string[]) => {
   const variants = await Promise.all(
     form.variants.flatMap(async (variant) => {
       const formData = new FormData();
@@ -214,8 +188,7 @@ const updatedVariantsPhotos = async (
         .post(`${import.meta.env.VITE_API_URL}/uploadImage/many`, formData)
         .then((res) => res.data);
       if (response.error) return toast.error(response.message);
-      const photosDataUrl = variant.photosData &&
-        variant.photosData.length > 0 && [...variant.photosData];
+      const photosDataUrl = variant.photosData && variant.photosData.length > 0 && [...variant.photosData];
       variant.photos = [];
       if (photosDataUrl) {
         const urls =

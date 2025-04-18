@@ -45,6 +45,7 @@ export default function Home() {
       transition={{ duration: 0.2 }}
       className="w-full text-white h-full flex flex-col gap-4 overflow-hidden justify-center items-center "
     >
+
       <HighlightProducts cart={cart} updateCart={updateCart} />
       <Slider settings={settings}>
         {brands.map((name, index) => {
