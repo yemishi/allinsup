@@ -44,7 +44,7 @@ export default function ProductSliderSkeleton({ count }: { count?: number }) {
         <Slide
           key={`slide-${index}`}
           className="group border border-primary-200 !flex rounded-xl text-sm bg-primary-500 font-lato 
-          pb-4 min-h-[310px] md:min-h-[370px] lg:min-h-[400px]  text-white flex-col justify-between md:text-base lg:text-lg"
+          pb-4 min-h-[310px] md:min-h-[370px] lg:min-h-[400px] text-white flex-col justify-between md:text-base lg:text-lg"
         >
           <Skeleton className="w-full h-[172px] md:h-[202px] lg:h-[212px] !rounded-lg" />
           <div className="flex flex-col p-2 pb-0 gap-4 ">

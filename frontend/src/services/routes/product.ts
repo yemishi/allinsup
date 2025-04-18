@@ -4,9 +4,7 @@ import { DefaultResponse, ErrorType, ProductType } from "../../types/response";
 const productRequest = (instance: AxiosInstance, baseUrl: string) => {
   return {
     single: (productId: string): Promise<ProductType | ErrorType> =>
-      instance
-        .get(`${baseUrl}/product?productId=${productId}`)
-        .then((res) => res.data),
+      instance.get(`${baseUrl}/product?productId=${productId}`).then((res) => res.data),
 
     many: (
       page?: number,
@@ -14,14 +12,12 @@ const productRequest = (instance: AxiosInstance, baseUrl: string) => {
       query?: string,
       brand?: string,
       category?: string
-    ): Promise<
-      { products: ProductType[]; hasMore: boolean; error: false } | ErrorType
-    > =>
+    ): Promise<{ products: ProductType[]; hasMore: boolean; error: false } | ErrorType> =>
       instance
         .get(
-          `${baseUrl}/product?page=${page || 0}&limit=${limit || 10}&query=${
-            query || ""
-          }&category=${category || ""}&brand=${brand || ""}`
+          `${baseUrl}/product?page=${page || 0}&limit=${limit || 10}&query=${query || ""}&category=${
+            category || ""
+          }&brand=${brand || ""}`
         )
         .then((res) => res.data),
 
@@ -33,24 +29,16 @@ const productRequest = (instance: AxiosInstance, baseUrl: string) => {
       productId: string,
       photosDelete?: string[]
     ): Promise<DefaultResponse> =>
-      instance
-        .patch(`${baseUrl}/product`, { product, productId, photosDelete })
-        .then((res) => res.data),
+      instance.patch(`${baseUrl}/product`, { product, productId, photosDelete }).then((res) => res.data),
 
     delete: (productId: string): Promise<DefaultResponse> =>
-      instance
-        .delete(`${baseUrl}/product?productId=${productId}`)
-        .then((res) => res.data),
+      instance.delete(`${baseUrl}/product?productId=${productId}`).then((res) => res.data),
     highlight: (
       page?: number,
       limit?: number
-    ): Promise<
-      { products: ProductType[]; hasMore: boolean; error: false } | ErrorType
-    > =>
+    ): Promise<{ products: ProductType[]; hasMore: boolean; error: false; message: string } | ErrorType> =>
       instance
-        .get(
-          `${baseUrl}/product/highlight?page=${page || 0}&limit=${limit || 10}`
-        )
+        .get(`${new URL(baseUrl).href}/product/highlight?page=${page || 0}&limit=${limit || 10}`)
         .then((res) => res.data),
   };
 };

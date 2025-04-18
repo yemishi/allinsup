@@ -4,7 +4,7 @@ import { z } from "zod";
 import Input from "../../ui/Input";
 import VariantsConfig from "./VariantsConfig";
 import { useState } from "react";
-import Button from "../../ui/Button,";
+import Button from "../../ui/Button";
 import { IoCaretBack } from "react-icons/io5";
 import {
   ProductFormType,

@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import axiosRequest from "../../services/axios.config";
 import ProductSlider from "../../components/Slider/ProductSlider";
 import { CartType } from "../../types/response";
-import ErrorPage from "../../features/Error/ErrorPage";
+import ErrorWrapper from "../../components/ErrorWrapper";
 
 export default function ProductsSimilar({
   query,
@@ -19,26 +19,26 @@ export default function ProductsSimilar({
   brand?: string;
   title?: string;
 }) {
-  const { data } = useQuery({
+  const { data, isError, isLoading, refetch } = useQuery({
     queryFn: () => axiosRequest.product.many(0, 10, query, brand, category),
     queryKey: ["Product-similar", query, brand, category],
   });
-  if (data?.error || !data)
-    return (
-      <ErrorPage msg="We had a problem trying to recover some products similar" />
-    );
+  if (!data?.error && data?.products.length === 0) return <></>;
 
-  if (data.products.length === 0) return <></>;
   return (
     <>
       <span className="border-l-4 border-secondary-600 flex items-center justify-between md:py-1 md:border-l-[6px] my-2 self-start">
-        <h3 className="font-lato font-semibold text-lg ml-1 md:text-xl">
-          {title || " Products similar"}
-        </h3>
+        <h3 className="font-lato font-semibold text-lg ml-1 md:text-xl">{title || " Products similar"}</h3>
       </span>
-      <ProductSlider cart={cart} updateCart={updateCart}>
-        {[...data.products]}
-      </ProductSlider>
+      <ErrorWrapper error={isError} refetch={refetch}>
+        {isLoading ? (
+          <img src="/loading.svg" alt="loading" className="h-40 w-40 mx-auto" />
+        ) : (
+          <ProductSlider cart={cart} updateCart={updateCart}>
+            {data && !data?.error ? [...data.products] : []}
+          </ProductSlider>
+        )}
+      </ErrorWrapper>
     </>
   );
 }

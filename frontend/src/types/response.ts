@@ -38,15 +38,14 @@ interface UserType {
     houseNumber: number;
     complement: string;
   };
+  message: string;
   error: false;
 }
 interface OrderType {
   _id: string;
   userId: string;
   method: "Cash on Delivery" | "Credit Card" | "Debit Card" | "PayPal";
-  user?:
-    | { isDeleted: true }
-    | { name: string; email: string; isDeleted: false };
+  user?: { isDeleted: true } | { name: string; email: string; isDeleted: false };
   products: {
     _id: string;
     qtd: number;
@@ -57,12 +56,7 @@ interface OrderType {
     productId: string;
     coverPhoto: string;
   }[];
-  status:
-    | "Pending"
-    | "Processing"
-    | "Shipped"
-    | "Out for delivery"
-    | "Delivered";
+  status: "Pending" | "Processing" | "Shipped" | "Out for delivery" | "Delivered";
   totalPaid: number;
   purchaseDate: Date;
   receivedDate?: Date;

@@ -4,7 +4,7 @@ import { OrderType } from "../../../types/response";
 import { DivList } from "../../../components/ui/DivList";
 import { useTempOverlay } from "../../../context/Provider";
 import EditOrder from "./EditOrder";
-import Button from "../../../components/ui/Button,";
+import Button from "../../../components/ui/Button";
 import { parseLocalCurrency } from "../../../utils/formatting";
 import { Image } from "../../../components";
 

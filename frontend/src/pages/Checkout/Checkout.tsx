@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
-import Button from "../../components/ui/Button,";
+import Button from "../../components/ui/Button";
 import { createOrder } from "../../features/Checkout/helpers";
 import { useCart } from "../../context/Provider";
 

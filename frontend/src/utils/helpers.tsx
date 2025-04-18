@@ -1,11 +1,6 @@
 import { Variants } from "framer-motion";
 
-import {
-  CartType,
-  ProductType,
-  VariantType,
-  DetailsType,
-} from "../types/response";
+import { CartType, ProductType, VariantType, DetailsType } from "../types/response";
 
 const stickyVariant: Variants = {
   sticky: {
@@ -26,8 +21,7 @@ const blinkVariant = {
 };
 
 const findInArray = (array: DetailsType[] | VariantType[], index?: number) => {
-
-  if (!Array.isArray(array)) return { value: array }
+  if (!Array.isArray(array)) return { value: array };
   if (index && array[index]) return { value: array[index], index };
   else
     return {
@@ -39,12 +33,7 @@ const findInArray = (array: DetailsType[] | VariantType[], index?: number) => {
     };
 };
 
-const productDetails = (
-  product: ProductType,
-  cart?: CartType[],
-  variantIndex?: number,
-  sizeIndex?: number
-) => {
+const productDetails = (product: ProductType, cart?: CartType[], variantIndex?: number, sizeIndex?: number) => {
   const { _id, name, variants } = product;
 
   const {
@@ -64,11 +53,7 @@ const productDetails = (
   };
 
   const amount =
-    (cart &&
-      cart.find(
-        (detail) =>
-          detail._id === _id && detail.flavor === flavor && detail.size === size
-      )?.amount) ||
+    (cart && cart.find((detail) => detail._id === _id && detail.flavor === flavor && detail.size === size)?.amount) ||
     0;
   return {
     coverPhoto: photos[0],
@@ -86,6 +71,20 @@ const productDetails = (
     error: false,
   };
 };
+const ensureClasses = (className = "", fallback = "") => {
+  const current = className.split(/\s+/);
+  const fallbackClasses = fallback.split(/\s+/);
 
+  const getPrefix = (cls: string) => cls.split("-")[0];
+
+  const existingPrefixes = new Set(current.map(getPrefix));
+
+  const filteredFallback = fallbackClasses.filter((cls) => {
+    const prefix = getPrefix(cls);
+    return !existingPrefixes.has(prefix);
+  });
+
+  return [...current, ...filteredFallback].join(" ").trim();
+};
 const enableScroll = () => (document.body.style.overflow = "");
-export { productDetails, blinkVariant, stickyVariant, enableScroll };
+export { productDetails, blinkVariant, stickyVariant, enableScroll, ensureClasses };

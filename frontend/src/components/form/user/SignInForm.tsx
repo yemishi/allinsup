@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IoCloseSharp } from "react-icons/io5";
 import { updateToken } from "../../../services/axios.config";
 import Input from "../../ui/Input";
-import Button from "../../ui/Button,";
+import Button from "../../ui/Button";
 import axiosRequest from "../../../services/axios.config";
 import { toast } from "react-toastify";
 

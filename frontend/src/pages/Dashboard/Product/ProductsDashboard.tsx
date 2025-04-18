@@ -4,7 +4,7 @@ import {
   ProductType,
   VariantType,
 } from "../../../types/response";
-import Button from "../../../components/ui/Button,";
+import Button from "../../../components/ui/Button";
 import { useTempOverlay } from "../../../context/Provider";
 import ProductForm from "../../../components/form/product/ProductForm";
 import axiosRequest from "../../../services/axios.config";

@@ -12,7 +12,7 @@ import EditableText from "../../components/ui/EditableText";
 import { ReactNode, useState } from "react";
 import { CartType } from "../../types/response";
 import Checkout from "../../features/Checkout/CheckoutGrid";
-import Button from "../../components/ui/Button,";
+import Button from "../../components/ui/Button";
 import VariantOptions from "./VariantOptions";
 
 import ProductsSimilar from "./ProductsSimilar";

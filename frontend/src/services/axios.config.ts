@@ -5,7 +5,7 @@ import orderRequest from "./routes/order.";
 import sellRequest from "./routes/sell";
 import uploadImgRequest from "./routes/uploadImg";
 
-const baseURL = import.meta.env.VITE_API_URL;
+const baseURL = `${new URL(import.meta.env.VITE_API_URL).origin}/api`;
 let token = localStorage.getItem("token");
 const axiosInstance: AxiosInstance = axios.create({
   baseURL,

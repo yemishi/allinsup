@@ -1,7 +1,7 @@
 import EditableText from "../../ui/EditableText";
 
 import { DetailsType } from "../../../types/response";
-import Button from "../../ui/Button,";
+import Button from "../../ui/Button";
 import { LuDelete } from "react-icons/lu";
 
 interface PropsType {

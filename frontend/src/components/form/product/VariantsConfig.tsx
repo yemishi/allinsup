@@ -1,4 +1,4 @@
-import Button from "../../ui/Button,";
+import Button from "../../ui/Button";
 import EditableText from "../../ui/EditableText";
 import DetailsConfig from "./DetailsConfig";
 import { RiDeleteBin2Line } from "react-icons/ri";

@@ -10,9 +10,7 @@ jest.mock("../../../services/axios.config", () => ({
 
 describe("Sign in component", () => {
   it("Test the onchange events", () => {
-    const { getByLabelText } = render(
-      <SignInForm onClose={() => {}} openSignUp={() => {}} />
-    );
+    const { getByLabelText } = render(<SignInForm onClose={() => {}} openSignUp={() => {}} />);
     const emailInput = getByLabelText("Email");
     const passwordInput = getByLabelText("Password");
     fireEvent.change(emailInput, { target: { value: "example email" } });
@@ -25,9 +23,7 @@ describe("Sign in component", () => {
 
 describe("Sign up component", () => {
   it("Test the onchange events", () => {
-    const { getByLabelText } = render(
-      <SignUpForm onClose={() => {}} openSignIn={() => {}} />
-    );
+    const { getByLabelText } = render(<SignUpForm onClose={() => {}} openSignIn={() => {}} />);
     const nameInput = getByLabelText("Name");
     const emailInput = getByLabelText("Email");
     const passwordInput = getByLabelText("Password");
@@ -58,6 +54,7 @@ describe("User form component", () => {
           email: "email test",
           error: false,
           name: "name test",
+          message: "message test",
         }}
       />
     );

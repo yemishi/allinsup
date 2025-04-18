@@ -9,7 +9,7 @@ import { IoIosClose } from "react-icons/io";
 import DivDraggable from "../../ui/DivDraggable";
 import Input from "../../ui/Input";
 import EditableText from "../../ui/EditableText";
-import Button from "../../ui/Button,";
+import Button from "../../ui/Button";
 import { toast } from "react-toastify";
 
 interface PropsType extends HTMLAttributes<HTMLDivElement> {
