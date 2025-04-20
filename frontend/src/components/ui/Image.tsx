@@ -1,40 +1,43 @@
-import { HTMLAttributes, useState } from "react";
+import React, { HTMLAttributes, useMemo, useState } from "react";
+import { cleanClasses } from "../../utils/helpers";
 
 interface PropsType extends HTMLAttributes<HTMLImageElement> {
   src: string;
+  alt?: string;
+  width?: number;
+  height?: number;
 }
 
-export default function Image({ src, ...props }: PropsType) {
-  const [isLoading, setIsLoading] = useState(true);
-  const { className, ...rest } = props;
-  const defaultSIze =
-    className?.includes("w-") || className?.includes("h-")
-      ? ""
-      : "!w-full !h-full";
-  const duration = className?.includes("duration-") ? "" : "duration-150";
-  const defaultObject = className?.includes("object-") ? "" : "object-cover";
+function parseAlt(src: string) {
+  return decodeURIComponent(src)
+    .split("/")
+    .pop()!
+    .replace(/\.[^/.]+$/, "")
+    .replace(/[-_]/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
+}
 
-  const parseAlt = (imageUrl: string) => {
-    const filename = imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
-    const filenameWithoutExtension = filename.split(".").slice(0, -1).join(" ");
-    const formattedText = filenameWithoutExtension.replace(/[-_]/g, " ");
-    const capitalizedText = formattedText.replace(/\b\w/g, (char) =>
-      char.toUpperCase()
-    );
-
-    return capitalizedText;
-  };
+const Image: React.FC<PropsType> = React.memo(({ src, className, width, height, alt, ...rest }) => {
+  const [loaded, setIsLoaded] = useState(false);
+  const classes = useMemo(
+    () => cleanClasses(className, `${!loaded ? "blur-md opacity-60" : ""} w-full h-full object-cover duration-150`),
+    [className,loaded]
+  );
   return (
     <img
       src={src}
-      alt={parseAlt(src)}
-      onLoad={() => setIsLoading(false)}
-      className={`${
-        className ? className : ""
-      }  ${defaultSIze} ${defaultObject} ${duration} ${
-        isLoading ? "blur-md" : ""
-      }`}
+      onLoad={() => setIsLoaded(true)}
+      alt={alt ?? parseAlt(src)}
+      width={width}
+      height={height}
+      className={classes}
+      loading="lazy"
+      decoding="async"
       {...rest}
     />
   );
-}
+});
+
+Image.displayName = "Image";
+
+export default Image;

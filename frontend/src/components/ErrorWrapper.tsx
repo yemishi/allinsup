@@ -1,6 +1,6 @@
 import { HtmlHTMLAttributes, ReactNode } from "react";
 import Button from "./ui/Button";
-import { ensureClasses } from "../utils/helpers";
+import { cleanClasses } from "../utils/helpers";
 
 interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
   error: boolean;
@@ -23,7 +23,7 @@ export default function ErrorWrapper({
     return (
       <div
         {...rest}
-        className={ensureClasses(
+        className={cleanClasses(
           className,
           "flex flex-col items-center mx-auto rounded-md w-full shadow-xl shadow-primary-700 bg-primary-550 text-gray-200 p-10 gap-2"
         )}
