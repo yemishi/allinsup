@@ -1,5 +1,6 @@
 import { HTMLAttributes, MouseEvent, ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
+import { cleanClasses } from "../utils/helpers";
 
 const modalRoot = document.getElementById("modal");
 
@@ -9,7 +10,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 const Modal = ({ children, onClose, ...props }: Props) => {
-  const { className ,...rest} = props;
+  const { className, ...rest } = props;
 
   useEffect(() => {
     document.body.style.overflow = "hidden";

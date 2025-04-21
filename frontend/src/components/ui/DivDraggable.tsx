@@ -1,12 +1,7 @@
 import { AnimatePresence, MotionProps, PanInfo, motion } from "framer-motion";
-import {
-  HTMLAttributes,
-  ReactNode,
-  useState,
-  Fragment,
-  useEffect,
-} from "react";
+import { HTMLAttributes, ReactNode, useState, Fragment, useEffect } from "react";
 import isMobile from "../../utils/isMobile";
+import { cleanClasses } from "../../utils/helpers";
 
 type HTMLMotionDivProps = Omit<
   HTMLAttributes<HTMLDivElement>,
@@ -40,9 +35,7 @@ export default function DivDraggable({
   const { className, ...rest } = props;
   const minTablet = !isMobile();
   const [isActive, setIsActive] = useState(true);
-  const [directionDrag, setDirectionDrag] = useState<"100%" | "-100%">(
-    initialDirection
-  );
+  const [directionDrag, setDirectionDrag] = useState<"100%" | "-100%">(initialDirection);
 
   const onDragEnd = (_: any, info: PanInfo) => {
     if (info.offset.x < -150 || info.offset.x > 150) {
@@ -61,11 +54,7 @@ export default function DivDraggable({
       setDirectionDrag("100%");
     }
   };
-  const defaultSize =
-    className?.includes("w-") || className?.includes("h-")
-      ? ""
-      : "h-full w-full lg:min-w-[500px] min-[450px]:w-[450px]";
-  const defaultBg = className?.includes("bg-") ? "" : "bg-primary-600";
+
   const Component = removeAnimatePresence ? Fragment : AnimatePresence;
 
   useEffect(() => {
@@ -84,13 +73,10 @@ export default function DivDraggable({
             opacity: changeOpacity ? 0 : 1,
           }}
           animate={{ x: 0, opacity: 1 }}
-          className={`${
-            className ? className : ""
-          } ${defaultBg} ${defaultSize} ${
-            maxMd
-              ? "max-h-[1000px] max-w-xl md:border md:border-primary-200"
-              : ""
-          } flex flex-col overflow-y-auto`}
+          className={`${cleanClasses(
+            className,
+            " flex flex-col overflow-y-auto h-full w-screen lg:min-w-[500px] min-[450px]:w-[450px]  bg-primary-600"
+          )} ${maxMd ? "max-h-[1000px] max-w-xl md:border md:border-primary-200" : ""}`}
           transition={{ type: "just" }}
           {...(!minTablet && {
             drag: disableDrag ? false : "x",

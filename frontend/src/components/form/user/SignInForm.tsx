@@ -9,6 +9,7 @@ import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import axiosRequest from "../../../services/axios.config";
 import { toast } from "react-toastify";
+import { cleanClasses } from "../../../utils/helpers";
 
 interface FormProps extends HTMLAttributes<HTMLFormElement> {
   openSignUp: () => void;
@@ -17,24 +18,14 @@ interface FormProps extends HTMLAttributes<HTMLFormElement> {
   onSuccess?: () => void;
 }
 
-export default function SignInForm({
-  onClose,
-  openSignUp,
-  disableExit,
-  onSuccess,
-  ...props
-}: FormProps) {
+export default function SignInForm({ onClose, openSignUp, disableExit, onSuccess, ...props }: FormProps) {
   type RegisterInputsType = z.infer<typeof FormSchema>;
-  const { className, ...rest } = props;
+  const { className = "", ...rest } = props;
 
   const [isLoading, setIsLoading] = useState(false);
-  const defaultBg = className?.includes("bg-") ? "" : "bg-primary";
 
   const FormSchema = z.object({
-    email: z
-      .string()
-      .min(1, "this field has to be filled.")
-      .email("this is not a valid email."),
+    email: z.string().min(1, "this field has to be filled.").email("this is not a valid email."),
     password: z.string().min(6, "this field must have at least 6 letters."),
   });
   const {
@@ -45,32 +36,23 @@ export default function SignInForm({
   const onSubmit: SubmitHandler<RegisterInputsType> = async (values) => {
     setIsLoading(true);
     await FormSchema.parseAsync(values);
-    const response = await axiosRequest.user.login(
-      values.email,
-      values.password
-    );
+    const response = await axiosRequest.user.login(values.email, values.password);
     setIsLoading(false);
     if (response.error) return toast.error(response.message);
-    return (
-      updateToken(response.token),
-      toast.success(response.message),
-      onClose(),
-      onSuccess && onSuccess()
-    );
+    return updateToken(response.token), toast.success(response.message), onClose(), onSuccess && onSuccess();
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className={`${
-        className ? className : ""
-      } ${defaultBg} w-full h-full flex flex-col gap-3 p-4 `}
+      className={cleanClasses(
+        className,
+        "bg-primary-600 rounded-lg shadow-xl w-full h-full flex flex-col gap-3 p-4"
+      )}
       {...rest}
     >
       <div className="flex justify-center items-center relative">
-        <span className="font-montserrat self-center text-3xl font-semibold mb-10">
-          Sign in
-        </span>
+        <span className="font-montserrat self-center text-3xl font-semibold mb-10">Sign in</span>
         {!disableExit && (
           <button type="button" onClick={onClose}>
             <IoCloseSharp className="h-8 w-8 top-0 right-0 absolute" />
@@ -106,9 +88,7 @@ export default function SignInForm({
 
       <div className="self-center font-bold space-x-1 mt-auto">
         <div className="h-[1px] w-full bg-zinc-700 mb-5" />
-        <span className="text-white text-opacity-50">
-          Don't have an account
-        </span>
+        <span className="text-white text-opacity-50">Don't have an account</span>
         <button
           disabled={isLoading}
           type="button"

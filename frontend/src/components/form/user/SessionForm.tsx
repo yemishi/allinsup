@@ -15,13 +15,11 @@ export default function SessionForm({
   onSignInSuccess?: () => void;
   onSignUpSuccess?: () => void;
 }) {
-  const [count, setCount] = useState(0);
-  const popStyle = `min-[768px]:h-[700px] max-w-xl ${
-    isSubPop ? "bg-none" : "md:border md:border-primary-200"
-  }`;
+  const [action, setAction] = useState<"signin" | "signup">("signin");
+  const popStyle = `min-[768px]:h-[700px] max-w-xl ${isSubPop ? "bg-none" : "md:border md:border-primary-200"}`;
   return (
     <AnimatePresence mode="wait">
-      {count === 0 && (
+      {action === "signin" && (
         <DivDraggable
           key="sign-in form"
           changeOpacity
@@ -35,14 +33,12 @@ export default function SessionForm({
             onSuccess={onSignInSuccess}
             className={popStyle}
             disableExit={isSubPop}
-            onClose={() => {
-              onClose(), (document.body.style.overflow = "");
-            }}
-            openSignUp={() => setCount(1)}
+            onClose={onClose}
+            openSignUp={() => setAction("signup")}
           />
         </DivDraggable>
       )}
-      {count === 1 && (
+      {action === "signup" && (
         <DivDraggable
           className="flex justify-center bg-none self-center"
           disableDrag={isSubPop}
@@ -56,10 +52,8 @@ export default function SessionForm({
             className={popStyle}
             disableExit={isSubPop}
             onSuccess={onSignUpSuccess}
-            onClose={() => {
-              onClose(), (document.body.style.overflow = "");
-            }}
-            openSignIn={() => setCount(0)}
+            onClose={onClose}
+            openSignIn={() => setAction("signin")}
           />
         </DivDraggable>
       )}

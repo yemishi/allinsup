@@ -83,7 +83,7 @@ export default function Menu() {
         <MdOutlineSort className="!w-full !h-full text-white hover:text-[#fb923c]" />
       </button>
       {isModal && (
-        <Modal className={!isModal.isLeft ? "mx-auto" : ""} onClose={closeModal}>
+        <Modal className={!isModal.isLeft ? "mx-auto bg-black  flex justify-center " : ""} onClose={closeModal}>
           {isModal.content}
         </Modal>
       )}
@@ -118,12 +118,12 @@ const MenuPanel = ({
   return (
     <DivDraggable
       initialDirection="-100%"
-      className="mr-auto md:text-lg md:rounded-r-lg md:border md:border-primary-200"
+      className="md:text-lg md:rounded-r-lg md:border md:border-primary-200 "
       closeParent={onClose}
     >
-      <div className="w-full flex top-0 z-10 p-5 h-[83px] bg-secondary rounded-b-xl ">
+      <div className="w-full flex top-0 p-5 h-[83px] bg-secondary rounded-b-xl  ">
         {isLoading ? (
-          <img src="/loading.svg" className="self-center w-20 h-20 brightness-150" />
+          <img src="/loading.svg" alt="loading" className="self-center w-20 h-20 brightness-150" />
         ) : (
           <span className="mt-auto font-semibold text-lg font-anton md:text-xl">
             {data?.error ? "Take a shortcut" : data?.name}
