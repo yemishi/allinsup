@@ -4,6 +4,7 @@ import ProductSlider from "../../components/Slider/ProductSlider";
 import { CartType } from "../../types/response";
 import ProductSliderSkeleton from "../../components/Slider/ProductSliderSkeleton";
 import ErrorWrapper from "../../components/ErrorWrapper";
+import highlightBackground from "./assets/highLightBg.png";
 
 export default function HighlightProducts({
   cart,
@@ -24,8 +25,8 @@ export default function HighlightProducts({
 
   return (
     <div
-      className={`bg-center w-full bg-cover flex items-end min-h-[420px] md:min-h-[600px] lg:min-h-[760px]   
-        bg-[url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]`}
+      style={{ backgroundImage: `url(${highlightBackground})` }}
+      className="bg-center w-full bg-cover flex items-end min-h-[420px] md:min-h-[600px] lg:min-h-[760px]"
     >
       <ErrorWrapper
         className="mb-4"

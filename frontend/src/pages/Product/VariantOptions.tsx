@@ -30,7 +30,7 @@ export default function VariantOptions({
   };
 
   return (
-    <div className="flex gap-3 flex-col border-b border-opacity-30 md:border-none border-white bg-primary-500 px-4 md:px-0 py-2  rounded-lg md:rounded-none">
+    <div className="flex gap-3 flex-col border-b border-opacity-30 md:border-none border-white bg-primary-500 px-4 md:px-0 py-2 rounded-lg md:rounded-none">
       <span className="gap-1 flex font-lato">
         <p className="font-thin lg:text-xl lg:font-semibold">Chosen Flavor</p>
       </span>

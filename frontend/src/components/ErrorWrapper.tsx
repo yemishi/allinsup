@@ -1,4 +1,4 @@
-import { HtmlHTMLAttributes, ReactNode } from "react";
+import { HtmlHTMLAttributes, ReactNode, memo } from "react";
 import Button from "./ui/Button";
 import { cleanClasses } from "../utils/helpers";
 
@@ -10,14 +10,7 @@ interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
   subTitle?: string;
 }
 
-export default function ErrorWrapper({
-  message = "We got a problem",
-  error,
-  subTitle,
-  refetch,
-  children,
-  ...props
-}: Props) {
+function ErrorWrapper({ message = "We got a problem", error, subTitle, refetch, children, ...props }: Props) {
   const { className = "", ...rest } = props;
   if (error)
     return (
@@ -54,3 +47,5 @@ export default function ErrorWrapper({
     );
   return <>{children}</>;
 }
+
+export default memo(ErrorWrapper);

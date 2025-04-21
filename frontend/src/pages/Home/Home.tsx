@@ -2,13 +2,17 @@ import { motion } from "framer-motion";
 import useScrollQuery from "../../hooks/useInfiniteQuery";
 import { ProductType } from "../../types/response";
 
+import brandIcon from "./assets/brand-icon.jpg";
+
 import HighlightProducts from "./HighlightProducts";
-import CardGrid from "../../components/Card/CardGrid";
+
 import { useCart } from "../../context/Provider";
 import { Image, Slide, Slider, SliderProps } from "../../components";
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { blinkVariant } from "../../utils/helpers";
-import ErrorWrapper from "../../components/ErrorWrapper";
+
+const ErrorWrapper = lazy(() => import("../../components/ErrorWrapper"));
+const CardGrid = lazy(() => import("../../components/Card/CardGrid"));
 
 export default function Home() {
   const { cart, updateCart } = useCart();
@@ -45,7 +49,6 @@ export default function Home() {
       transition={{ duration: 0.2 }}
       className="w-full text-white h-full flex flex-col gap-4 overflow-hidden justify-center items-center "
     >
-
       <HighlightProducts cart={cart} updateCart={updateCart} />
       <Slider settings={settings}>
         {brands.map((name, index) => {
@@ -65,7 +68,7 @@ export default function Home() {
                            : "border-primary-200  group-hover:border-secondary-200 group-hover:border-opacity-50 group-hover:border-[3px]"
                        }`}
               >
-                <Image src="https://firebasestorage.googleapis.com/v0/b/allinsup-2b48a.appspot.com/o/default%2FmewMettle.jpg?alt=media&token=a705cec0-793e-49b6-9368-9ee28a5ed8d2" />
+                <Image src={brandIcon} />
               </div>
 
               <span>{name}</span>
@@ -73,13 +76,17 @@ export default function Home() {
           );
         })}
       </Slider>
-      <ErrorWrapper refetch={refetch} error={isError}>
-        {values.length === 0 && !isLoading && (
-          <span className="text-xl font-semibold text-secondary-500 mt-4">No products found for this brand.</span>
-        )}
-        <CardGrid isLoading={isLoading} products={values} />
-        {!isFetchingNextPage && hasNextPage && <div ref={ref} />}
-      </ErrorWrapper>
+      <Suspense fallback={<img src="/loading.svg" alt="loading" />}>
+        <ErrorWrapper refetch={refetch} error={isError}>
+          {values.length === 0 && !isLoading && (
+            <span className="text-xl font-semibold text-secondary-500 mt-4">No products found for this brand.</span>
+          )}
+          <Suspense fallback={<img src="/loading.svg" alt="loading" />}>
+            <CardGrid isLoading={isLoading} products={values} />
+          </Suspense>
+          {!isFetchingNextPage && hasNextPage && <div ref={ref} />}
+        </ErrorWrapper>
+      </Suspense>
     </motion.div>
   );
 }

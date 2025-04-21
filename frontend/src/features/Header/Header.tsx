@@ -1,22 +1,18 @@
-import { memo, useRef } from "react";
+import { memo, useRef, Suspense, lazy } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { stickyVariant } from "../../utils/helpers";
-import Cart from "../Cart/Cart";
-import Menu from "../Menu/Menu";
+const Cart = lazy(() => import("../Cart/Cart"));
+const Menu = lazy(() => import("../Menu/Menu"));
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const brand = searchParams.get("brand")
-    ? `&brand=${searchParams.get("brand")}`
-    : "";
+  const brand = searchParams.get("brand") ? `&brand=${searchParams.get("brand")}` : "";
 
-  const category = searchParams.get("category")
-    ? `&category=${searchParams.get("category")}`
-    : "";
+  const category = searchParams.get("category") ? `&category=${searchParams.get("category")}` : "";
 
   const isDashboard = location.pathname.toLowerCase().includes("/dashboard");
 
@@ -26,8 +22,7 @@ function Header() {
 
   const handleFetch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchInput = e.target.value;
-    if (searchInput.length > 1 || brand || category)
-      navigate(`/search?query=${searchInput}${brand}${category}`);
+    if (searchInput.length > 1 || brand || category) navigate(`/search?query=${searchInput}${brand}${category}`);
     else navigate("/");
   };
 
@@ -58,27 +53,26 @@ function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  if (isCheckout) return <></>
+
+  if (isCheckout) return <></>;
   return (
     <motion.header
       variants={stickyVariant}
       animate={isSticky ? "sticky" : "noSticky"}
-      className="w-full px-5 py-3  z-20 top-0 flex flex-col gap-2 
+      className="w-full px-5 py-3 z-20 top-0 flex flex-col gap-2 
          bg-primary-600"
     >
       <div className="flex justify-between w-full relative items-center">
-        <Menu />
-
-        <div
-          onClick={handleToHome}
-          className="text-white text-center cursor-pointer"
-        >
-          <span className="font-montserrat text-3xl font-extrabold md:text-xl lg:text-3xl  duration-300">
-            ALL IN
-          </span>
+        <Suspense fallback={<img src="/loading.svg" className="w-7 lg:w-10" alt="loading" />}>
+          <Menu />
+        </Suspense>
+        <div onClick={handleToHome} className="text-white text-center cursor-pointer">
+          <span className="font-montserrat text-3xl font-extrabold md:text-xl lg:text-3xl  duration-300">ALL IN</span>
         </div>
 
-        <Cart />
+        <Suspense fallback={<img src="/loading.svg" className="w-7 lg:w-10" alt="loading" />}>
+          <Cart />
+        </Suspense>
       </div>
 
       <input
@@ -87,8 +81,7 @@ function Header() {
         type="text"
         placeholder="What you looking for?"
         className={`outline-none border-b placeholder:text-zinc-300 rounded-md p-2 text-white text-base w-[80%] lg:w-3/6 lg:text-xl bg-transparent
-         self-center focus:border-secondary-600 ${isDashboard ? "hidden" : "inline"
-          }`}
+         self-center focus:border-secondary-600 ${isDashboard ? "hidden" : "inline"}`}
       />
     </motion.header>
   );
