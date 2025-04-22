@@ -4,9 +4,10 @@ import { lazy, useState } from "react";
 import DivDraggable from "../../ui/DivDraggable";
 import { IoCloseSharp } from "react-icons/io5";
 import MotionDiv from "../../ui/MotionDiv";
-import SigninForm from "./SigninForm";
+import SignInForm from "./SignInForm"
 
-const SignupForm = lazy(() => import("./SignupForm"));
+
+const SignUpForm = lazy(() => import("./SignUpForm"));
 export default function Login({ onClose, onSignInSuccess }: { onClose: () => void; onSignInSuccess?: () => void }) {
   const [action, setAction] = useState<"signin" | "signup">("signin");
 
@@ -42,7 +43,7 @@ export default function Login({ onClose, onSignInSuccess }: { onClose: () => voi
             initialDirection="-100%"
             removeAnimatePresence
           >
-            <SigninForm onSuccess={onSignInSuccess} onClose={onClose} />
+            <SignInForm onSuccess={onSignInSuccess} onClose={onClose} />
           </DivDraggable>
         ) : (
           <DivDraggable
@@ -54,7 +55,7 @@ export default function Login({ onClose, onSignInSuccess }: { onClose: () => voi
             initialDirection="100%"
             removeAnimatePresence
           >
-            <SignupForm gotoSignIn={() => setAction("signin")} />
+            <SignUpForm gotoSignIn={() => setAction("signin")} />
           </DivDraggable>
         )}
       </AnimatePresence>

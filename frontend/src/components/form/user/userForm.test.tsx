@@ -1,8 +1,8 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render } from "@testing-library/react";
 
-import SignupForm from "./SignupForm";
-import SigninForm from "./SigninForm";
+import SignupForm from "./SignUpForm";
+import SigninForm from "./SignInForm";
 
 jest.mock("../../../services/axios.config", () => ({
   createAxiosInstance: jest.fn(),
@@ -36,3 +36,5 @@ describe("Sign up component", () => {
     expect(passwordInput).toHaveValue("example password");
   });
 });
+
+// Todo test for userForm component

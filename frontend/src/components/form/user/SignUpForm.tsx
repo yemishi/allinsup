@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 interface Props {
   gotoSignIn: () => void;
 }
-export default function SignupForm({ gotoSignIn }: Props) {
+export default function SignUpForm({ gotoSignIn }: Props) {
   const inputs: InputsType = {
     name: { label: "Name", value: "", min: 3, max: 15 },
     email: { label: "Email", value: "", min: 1, isEmail: true },
