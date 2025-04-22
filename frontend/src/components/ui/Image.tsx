@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, useMemo, useState } from "react";
+import { memo, HTMLAttributes, useMemo, useState } from "react";
 import { cleanClasses } from "../../utils/helpers";
 
 interface PropsType extends HTMLAttributes<HTMLImageElement> {
@@ -17,11 +17,11 @@ function parseAlt(src: string) {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-const Image: React.FC<PropsType> = React.memo(({ src, className, width, height, alt, ...rest }) => {
+const Image: React.FC<PropsType> = memo(({ src, className, width, height, alt, ...rest }) => {
   const [loaded, setIsLoaded] = useState(false);
   const classes = useMemo(
     () => cleanClasses(className, `${!loaded ? "blur-md opacity-60" : ""} w-full h-full object-cover duration-150`),
-    [className,loaded]
+    [className, loaded]
   );
   return (
     <img
