@@ -9,13 +9,13 @@ import { IoIosClose } from "react-icons/io";
 import Address from "./Address";
 import Steps from "./Steps";
 import Button from "../../components/ui/Button";
-import SessionForm from "../../components/form/user/SessionForm";
 import UserForm from "../../components/form/user/UserForm";
 import ErrorWrapper from "../../components/ErrorWrapper";
 import PaymentMethod from "./PaymentMethod";
 import Summary from "./Summary";
 import stripeCheckout from "./StripeCheckout";
 import { createOrder } from "./helpers";
+import Login from "../../components/form/user/Login";
 
 export default function CheckoutGrid({ onClose }: { onClose: () => void }) {
   const { cart, updateCart } = useCart();
@@ -46,8 +46,7 @@ export default function CheckoutGrid({ onClose }: { onClose: () => void }) {
   };
   const RenderStep = {
     0: (
-      <SessionForm
-        isSubPop
+      <Login
         onSignInSuccess={() => {
           refetch(), setStep(1);
         }}
