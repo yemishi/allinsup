@@ -9,7 +9,6 @@ type HTMLMotionDivProps = Omit<
 >;
 
 type MotionPropsWithoutChildren = Omit<MotionProps, "children">;
-
 interface PropsType extends HTMLMotionDivProps, MotionPropsWithoutChildren {
   initialDirection: "100%" | "-100%";
   closeParent?: () => void;

@@ -12,13 +12,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { MdOutlineSort } from "react-icons/md";
 
-import SessionForm from "../../components/form/user/SessionForm";
 import { updateToken } from "../../services/axios.config";
 import Button from "../../components/ui/Button";
 import { ReactNode, useState } from "react";
 import { toast } from "react-toastify";
 import { DivDraggable } from "../../components";
 import Modal from "../../components/Modal";
+import Login from "../../components/form/user/Login";
 
 export default function Menu() {
   const [isLoading, setIsLoading] = useState(false);
@@ -66,7 +66,7 @@ export default function Menu() {
     return toast.success(response.message), closeModal();
   };
 
-  const openLogin = () => setIsModal({ content: <SessionForm onClose={closeModal} />, isLeft: false });
+  const openLogin = () => setIsModal({ content: <Login onClose={closeModal} />, isLeft: false });
 
   const upToAdmin = () => setIsModal({ content: <UpgradeUser onClose={closeModal} />, isLeft: false });
 
@@ -83,7 +83,7 @@ export default function Menu() {
         <MdOutlineSort className="!w-full !h-full text-white hover:text-[#fb923c]" />
       </button>
       {isModal && (
-        <Modal className={!isModal.isLeft ? "mx-auto bg-black  flex justify-center " : ""} onClose={closeModal}>
+        <Modal className={!isModal.isLeft ? "mx-auto  my-auto " : ""} onClose={closeModal}>
           {isModal.content}
         </Modal>
       )}

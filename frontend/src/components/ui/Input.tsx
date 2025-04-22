@@ -1,68 +1,51 @@
 import { InputHTMLAttributes, forwardRef, useState } from "react";
 import { FaEyeSlash } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
+import { cleanClasses } from "../../utils/helpers";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
-  icon?: React.ReactNode;
-  info?: string;
+  isLoading?: boolean;
   isPassword?: boolean;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const { label, icon, className, info, error, id, isPassword, ...rest } =
-    props;
-
+  const { className = "", label, error, id, isPassword, isLoading, placeholder, ...rest } = props;
   const [isPass, setIsPass] = useState<boolean>(true);
   const PassIcon = isPass ? FaEyeSlash : IoEyeSharp;
+  const hasValue = !!rest.value;
+
   const checkType = isPassword ? (isPass ? "password" : "text") : undefined;
-
   return (
-    <span
-      className={`${
-        className ? className : ""
-      }  flex flex-col gap-1 font-kanit text-left `}
-    >
-      <span>
-        <label
-          className="text-gray-200 lg:text-lg"
-          htmlFor={id || rest.name}
-          aria-label={rest.name}
-        >
-          {label}
-        </label>
-        {info && <p className="text-gray-400 text-sm">{info}</p>}
-      </span>
-
-      <span
-        className={`text-lg relative text-white rounded-md w-full
-       ${icon && "relative"}`}
-      >
-        <input
-          type={checkType}
-          id={id || rest.name}
-          className={`${className ? className : ""} ${
-            error ? "border-red-500" : "border-transparent"
-          } border w-full text-white text-opacity-50 duration-150 bg-primary-400 focus:bg-primary-200 p-2 lg:py-3 rounded-md outline-none focus:text-opacity-100 
-           placeholder:text-white placeholder:text-opacity-50 focus:placeholder:text-opacity-90 lg:text-xl disabled:pointer-events-none disabled:animate-pulse`}
-          ref={ref}
-          {...rest}
-        />
-        {icon}
-        {isPassword && (
-          <span
-            onClick={() => setIsPass(!isPass)}
-            className="absolute top-2/4 -translate-y-2/4 right-2 cursor-pointer"
-          >
-            <PassIcon className="w-6 h-6" />
-          </span>
-        )}
-      </span>
-      {error && (
-        <span className="ml-1 text-sm text-red-500 md:text-base">{error}</span>
+    <div
+      className={cleanClasses(
+        className,
+        `flex flex-col gap-1 relative border-b-2 p-2 group focus-within:border-secondary-400 ${
+          hasValue ? "border-blue-300" : ""
+        } ${error ? "!text-red-500 !border-red-500" : ""} ${isLoading ? "pointer-events-none animate-bounce" : ""}`
       )}
-    </span>
+    >
+      <label
+        className={`lg:text-lg absolute left-2 group-focus-within:text-secondary-400 duration-150 bottom-2 ${
+          hasValue ? "-translate-y-[85%] -translate-x-3 scale-[.78] font-semibold" : ""
+        } ${!error && hasValue ? "text-blue-300" : ""}`}
+        htmlFor={id || rest.name}
+        aria-label={rest.name}
+      >
+        {label}
+      </label>
+
+      <input type={checkType} id={id || rest.name} className="outline-none bg-transparent w-full" {...rest} ref={ref} />
+
+      {isPassword && (
+        <span onClick={() => setIsPass(!isPass)} className="absolute top-2/4 -translate-y-2/4 right-2 cursor-pointer">
+          <PassIcon className="w-6 h-6" />
+        </span>
+      )}
+
+      {error && <span className="text-sm absolute -top-3 right-0">{error || "Something went wrong here."}</span>}
+    </div>
   );
 });
 
