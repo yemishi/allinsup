@@ -4,16 +4,16 @@ import { lazy, useState } from "react";
 import DivDraggable from "../../ui/DivDraggable";
 import { IoCloseSharp } from "react-icons/io5";
 import MotionDiv from "../../ui/MotionDiv";
-import SigninForm from "./SignInForm";
+import SigninForm from "./SigninForm";
 
-const SignupForm = lazy(() => import("./SignUpForm"));
+const SignupForm = lazy(() => import("./SignupForm"));
 export default function Login({ onClose, onSignInSuccess }: { onClose: () => void; onSignInSuccess?: () => void }) {
   const [action, setAction] = useState<"signin" | "signup">("signin");
 
   return (
     <div
       className="flex flex-col items-center w-screen bg-gradient-to-tl overflow-x-hidden from-primary-500 to-primary 
-    h-screen min-[768px]:h-[700px] max-w-xl md:border md:border-primary-200 p-5 md:rounded-xl relative"
+    h-[100dvh] min-[768px]:h-[700px] max-w-xl md:border md:border-primary-200 p-5 md:rounded-xl relative"
     >
       <button type="button" className="ml-auto" onClick={onClose}>
         <IoCloseSharp className="h-8 w-8" />
