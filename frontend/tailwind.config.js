@@ -26,6 +26,7 @@ export default {
       fontFamily: {
         lato: ["Lato, sans-serif;"],
         montserrat: ["Montserrat, sans-serif"],
+        roboto: ["Roboto", "sans-serif"],
       },
       colors: {
         primary: { ...colorPrimary, DEFAULT: colorPrimary[700] },
