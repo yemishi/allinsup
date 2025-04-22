@@ -184,7 +184,6 @@ export default function Product() {
               </div>
 
               <Button
-                disableBounce
                 onClick={toCart}
                 className={`${
                   !count ? "pointer-events-none opacity-60" : ""
@@ -199,7 +198,6 @@ export default function Product() {
 
           <Button
             onClick={buyNow}
-            disableBounce
             className={`bg-sky-500 hover:bg-sky-600 w-full rounded-md ${
               !count ? "pointer-events-none opacity-60" : ""
             } `}
