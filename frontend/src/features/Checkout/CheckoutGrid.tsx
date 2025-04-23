@@ -4,18 +4,22 @@ import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import { redirect } from "react-router-dom";
 import { useCart } from "../../context/Provider";
-import { IoIosClose } from "react-icons/io";
 
 import Address from "./Address";
 import Steps from "./Steps";
 import Button from "../../components/ui/Button";
-import UserForm from "../../components/form/user/UserForm";
+
 import ErrorWrapper from "../../components/ErrorWrapper";
+
 import PaymentMethod from "./PaymentMethod";
 import Summary from "./Summary";
 import stripeCheckout from "./StripeCheckout";
-import { createOrder } from "./helpers";
 import Login from "../../components/form/user/Login";
+import AddressForm from "../../components/form/user/AddressForm";
+
+import { IoCloseSharp } from "react-icons/io5";
+import MotionDiv from "../../components/ui/MotionDiv";
+import { createOrder } from "./helpers";
 
 export default function CheckoutGrid({ onClose }: { onClose: () => void }) {
   const { cart, updateCart } = useCart();
@@ -25,7 +29,6 @@ export default function CheckoutGrid({ onClose }: { onClose: () => void }) {
     queryFn: () => axiosRequest.user.info(),
   });
   const [isFetching, setIsFetching] = useState(false);
-  const [isAddress, setIsAddress] = useState(false);
 
   const [step, setStep] = useState(1);
   const [method, setMethod] = useState("");
@@ -33,38 +36,81 @@ export default function CheckoutGrid({ onClose }: { onClose: () => void }) {
   if (data?.error && step !== 0) setStep(0);
 
   const next = async () => {
+    if (step === 0.5) return setStep(1);
     if (step !== 3) return setStep(step + 1);
-    if (method === "paypal" || method === "card") return await stripeCheckout({ method, cart });
+    const methodChoice = method.toLocaleLowerCase();
+
+    if (methodChoice === "paypal" || methodChoice === "card")
+      return await stripeCheckout({ method: methodChoice, cart });
     const onFinally = () => {
       setIsFetching(false);
       updateCart([]);
       redirect("/");
       onClose();
-      document.body.style.overflow = "";
     };
     createOrder(cart, method, setIsFetching, onFinally, updateCart);
   };
   const RenderStep = {
     0: (
       <Login
+        key="login-step"
+        className="bg-none border-none"
+        disableExit
         onSignInSuccess={() => {
           refetch(), setStep(1);
         }}
         onClose={() => setStep(1)}
       />
     ),
-    1: !data?.error && <Address toggleForm={() => setIsAddress(isAddress ? false : true)} userInfo={data!} />,
-    2: <PaymentMethod method={method} setMethod={setMethod} />,
-    3: <Summary method={method} cart={cart} />,
+    0.5: !data?.error && (
+      <MotionDiv justY key="delivery-form-step">
+        <AddressForm onSuccess={refetch} userInfo={data} onClose={() => setStep(1)} />
+      </MotionDiv>
+    ),
+    1: !data?.error && <Address key="address-step" toggleForm={() => setStep(0.5)} userInfo={data!} />,
+    2: <PaymentMethod key="payment-step" method={method} setMethod={setMethod} />,
+    3: <Summary key="summary-step" method={method} cart={cart} />,
+  }[step];
+
+  const RenderTitle = {
+    0: <></>,
+    0.5: (
+      <MotionDiv key="delivery-form-title">
+        <h2>Set a new address</h2>
+      </MotionDiv>
+    ),
+    1: (
+      <MotionDiv key="delivery-title">
+        <h2>Delivery address</h2>
+      </MotionDiv>
+    ),
+    2: (
+      <MotionDiv key="payment-title">
+        <h2>Payment Method</h2>
+      </MotionDiv>
+    ),
+    3: (
+      <MotionDiv key="summary-title">
+        <h2>Summary</h2>
+      </MotionDiv>
+    ),
+  }[step];
+  const textNext = {
+    0.5: "Back",
+    1: "Next",
+    2: "Confirm",
+    3: "Complete purchase",
   }[step];
 
   const disableNextAction =
-    (step === 2 && !method) || (step === 1 && !data?.error && !data?.address) ? "pointer-events-none opacity-50" : "";
+    (step === 2 && !method) || (step === 1 && !data?.error && !data?.address)
+      ? "pointer-events-none grayscale text-black"
+      : "";
 
   return (
     <div
-      className="w-full h-full overflow-x-hidden bg-primary-600 p-4 pb-8 flex flex-col max-h-[1000px] max-w-xl md:border md:border-primary-200
-     relative md:rounded-lg "
+      className="w-screen h-screen bg-gradient-to-tl p-5 from-primary-500 to-primary overflow-x-hidden bg-primary-600 pb-8 flex flex-col items-center 
+       max-w-3xl md:h-[900px] md:border md:border-primary-200 md:rounded-lg "
     >
       <ErrorWrapper
         className="my-auto shadow-none bg-none"
@@ -76,14 +122,18 @@ export default function CheckoutGrid({ onClose }: { onClose: () => void }) {
           <img src="loading.svg" className="self-center my-auto" />
         ) : (
           <>
-            <div className="flex flex-col gap-2 mb-5 ">
-              <button onClick={onClose}>
-                <IoIosClose className="w-7 h-7 md:w-10 md:h-10" />
+            <div className="flex flex-col gap-2 mb-5 w-full">
+              <button type="button" className="ml-auto" onClick={onClose}>
+                <IoCloseSharp className="h-8 w-8" />
               </button>
               <Steps setStep={setStep} step={step - 1} stepLength={3} />
             </div>
 
-            {isLoading ? <img src="/loading.svg" /> : <AnimatePresence mode="wait">{RenderStep}</AnimatePresence>}
+            <span className="font-anton text-xl w-max text-gray-200 md:self-center lg:text-2xl mb-5">
+              <AnimatePresence mode="wait">{RenderTitle}</AnimatePresence>
+            </span>
+
+            <AnimatePresence mode="wait">{RenderStep}</AnimatePresence>
 
             {step !== 0 && (
               <Button
@@ -91,16 +141,8 @@ export default function CheckoutGrid({ onClose }: { onClose: () => void }) {
                 onClick={next}
                 className={`mt-auto self-center bg-secondary-600 px-7 md:text-lg ${disableNextAction}`}
               >
-                {step === 3 ? "Complete purchase" : "Next"}
+                {textNext}
               </Button>
-            )}
-            {isAddress && !data?.error && (
-              <UserForm
-                className="z-20 absolute top-0 left-0 "
-                onSuccess={refetch}
-                onClose={() => setIsAddress(false)}
-                userInfo={data!}
-              />
             )}
           </>
         )}
