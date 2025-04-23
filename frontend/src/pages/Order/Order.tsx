@@ -15,17 +15,26 @@ export default function Order() {
   const { orderId } = useParams();
   const variant = {
     open: { y: 0, opacity: 1, height: "auto" },
-    closed: { y: "-100%", opacity: 0, height: "1px" },
+    closed: { y: -200, opacity: 0, height: "0px" },
   };
-  const [allowProduct, setAllowProduct] = useState(false);
+  const [allowProduct, setAllowProduct] = useState(true);
   const { data, isLoading } = useQuery({
     queryFn: () => axiosRequest.order.single(orderId as string),
     queryKey: [orderId],
   });
-  if (isLoading) return  <Image src="/loading.svg" className="h-40 w-40 ml-auto mr-auto" />;
+  if (isLoading) return <Image src="/loading.svg" className="h-40 w-40 ml-auto mr-auto" />;
   if (!data || data.error) return <NotFoundPage />;
 
-  const { products, purchaseDate, status, _id, totalPaid, method } = data;
+  const {
+    products,
+    purchaseDate,
+    status,
+    _id,
+    totalPaid,
+    method,
+    address: { address, houseNumber, cep },
+    receivedDate,
+  } = data;
 
   return (
     <motion.div
@@ -36,19 +45,18 @@ export default function Order() {
       transition={{ duration: 0.2 }}
       className="flex flex-col p-4 text-white gap-7 md:items-center"
     >
-      <h1 className="font-anton text-xl lg:text-2xl ml-4  font-semibold ">
+      <h1 className="font-anton ml-4 font-semibold text-xl mt-4 font-anton md:text-2xl lg:text-3xl">
         Purchase information
       </h1>
       <div className="w-full max-w-2xl lg:text-lg bg-primary-600 border-y text-gray-200 border-primary-200 ">
         <dl className="flex flex-col gap-3 p-4 ">
           <DivList dt="Purchase date:" dd={parseToDate(purchaseDate)} />
-          <DivList
-            dt="Total paid:"
-            dd={parseLocalCurrency(Number(totalPaid))}
-          />
+          <DivList dt="Total paid:" dd={parseLocalCurrency(Number(totalPaid))} />
+          {receivedDate && <DivList dt="Received at" dd={String(receivedDate)} />}
           <DivList dt="Status" dd={status} />
           <DivList dt="Order id:" dd={_id} />
           <DivList dt="Payment method" dd={method} />
+          <DivList dt="Delivery address" dd={`${cep}-${address}-${houseNumber}`} />
         </dl>
       </div>
 
@@ -84,27 +92,16 @@ export default function Order() {
                 className="flex gap-7 lg:text-lg md:gap-3 pb-7 md:pb-2 border-b
                          border-primary-200 md:grid md:grid-cols-2 lg:gap-14"
               >
-                <Link
-                  to={`/product/${_id}`}
-                  className="w-2/6 h-28 md:w-auto md:h-36 lg:h-40"
-                >
-                  <Image
-                    src={coverPhoto}
-                    className="rounded-lg duration-300 object-contain p-1 bg-white"
-                  />
+                <Link to={`/product/${_id}`} className="w-2/6 h-28 md:w-auto md:h-36 lg:h-40">
+                  <Image src={coverPhoto} className="rounded-lg duration-300 object-contain p-1 bg-white" />
                 </Link>
 
                 <div className="flex w-3/5 flex-col font-anton md:w-auto">
                   <dl className="flex flex-col gap-2  h-full ">
-                    <span className="font-semibold text-center text-gray-200 md:text-xl">
-                      {name}
-                    </span>
+                    <span className="font-semibold text-center text-gray-200 md:text-xl">{name}</span>
                     <span className="mt-auto">
                       <DivList dt="Qtd:" dd={String(qtd)} />
-                      <DivList
-                        dt="Total:"
-                        dd={parseLocalCurrency(Number(price))}
-                      />
+                      <DivList dt="Total:" dd={parseLocalCurrency(Number(price))} />
                     </span>
                   </dl>
                 </div>
