@@ -18,6 +18,7 @@ interface PropsType<T> extends Omit<FormHTMLAttributes<HTMLFormElement>, "onSubm
   children?: ReactNode;
   submitMessage?: string;
   disabled?: boolean;
+  submitStyle?: string;
 }
 
 export default function Form<T>({
@@ -26,6 +27,7 @@ export default function Form<T>({
   onSubmit,
   isSuccess,
   children,
+  submitStyle = "",
   submitMessage,
   ...props
 }: PropsType<T>) {
@@ -59,7 +61,7 @@ export default function Form<T>({
           />
         );
       })}
-      <Button disabled={disabled} isLoading={isLoading} className="my-5 self-center" type="submit">
+      <Button disabled={disabled} isLoading={isLoading} className={`${submitStyle} my-5 self-center`} type="submit">
         {submitMessage || "Confirm"}
       </Button>
       {children}
