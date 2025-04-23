@@ -11,12 +11,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const { className = "", label, error, id, isPassword, isLoading, placeholder, ...rest } = props;
+  const { className = "", label, error, id, isPassword, isLoading, placeholder, type: selectedType, ...rest } = props;
   const [isPass, setIsPass] = useState<boolean>(true);
   const PassIcon = isPass ? FaEyeSlash : IoEyeSharp;
   const hasValue = !!rest.value;
 
-  const checkType = isPassword ? (isPass ? "password" : "text") : undefined;
+  const type = isPassword ? (isPass ? "password" : "text") : selectedType || "text";
   return (
     <div
       className={cleanClasses(
@@ -36,7 +36,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
         {label}
       </label>
 
-      <input type={checkType} id={id || rest.name} className="outline-none bg-transparent w-full" {...rest} ref={ref} />
+      <input type={type} id={id || rest.name} className="outline-none bg-transparent w-full" {...rest} ref={ref} />
 
       {isPassword && (
         <span onClick={() => setIsPass(!isPass)} className="absolute top-2/4 -translate-y-2/4 right-2 cursor-pointer">
