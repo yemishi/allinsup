@@ -10,6 +10,7 @@ import { RxExit } from "react-icons/rx";
 import CartProducts from "./CartProducts";
 import Checkout from "../Checkout/CheckoutGrid";
 import Modal from "../../components/Modal";
+import Button from "../../components/ui/Button";
 
 interface PropsType {
   onClose: () => void;
@@ -65,15 +66,19 @@ export default function CartPanel({ onClose }: PropsType) {
         </div>
       )}
       <div className="sticky mt-auto bottom-0 w-full flex justify-center items-center py-4 px-2">
-        {isModal && <Modal onClose={() => setIsModal(false)}>{isModal}</Modal>}
-        <button
+        {isModal && (
+          <Modal className="mx-auto my-auto" onClose={() => setIsModal(false)}>
+            {isModal}
+          </Modal>
+        )}
+        <Button
           onClick={() => setIsModal(<Checkout onClose={() => setIsModal(false)} />)}
           className={`${
-            cart.length === 0 ? "opacity-50 pointer-events-none bg-white text-black" : "bg-secondary-600 cursor-pointer"
-          }    font-lato py-4 px-6 text-sm font-semibold rounded-xl`}
+            cart.length === 0 ? " pointer-events-none grayscale text-black" : "bg-secondary-600 cursor-pointer"
+          }    font-lato py-4 px-6 text-sm font-semibold rounded-xl bg-secondary-600`}
         >
           CONTINUE
-        </button>
+        </Button>
       </div>
     </DivDraggable>
   );

@@ -33,6 +33,7 @@ router.post("/checkout", (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.json({ id: session.id });
     }
     catch (error) {
+        console.log(error);
         return res.json({
             error: true,
             message: "We had a problem in an attempt to make a purchase.",
@@ -51,7 +52,12 @@ router.get("/confirm-payment", (req, res) => __awaiter(void 0, void 0, void 0, f
         }
         const session = yield stripe.checkout.sessions.retrieve(sessionId);
         if (session.payment_status === "paid") {
-            res.json({ success: true, message: "Payment successful", paymentStatus: session.payment_status, method: decoded.method });
+            res.json({
+                success: true,
+                message: "Payment successful",
+                paymentStatus: session.payment_status,
+                method: decoded.method,
+            });
         }
         else {
             res.json({ success: false, message: "Payment not successful", paymentStatus: session.payment_status });

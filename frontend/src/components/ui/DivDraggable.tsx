@@ -14,7 +14,6 @@ interface PropsType extends HTMLMotionDivProps, MotionPropsWithoutChildren {
   closeParent?: () => void;
   exit?: string;
   children?: ReactNode;
-  changeOpacity?: boolean;
   disableDrag?: boolean;
   maxMd?: boolean;
   removeAnimatePresence?: boolean;
@@ -27,7 +26,6 @@ export default function DivDraggable({
   disableDrag,
   exit,
   maxMd,
-  changeOpacity,
   removeAnimatePresence,
   ...props
 }: PropsType) {
@@ -66,15 +64,15 @@ export default function DivDraggable({
         <motion.div
           {...rest}
           dragPropagation={false}
-          initial={{ x: initialDirection, opacity: changeOpacity ? 0 : 1 }}
+          initial={{ x: initialDirection, opacity: 0 }}
           exit={{
             x: exit ? exit : directionDrag,
-            opacity: changeOpacity ? 0 : 1,
+            opacity: 0,
           }}
           animate={{ x: 0, opacity: 1 }}
           className={`${cleanClasses(
             className,
-            " flex flex-col overflow-y-auto h-full w-screen lg:min-w-[500px] min-[450px]:w-[450px]  bg-primary-600"
+            " flex flex-col overflow-y-auto h-full w-screen lg:min-w-[500px] min-[450px]:w-[450px] bg-primary-600"
           )} ${maxMd ? "max-h-[1000px] max-w-xl md:border md:border-primary-200" : ""}`}
           transition={{ type: "just" }}
           {...(!minTablet && {
