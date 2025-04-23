@@ -16,14 +16,14 @@ export default function Address({
       exit="-100%"
       removeAnimatePresence
       disableDrag
-      className="flex flex-col p-2 gap-4 lg:gap-11 h-full w-full bg-none"
+      className="flex flex-col p-2 gap-4 lg:gap-11 bg-none"
     >
-      <h2 className="font-anton text-xl w-max text-gray-200 md:self-center lg:text-2xl">
-        Delivery address
-      </h2>
-      <div className="flex flex-col items-center w-full text-white bg-primary p-6 gap-4 border border-primary-200 ">
+      <div
+        className="flex flex-col items-center w-full mt-20 bg-gradient-to-br from-primary to-primary-550 p-6 gap-4 border rounded-lg
+       border-primary-200 "
+      >
         {address ? (
-          <div className="flex w-full flex-col gap-6">
+          <div className="flex w-full flex-col gap-7 lg:text-lg lg:py-5 lg:gap-10">
             <ul className="font-lato flex flex-col lg:gap-2 lg:text-lg">
               <li>{name}</li>
               <li>
@@ -33,22 +33,24 @@ export default function Address({
               <li>
                 {address.cep} {address.state}
               </li>
+
+              {address.complement && <li>{address.complement}</li>}
             </ul>
             <button
               onClick={toggleForm}
-              className="cursor-pointer border-b leading-4 self-center lg:text-lg text-secondary-200 border-secondary-200 font-lato font-semibold"
+              className="cursor-pointer text-secondary-300 hover:brightness-110 underline underline-offset-4 leading-4 self-center font-lato font-semibold
+               transition-all"
             >
               Edit delivery address
             </button>
           </div>
         ) : (
-          <div className="flex flex-col w-full items-start rounded-md gap-7 lg:text-lg lg:py-5 lg:gap-10">
-            <p className="font-anton text-red-400">
-              You must have a delivery address
-            </p>
+          <div className="flex flex-col items-start rounded-md gap-7 lg:text-lg lg:py-5 lg:gap-10">
+            <p className="font-anton text-red-400">You must have a delivery address</p>
             <button
               onClick={toggleForm}
-              className="cursor-pointer underline underline-offset-4 leading-4 self-center font-lato font-semibold "
+              className="cursor-pointer text-secondary-300 hover:brightness-110 underline underline-offset-4 leading-4 self-center font-lato font-semibold
+               transition-all"
             >
               Add address
             </button>
