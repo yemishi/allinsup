@@ -10,6 +10,7 @@ import { TfiPackage } from "react-icons/tfi";
 import ErrorWrapper from "../../components/ErrorWrapper";
 import { blinkVariant } from "../../utils/helpers";
 import { parseLocalCurrency, parseToDate } from "../../utils/formatting";
+import Button from "../../components/ui/Button";
 
 export default function Orders() {
   const {
@@ -33,7 +34,7 @@ export default function Orders() {
       exit="exit"
       variants={blinkVariant}
       transition={{ duration: 0.2 }}
-      className="flex flex-col items-center p-4 text-white gap-5 w-full"
+      className="flex flex-col items-center p-4 gap-5 w-full "
     >
       <h1 className="text-xl mt-4 self-baseline font-anton font-semibold md:text-2xl lg:text-3xl">My orders</h1>
       <ErrorWrapper error={isError} refetch={refetch}>
@@ -46,8 +47,8 @@ export default function Orders() {
               return (
                 <div
                   key={`${order}_${index}`}
-                  className="p-4 border font-lato text-gray-200 flex w-full rounded bg-primary-550 
-                        border-gray-600 lg:text-lg flex-col gap-4"
+                  className="p-4  border font-lato text-gray-200 flex bg-primary-550 hover:bg-primary-500 transition-all
+                   border-gray-600 lg:text-lg flex-col gap-4 rounded-xl"
                 >
                   <dl className="w-full flex flex-col gap-1 md:gap-4">
                     <DivList dt="Order id:" dd={_id} />
@@ -56,12 +57,9 @@ export default function Orders() {
                     <DivList dt="Value paid" dd={parseLocalCurrency(Number(totalPaid))} />
                     <DivList dt="Status" dd={status} />
                   </dl>
-                  <Link
-                    to={`/order/${_id}`}
-                    className="self-center px-4 py-1 border mt-auto border-gray-500 font-serif font-thin rounded-md md:py-2 md:px-4"
-                  >
-                    Details
-                  </Link>
+                  <Button className="self-center px-4 py-2 border border-secondary-">
+                    <Link to={`/order/${_id}`}>Details</Link>
+                  </Button>
                 </div>
               );
             })}
