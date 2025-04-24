@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import useScrollQuery from "../../hooks/useInfiniteQuery";
-import { DivList } from "../../components/ui/DivList";
 import { OrderType } from "../../types/response";
+import useScrollQuery from "../../hooks/useInfiniteQuery";
 
-import ProductsSimilar from "../Product/ProductsSimilar";
+import ProductsSimilar from "../Product/ProductsSimilar/ProductsSimilar";
 import { useCart } from "../../context/Provider";
 import { TfiPackage } from "react-icons/tfi";
-import ErrorWrapper from "../../components/ErrorWrapper";
+
 import { blinkVariant } from "../../utils/helpers";
 import { parseLocalCurrency, parseToDate } from "../../utils/formatting";
-import Button from "../../components/ui/Button";
+import { Button } from "../../ui";
+import { ErrorWrapper } from "../../components";
+import { DivList } from "../../ui";
 
 export default function Orders() {
   const {

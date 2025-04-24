@@ -1,6 +1,6 @@
 import "react-toastify/dist/ReactToastify.css";
 import RoutesConfig from "./routes/routesConfig";
-import Header from "./features/Header/Header";
+import Header from "./components/Header/Header";
 
 function App() {
   return (

@@ -4,14 +4,14 @@ import { ProductType } from "../../types/response";
 
 import brandIcon from "./assets/brand-icon.jpg";
 
-import HighlightProducts from "./HighlightProducts";
+import HighlightPanel from "./HighlightPanel/HighlightPanel";
 
 import { useCart } from "../../context/Provider";
-import { Image, Slide, Slider, SliderProps } from "../../components";
+import { Slide, Slider, SliderProps, ErrorWrapper } from "../../components";
 import { lazy, Suspense, useState } from "react";
 import { blinkVariant } from "../../utils/helpers";
+import { Image } from "../../ui";
 
-const ErrorWrapper = lazy(() => import("../../components/ErrorWrapper"));
 const CardGrid = lazy(() => import("../../components/Card/CardGrid"));
 
 export default function Home() {
@@ -49,7 +49,7 @@ export default function Home() {
       transition={{ duration: 0.2 }}
       className="w-full text-white h-full flex flex-col gap-4 overflow-hidden justify-center items-center "
     >
-      <HighlightProducts cart={cart} updateCart={updateCart} />
+      <HighlightPanel cart={cart} updateCart={updateCart} />
       <Slider settings={settings}>
         {brands.map((name, index) => {
           return (

@@ -1,16 +1,16 @@
+import axios from "axios";
+
+import { ReactNode, useState } from "react";
 import useScrollQuery from "../../../hooks/useInfiniteQuery";
 import { ProductFormType, ProductType, VariantType } from "../../../types/response";
-import Button from "../../../components/ui/Button";
-import ProductForm from "../../../components/form/product/ProductForm";
+
 import axiosRequest from "../../../services/axios.config";
-import { motion } from "framer-motion";
-import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import { enableScroll, productDetails } from "../../../utils/helpers";
 import { toast } from "react-toastify";
-import { DivDraggable } from "../../../components";
-import { ReactNode, useState } from "react";
-import Modal from "../../../components/Modal";
+
+import { Modal, ProductForm } from "../../../components";
+import { DivDraggable, MotionDiv, Button } from "../../../ui";
 
 interface VariantData extends Omit<VariantType, "photos"> {
   photos: [];
@@ -159,12 +159,7 @@ export default function ProductsDashboard() {
 
 const DeleteProduct = ({ fetchData, close }: { fetchData: () => void; close: () => void }) => {
   return (
-    <motion.div
-      initial={{ y: "-100%" }}
-      animate={{ y: 0 }}
-      transition={{ type: "just" }}
-      className="p-6 pb-4 rounded-lg bg-primary-500 flex flex-col gap-14"
-    >
+    <MotionDiv justY className="p-6 pb-4 rounded-lg bg-primary-500 flex flex-col gap-14">
       <span className="text-xl font-bold">You really want delete this product?</span>
       <div className="grid grid-cols-2 gap-2">
         <Button className="py-2 bg-primary" onClick={close}>
@@ -174,7 +169,7 @@ const DeleteProduct = ({ fetchData, close }: { fetchData: () => void; close: () 
           Yes!
         </Button>
       </div>
-    </motion.div>
+    </MotionDiv>
   );
 };
 

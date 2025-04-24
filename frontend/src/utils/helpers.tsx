@@ -72,6 +72,7 @@ const productDetails = (product: ProductType, cart?: CartType[], variantIndex?: 
   };
 };
 const cleanClasses = (className = "", fallback = "") => {
+  
   const current = className.split(/\s+/);
   const fallbackClasses = fallback.split(/\s+/);
 

@@ -2,7 +2,7 @@ import { AnimatePresence } from "framer-motion";
 import { HTMLAttributes, lazy, useState } from "react";
 
 import { IoCloseSharp } from "react-icons/io5";
-import MotionDiv from "../../ui/MotionDiv";
+import MotionDiv from "../../../ui/Divs/MotionDiv";
 import SignInForm from "./SignInForm";
 import { cleanClasses } from "../../../utils/helpers";
 
@@ -22,7 +22,7 @@ export default function Login({ disableExit, onClose, onSignInSuccess, ...rest }
       className={cleanClasses(
         className,
         `flex flex-col items-center w-screen bg-gradient-to-tl from-primary-500 to-primary overflow-x-hidden  
-    h-[100dvh] min-[768px]:h-[700px] max-w-xl md:border md:border-primary-200 p-5 md:rounded-xl`
+         h-[100dvh] min-[768px]:h-[700px] max-w-xl md:border md:border-primary-200 p-5 md:rounded-xl`
       )}
     >
       {!disableExit && (

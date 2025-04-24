@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import Slider, { Slide } from "./Slider";
-import { Image, SliderProps } from "..";
+
 import { CartType, ProductType } from "../../types/response";
 import { parseLocalCurrency } from "../../utils/formatting";
 import { productDetails } from "../../utils/helpers";
 import { FaCartPlus } from "react-icons/fa";
+import { SliderProps } from "..";
+import { Image } from "../../ui";
 
 export default function ProductSlider({
   children,

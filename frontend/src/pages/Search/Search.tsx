@@ -1,12 +1,14 @@
+import { useEffect, useRef, useState, useCallback } from "react";
+import { motion } from "framer-motion";
 import { useSearchParams } from "react-router-dom";
 import { IoIosArrowUp } from "react-icons/io";
-import { motion } from "framer-motion";
-import CardGrid from "../../components/Card/CardGrid";
+
 import useScrollQuery from "../../hooks/useInfiniteQuery";
 import { ProductType } from "../../types/response";
-import { blinkVariant } from "../../utils/helpers";
-import { Image } from "../../components";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { blinkVariant } from "../../utils/helpers";;
+import { Image } from "../../ui";
+
+import { CardGrid } from "../../components";
 
 export default function Search() {
   const [searchParams] = useSearchParams();

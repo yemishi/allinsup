@@ -1,6 +1,6 @@
-import Form, { InputsType } from "../Form";
 import axiosRequest from "../../../services/axios.config";
 import { toast } from "react-toastify";
+import Form, { InputsType } from "../Form";
 interface Props {
   gotoSignIn: () => void;
 }

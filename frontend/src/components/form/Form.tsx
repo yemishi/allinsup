@@ -1,6 +1,5 @@
 import { FormHTMLAttributes, ReactNode, useState } from "react";
-import Button from "../ui/Button";
-import Input from "../ui/Input";
+import { Button, Input } from "../../ui";
 import useForm, { FormField } from "../../hooks/useForm";
 import { cleanClasses } from "../../utils/helpers";
 

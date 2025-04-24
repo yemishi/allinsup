@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { ReactNode, useState } from "react";
 import { useQuery } from "react-query";
 import axiosRequest from "../../services/axios.config";
 
@@ -8,20 +9,20 @@ import { RiShoppingCartLine } from "react-icons/ri";
 import { useCart } from "../../context/Provider";
 
 import checkDev from "../../utils/isMobile";
-import EditableText from "../../components/ui/EditableText";
-import { ReactNode, useState } from "react";
 import { CartType } from "../../types/response";
-import Checkout from "../../features/Checkout/CheckoutGrid";
-import Button from "../../components/ui/Button";
-import VariantOptions from "./VariantOptions";
 
-import ProductsSimilar from "./ProductsSimilar";
-import ProductImages from "./ProductImages";
+import ProductVariantOptions from "./ProductVariantOptions/ProductVariantOptions";
+
+import ProductsSimilar from "./ProductsSimilar/ProductsSimilar";
+
 import { productDetails } from "../../utils/helpers";
 import { parseLocalCurrency } from "../../utils/formatting";
 import NotFoundPage from "../NotFoundPage";
-import Description from "../../components/Description/Description";
-import Modal from "../../components/Modal";
+
+import { CheckoutGrid, Modal } from "../../components";
+import { EditableText, Button } from "../../ui";
+import ProductImageGallery from "./ProductImageGallery/ProductImageGallery";
+import ProductDesc from "./ProductDesc/ProductDesc";
 
 export default function Product() {
   const { _id } = useParams();
@@ -95,7 +96,7 @@ export default function Product() {
   };
 
   const buyNow = () => {
-    const Component = () => <Checkout onClose={() => setIsModal(false)} />;
+    const Component = () => <CheckoutGrid onClose={() => setIsModal(false)} />;
     toCart(), setIsModal(<Component />), setCount(0);
   };
 
@@ -115,7 +116,7 @@ export default function Product() {
 
       <h1 className="md:hidden first-letter:uppercase text-xl font-bold">{name}</h1>
       <div className="flex flex-col gap-6 pb-6 w-full p-4 bg-primary-500 rounded-md md:flex-row">
-        <ProductImages photos={photos} />
+        <ProductImageGallery photos={photos} />
 
         <div className="flex flex-col gap-4 md:gap-6  md:min-w-[38%] lg:w-[35%] md:max-w-[28%]">
           <h1 className="font-lato text-xl text-white font-medium md:text-2xl lg:text-3xl overflow-hidden hidden md:block">
@@ -143,7 +144,7 @@ export default function Product() {
 
           <div className={`flex gap-4 justify-between md:flex-col md:gap-6 ${stock === 0 && "grayscale"}`}>
             {!isMobile && (
-              <VariantOptions
+              <ProductVariantOptions
                 sizeCurrIndex={sizeCurrIndex}
                 changeVariant={(index: number) => {
                   setVariantIndex(index), setCount(0);
@@ -184,7 +185,6 @@ export default function Product() {
               </div>
 
               <Button
-                
                 onClick={toCart}
                 className={`${
                   !count ? "pointer-events-none opacity-60" : ""
@@ -211,7 +211,7 @@ export default function Product() {
         <>
           <Title>Product Details</Title>
 
-          <VariantOptions
+          <ProductVariantOptions
             sizeCurrIndex={sizeCurrIndex}
             changeVariant={(index: number) => {
               setVariantIndex(index), setCount(0);
@@ -225,7 +225,7 @@ export default function Product() {
         </>
       )}
       <Title>Product Information</Title>
-      <Description desc={data.desc} />
+      <ProductDesc desc={data.desc} />
       <ProductsSimilar title="You may to like" cart={cart} updateCart={updateCart} brand={data.brand} />
     </div>
   );

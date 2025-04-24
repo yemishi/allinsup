@@ -1,15 +1,15 @@
+import { ReactNode, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useScrollQuery from "../../../hooks/useInfiniteQuery";
 import { OrderType } from "../../../types/response";
-import { DivList } from "../../../components/ui/DivList";
+
 
 import EditOrder from "./EditOrder";
-import Button from "../../../components/ui/Button";
 
 import { parseLocalCurrency } from "../../../utils/formatting";
-import { Image } from "../../../components";
-import { ReactNode, useState } from "react";
-import Modal from "../../../components/Modal";
+
+import Modal from "../../../components/Modal/Modal";
+import { DivList, Image ,Button} from "../../../ui";
 
 export default function OrdersDashboard() {
   const [searchParams] = useSearchParams();

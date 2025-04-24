@@ -1,7 +1,5 @@
-import EditableText from "../../ui/EditableText";
-
 import { DetailsType } from "../../../types/response";
-import Button from "../../ui/Button";
+import { Button, EditableText } from "../../../ui";
 import { LuDelete } from "react-icons/lu";
 
 interface PropsType {
@@ -10,16 +8,9 @@ interface PropsType {
   variantIndex: number;
 }
 
-export default function DetailsConfig({
-  details,
-  updateDetails,
-  variantIndex,
-}: PropsType) {
+export default function DetailsConfig({ details, updateDetails, variantIndex }: PropsType) {
   const add = () => {
-    const update: DetailsType[] = [
-      ...details,
-      { price: 22, size: "20ml", stock: 10 },
-    ];
+    const update: DetailsType[] = [...details, { price: 22, size: "20ml", stock: 10 }];
     updateDetails(update);
   };
   const remove = (index: number) => {
@@ -31,15 +22,8 @@ export default function DetailsConfig({
       {details.map((detail, sizeIndex) => {
         const { price, size, stock, isHighlight, promotion } = detail;
         return (
-          <div
-            className="text-lg flex flex-col relative lg:text-xl"
-            key={`${variantIndex}_${detail}_${sizeIndex}`}
-          >
-            <div
-              className={`text-center my-2 relative ${
-                sizeIndex === 0 ? "" : "border-t pt-2"
-              }`}
-            >
+          <div className="text-lg flex flex-col relative lg:text-xl" key={`${variantIndex}_${detail}_${sizeIndex}`}>
+            <div className={`text-center my-2 relative ${sizeIndex === 0 ? "" : "border-t pt-2"}`}>
               {details.length > 1 && (
                 <button
                   onClick={() => remove(sizeIndex)}
@@ -103,10 +87,7 @@ export default function DetailsConfig({
                 updateDetails(updated);
               }}
             >
-              <span>Is highlight?</span>{" "}
-              <span className="text-secondary-300">
-                {isHighlight ? "Yes" : "No"}
-              </span>
+              <span>Is highlight?</span> <span className="text-secondary-300">{isHighlight ? "Yes" : "No"}</span>
             </span>
 
             <span className="flex gap-1">

@@ -1,6 +1,6 @@
-import Form, { InputsType } from "../Form";
 import axiosRequest, { updateToken } from "../../../services/axios.config";
 import { toast } from "react-toastify";
+import Form, { InputsType } from "../Form";
 
 export default function SignInForm({ onClose, onSuccess }: { onClose: () => void; onSuccess?: () => void }) {
   const inputs: InputsType = {

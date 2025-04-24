@@ -1,5 +1,4 @@
-import Button from "../../ui/Button";
-import EditableText from "../../ui/EditableText";
+import { Button, EditableText } from "../../../ui";
 import DetailsConfig from "./DetailsConfig";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import PhotosConfig from "./PhotosConfig";
@@ -21,9 +20,7 @@ interface PropsType {
   defaultVariant: VariantType;
   updateVariants: (updatedVariants: VariantType[]) => void;
   suspendedPhotos: string[] | undefined;
-  setSuspendedPhotos: React.Dispatch<
-    React.SetStateAction<string[] | undefined>
-  >;
+  setSuspendedPhotos: React.Dispatch<React.SetStateAction<string[] | undefined>>;
 }
 
 export default function VariantsConfig({
@@ -63,17 +60,13 @@ export default function VariantsConfig({
               placeholder={flavor}
               value={flavor}
               onBlur={(e) => {
-                if (!e.target.value)
-                  updateName(flavor || `flavor ${index + 1}`, index);
+                if (!e.target.value) updateName(flavor || `flavor ${index + 1}`, index);
               }}
               onChange={(e) => updateName(e.target.value, index)}
             />
 
             {variants.length > 1 && (
-              <span
-                onClick={() => remove(index)}
-                className="absolute right-0 top-0 p-2 backdrop rounded-lg"
-              >
+              <span onClick={() => remove(index)} className="absolute right-0 top-0 p-2 backdrop rounded-lg">
                 <RiDeleteBin2Line opacity="80%" size={24} />
               </span>
             )}

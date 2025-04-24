@@ -4,7 +4,7 @@ import { CartType } from "../../types/response";
 import { BsCartPlus } from "react-icons/bs";
 import { parseLocalCurrency } from "../../utils/formatting";
 import { motion } from "framer-motion";
-import Image from "../ui/Image";
+import { Image } from "../../ui";
 
 interface PropsType {
   addToCart: () => void;
@@ -22,14 +22,8 @@ export default function Card({
     flex-1 min-w-[165px] max-w-[250px] md:min-w-[185px] border border-primary-200 lg:min-w-[250px] lg:max-w-[280px] lg:h-[342px] text-white bg-primary-500 p-1 md:p-2 gap-2 pb-2 md:pb-3 md:gap-4 rounded-lg"
     >
       <div className="flex flex-col gap-2 h-full pb-1">
-        <Link
-          to={`/product/${_id}`}
-          className="bg-white p-4 cursor-pointer rounded-md "
-        >
-          <Image
-            src={coverPhoto}
-            className="w-full h-44 object-contain hover:scale-105 "
-          />
+        <Link to={`/product/${_id}`} className="bg-white p-4 cursor-pointer rounded-md ">
+          <Image src={coverPhoto} className="w-full h-44 object-contain hover:scale-105 " />
         </Link>
 
         <span className="truncate-2-lines">{name}</span>
@@ -55,14 +49,8 @@ export default function Card({
           <button
             onClick={addToCart}
             className={`border py-1 duration-300 px-3 
-                rounded-lg relative ${
-                  !amount && !soldOff
-                    ? "border-white "
-                    : "border-secondary-500 "
-                }
-                 ${
-                   soldOff ? "pointer-events-none grayscale" : "cursor-pointer"
-                 } group`}
+                rounded-lg relative ${!amount && !soldOff ? "border-white " : "border-secondary-500 "}
+                 ${soldOff ? "pointer-events-none grayscale" : "cursor-pointer"} group`}
           >
             <BsCartPlus
               className={`!w-5 !h-5 md:!w-6 md:!h-6 lg:!w-7 lg:!h-7 ${

@@ -1,7 +1,6 @@
 import { HTMLAttributes, useMemo, useState } from "react";
-import InputImage from "../../ui/InputImg";
 import { RiDeleteBin5Line } from "react-icons/ri";
-import Image from "../../ui/Image";
+import { Image, InputImg } from "../../../ui";
 
 interface PropsType extends HTMLAttributes<HTMLDivElement> {
   photos: FileList[];
@@ -23,10 +22,7 @@ export default function PhotosConfig({
 }: PropsType) {
   const [photos, setPhotos] = useState<FileList[]>(initialPhotos);
   const { className, ...rest } = props;
-  const photosUrls = useMemo(
-    () => photos.map((photo) => URL.createObjectURL(photo[0])),
-    [photos]
-  );
+  const photosUrls = useMemo(() => photos.map((photo) => URL.createObjectURL(photo[0])), [photos]);
 
   const removePhoto = (index: number) => {
     const updated = photos.filter((_, photoIndex) => index !== photoIndex);
@@ -35,19 +31,12 @@ export default function PhotosConfig({
   };
 
   return (
-    <div
-      {...rest}
-      className={`${
-        className ? className : ""
-      } flex flex-wrap gap-4 items-center`}
-    >
+    <div {...rest} className={`${className ? className : ""} flex flex-wrap gap-4 items-center`}>
       {photosData &&
         photosData.map((url, index) => {
           return (
             <Photo
-              className={
-                suspendedPhotos?.includes(url) ? "opacity-50 grayscale" : ""
-              }
+              className={suspendedPhotos?.includes(url) ? "opacity-50 grayscale" : ""}
               key={`${url}_${index}`}
               url={url}
               onClick={() => updateSuspended(url)}
@@ -56,15 +45,9 @@ export default function PhotosConfig({
         })}
 
       {photosUrls.map((url, index) => {
-        return (
-          <Photo
-            key={`${url}_${index}`}
-            url={url}
-            onClick={() => removePhoto(index)}
-          />
-        );
+        return <Photo key={`${url}_${index}`} url={url} onClick={() => removePhoto(index)} />;
       })}
-      <InputImage
+      <InputImg
         id={`photos_variant_${variantIndex}`}
         onChange={(e) => {
           updatePhotos([...photos, e]);
@@ -75,15 +58,7 @@ export default function PhotosConfig({
   );
 }
 
-const Photo = ({
-  onClick,
-  url,
-  className,
-}: {
-  onClick: () => void;
-  url: string;
-  className?: string;
-}) => (
+const Photo = ({ onClick, url, className }: { onClick: () => void; url: string; className?: string }) => (
   <div className={`relative h-20 w-20 lg:w-24 lg:h-24 group ${className || ""}`}>
     <Image className="object-cover rounded-lg w-full h-full" src={url} />
     <div

@@ -1,17 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import Input from "../../ui/Input";
 import VariantsConfig from "./VariantsConfig";
 import { useState } from "react";
-import Button from "../../ui/Button";
+import { Button, Input } from "../../../ui";
 import { IoCaretBack } from "react-icons/io5";
-import {
-  ProductFormType,
-  ProductType,
-  VariantType,
-} from "../../../types/response";
-import Description from "../../Description/Description";
+import { ProductFormType, ProductType, VariantType } from "../../../types/response";
+import Description from "./EditProductDesc";
 
 interface VariantData extends Omit<VariantType, "photos"> {
   photos: [];
@@ -70,9 +65,7 @@ export default function ProductForm({
       ],
     };
   };
-  const [variants, setVariants] = useState<VariantType>(
-    defaultValues?.variants || [defaultVariant(1)]
-  );
+  const [variants, setVariants] = useState<VariantType>(defaultValues?.variants || [defaultVariant(1)]);
   const [isLoading, setIsLoading] = useState(false);
   const [suspendedPhotos, setSuspendedPhotos] = useState<string[]>();
   const [desc, setDesc] = useState<{ title: string; text: string }[]>(
@@ -99,16 +92,9 @@ export default function ProductForm({
     setIsLoading(false);
   };
   return (
-    <form
-      className="w-full h-full flex flex-col pt-4 px-4 gap-2 overflow-x-hidden"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <form className="w-full h-full flex flex-col pt-4 px-4 gap-2 overflow-x-hidden" onSubmit={handleSubmit(onSubmit)}>
       <div className="font-montserrat text-center text-2xl lg:text-3xl font-semibold mb-6 relative ">
-        <button
-          type="button"
-          onClick={onClose}
-          className="h-8 w-8 absolute top-2/4 -translate-y-2/4  left-0"
-        >
+        <button type="button" onClick={onClose} className="h-8 w-8 absolute top-2/4 -translate-y-2/4  left-0">
           <IoCaretBack className="!h-full !w-full" />
         </button>
         <span>Product</span>
@@ -148,12 +134,7 @@ export default function ProductForm({
         suspendedPhotos={suspendedPhotos}
         setSuspendedPhotos={setSuspendedPhotos}
       />
-      <Description
-        updateDesc={(updated: { text: string; title: string }[]) =>
-          setDesc(updated)
-        }
-        desc={desc}
-      />
+      <Description updateDesc={(updated: { text: string; title: string }[]) => setDesc(updated)} desc={desc} />
       <Button
         disabled={isLoading}
         onClick={() => {
