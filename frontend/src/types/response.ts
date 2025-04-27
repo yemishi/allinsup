@@ -11,7 +11,7 @@ type VariantType = {
   flavor: string;
   photos: string[];
   sizeDetails: DetailsType[];
-  photosData?: string[];
+  imageFiles?: FileList[];
   isSelected?: boolean;
 };
 
@@ -92,28 +92,6 @@ interface CartType {
   size: string;
   promotion?: number;
 }
-interface ProductFormType {
-  desc: {
-    title: string;
-    text: string;
-  }[];
-  name: string;
-  variants: {
-    photos: FileList[];
-    photosData?: string[];
-    flavor: string;
-    sizeDetails: {
-      size: string;
-      price: number;
-      stock: number;
-      isHighlight?: boolean | undefined;
-      promotion?: number | undefined;
-    }[];
-  }[];
-  category: string;
-  brand: string;
-}
-
 type ErrorType = {
   message: string;
   error: true;
@@ -130,5 +108,4 @@ export type {
   ErrorType,
   DetailsType,
   CartType,
-  ProductFormType,
 };
