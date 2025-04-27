@@ -56,7 +56,8 @@ export default function CheckoutGrid({ onClose }: { onClose: () => void }) {
         className="bg-none border-none"
         disableExit
         onSignInSuccess={() => {
-          refetch(), setStep(1);
+          refetch();
+          setTimeout(() => setStep(1), 100);
         }}
         onClose={() => setStep(1)}
       />

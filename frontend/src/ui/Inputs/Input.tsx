@@ -14,8 +14,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const { className = "", label, error, id, isPassword, isLoading, placeholder, type: selectedType, ...rest } = props;
   const [isPass, setIsPass] = useState<boolean>(true);
   const PassIcon = isPass ? FaEyeSlash : IoEyeSharp;
-  const hasValue = !!rest.value;
 
+  const hasValue = !!rest.value;
   const type = isPassword ? (isPass ? "password" : "text") : selectedType || "text";
   return (
     <div

@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = memo(({ isLoading, children, ...props }) =
         className,
         `${
           isLoading ? "animate-bounce pointer-events-none" : ""
-        } p-3 rounded-xl bg-secondary-600 font-semibold disabled:grayscale active:scale-90 hover:scale-95 hover:brightness-110 transition-all`
+        } p-3 rounded-xl outline-none bg-secondary-600 font-semibold disabled:grayscale active:scale-90 hover:scale-95 hover:brightness-110 transition-all`
       )}
     >
       {children}

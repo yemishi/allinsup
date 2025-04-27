@@ -52,7 +52,7 @@ export default function Form<T>({
             label={label}
             placeholder={inputProps?.placeholder || label}
             isPassword={isPassword}
-            value={values[name]}
+            value={(values as Record<string, any>)[name]}
             error={errors[name] as string}
             name={name}
             onChange={onChange}

@@ -72,7 +72,6 @@ const productDetails = (product: ProductType, cart?: CartType[], variantIndex?: 
   };
 };
 const cleanClasses = (className = "", fallback = "") => {
-  
   const current = className.split(/\s+/);
   const fallbackClasses = fallback.split(/\s+/);
 
@@ -87,5 +86,4 @@ const cleanClasses = (className = "", fallback = "") => {
 
   return [...current, ...filteredFallback].join(" ").trim();
 };
-const enableScroll = () => (document.body.style.overflow = "");
-export { productDetails, blinkVariant, stickyVariant, enableScroll, cleanClasses };
+export { productDetails, blinkVariant, stickyVariant, cleanClasses };
