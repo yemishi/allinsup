@@ -17,8 +17,9 @@ import { MdOutlineSort } from "react-icons/md";
 
 import { toast } from "react-toastify";
 import Modal from "../../Modal/Modal";
-import Login from "../../Form/User/Login";
+
 import { Button, DivDraggable } from "../../../ui";
+import { Login } from "../../../components";
 
 export default function Menu() {
   const [isLoading, setIsLoading] = useState(false);
