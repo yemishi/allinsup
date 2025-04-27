@@ -9,8 +9,6 @@ export { default as SignUpForm } from "./Form/User/SignUpForm";
 export { default as Login } from "./Form/User/Login";
 export { default as UserAddressForm } from "./Form/User/UserAddressForm";
 
-export { default as ProductForm } from "./Form/Product/ProductForm";
-
 export { default as Card } from "./Card/Card";
 export { default as CardSkeleton } from "./Card/CardSkeleton";
 export { default as CardGrid } from "./Card/CardGrid";
