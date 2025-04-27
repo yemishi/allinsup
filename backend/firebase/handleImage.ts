@@ -1,9 +1,4 @@
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { analytics } from "./firebase.config";
 import fs from "fs/promises";
 
@@ -14,20 +9,15 @@ interface UploadedFile {
 }
 export default async function uploadImg(file: UploadedFile) {
   try {
-    const fileRef = ref(
-      analytics,
-      `images/${
-        file.originalname.split(".")[0]
-      }?uploadAt=${new Date().getTime()}`
-    );
+    const fileRef = ref(analytics, `images/${file.originalname.split(".")[0]}?uploadAt=${new Date().getTime()}`);
     const fileBuffer = await fs.readFile(file.path);
 
     const metadata = {
       contentType: file.mimetype,
     };
 
-    const upload = await uploadBytes(fileRef, fileBuffer, metadata).then(
-      (res) => getDownloadURL(res.ref).then((url) => url)
+    const upload = await uploadBytes(fileRef, fileBuffer, metadata).then((res) =>
+      getDownloadURL(res.ref).then((url) => url)
     );
     return upload;
   } catch (error) {
@@ -39,6 +29,7 @@ export default async function uploadImg(file: UploadedFile) {
 }
 
 export async function deleteImage(url: string) {
+  if (url === process.env.DEFAULT_PRODUCT_PHOTO) return { message: "This image can't be deleted" };
   try {
     const fileRef = ref(analytics, url);
     await deleteObject(fileRef);

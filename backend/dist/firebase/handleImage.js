@@ -40,7 +40,8 @@ function deleteImage(url) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const fileRef = (0, storage_1.ref)(firebase_config_1.analytics, url);
-            yield (0, storage_1.deleteObject)(fileRef);
+            const test = yield (0, storage_1.deleteObject)(fileRef);
+            console.log(test);
             return {
                 message: "Image deleted with success",
             };

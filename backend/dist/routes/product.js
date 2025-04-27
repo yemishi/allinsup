@@ -19,7 +19,7 @@ const handleImage_1 = require("../firebase/handleImage");
 const router = (0, express_1.default)();
 router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { productId, page = 0, limit = 10, query = "", brand, category, sort, } = req.query;
+        const { productId, page = 0, limit = 10, query = "", brand, category, sort } = req.query;
         if (productId) {
             const product = yield models_1.Product.findById(productId);
             return res.json(product);
@@ -52,9 +52,9 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                                 if: { $gt: ["$variants.sizeDetails.promotion", 0] },
                                 then: "$variants.sizeDetails.promotion",
                                 else: "$variants.sizeDetails.price",
-                            }
-                        }
-                    }
+                            },
+                        },
+                    },
                 },
                 {
                     $group: {
@@ -65,17 +65,15 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                         desc: { $first: "$desc" },
                         variants: { $push: "$variants" },
                         minPrice: { $min: "$priceToSort" },
-                    }
+                    },
                 },
                 { $sort: { minPrice: sortDirection } },
                 { $skip: offset },
-                { $limit: Number(limit) }
+                { $limit: Number(limit) },
             ]);
             return res.json({ products: productsData, hasMore });
         }
-        const productsData = yield models_1.Product.find(filter)
-            .skip(offset)
-            .limit(Number(limit));
+        const productsData = yield models_1.Product.find(filter).skip(offset).limit(Number(limit));
         const products = (0, utils_1.search)(productsData, query);
         return res.json({ products, hasMore });
     }
@@ -91,8 +89,8 @@ router.post("/", utils_1.authToken, (req, res) => __awaiter(void 0, void 0, void
         const { name, desc, category, brand, variants } = req.body;
         const { email } = req.user;
         variants.map((variant) => {
-            variant.photos.length === 0;
-            variant.photos.push(process.env.DEFAULT_PRODUCT_PHOTO);
+            if (variant.photos.length === 0)
+                variant.photos.push(process.env.DEFAULT_PRODUCT_PHOTO);
         });
         const user = yield models_1.User.findOne({ email });
         if (!(user === null || user === void 0 ? void 0 : user.isAdmin))
@@ -114,6 +112,7 @@ router.patch("/", utils_1.authToken, (req, res) => __awaiter(void 0, void 0, voi
     try {
         const { email } = req.user;
         const { productId, product, photosDelete } = req.body;
+        console.log(photosDelete);
         product.variants.map((variant) => {
             if (variant.photos.length === 0)
                 variant.photos.push(process.env.DEFAULT_PRODUCT_PHOTO);
@@ -124,6 +123,7 @@ router.patch("/", utils_1.authToken, (req, res) => __awaiter(void 0, void 0, voi
         const productData = yield models_1.Product.findByIdAndUpdate(productId, product);
         if (photosDelete) {
             yield Promise.all(photosDelete.map((photo) => __awaiter(void 0, void 0, void 0, function* () {
+                console.log("deleting....");
                 yield (0, handleImage_1.deleteImage)(photo);
             })));
         }
@@ -132,6 +132,7 @@ router.patch("/", utils_1.authToken, (req, res) => __awaiter(void 0, void 0, voi
         return res.json({ message: "Product updated with success" });
     }
     catch (error) {
+        console.log(error);
         return res.json({
             error: true,
             message: "We had a problem trying to updated the product",
@@ -183,9 +184,7 @@ router.get("/highlight", (req, res) => __awaiter(void 0, void 0, void 0, functio
         };
         const offset = Number(limit) * Number(page);
         const productsTotal = yield models_1.Product.countDocuments(filter);
-        const products = yield models_1.Product.find(filter)
-            .skip(offset)
-            .limit(Number(limit));
+        const products = yield models_1.Product.find(filter).skip(offset).limit(Number(limit));
         const hasMore = offset + Number(limit) < productsTotal;
         return res.json({ products, hasMore });
     }

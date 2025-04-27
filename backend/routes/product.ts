@@ -7,15 +7,7 @@ const router = express();
 
 router.get("/", async (req, res) => {
   try {
-    const {
-      productId,
-      page = 0,
-      limit = 10,
-      query = "",
-      brand,
-      category,
-      sort,
-    } = req.query;
+    const { productId, page = 0, limit = 10, query = "", brand, category, sort } = req.query;
     if (productId) {
       const product = await Product.findById(productId);
       return res.json(product);
@@ -33,7 +25,6 @@ router.get("/", async (req, res) => {
     if (category) filter.category = { $regex: category, $options: "i" };
     const offset = Number(limit) * Number(page);
 
-
     const productsTotal = await Product.countDocuments(filter);
     const hasMore = offset + Number(limit) < productsTotal;
     if (sort) {
@@ -50,9 +41,9 @@ router.get("/", async (req, res) => {
                 if: { $gt: ["$variants.sizeDetails.promotion", 0] },
                 then: "$variants.sizeDetails.promotion",
                 else: "$variants.sizeDetails.price",
-              }
-            }
-          }
+              },
+            },
+          },
         },
         {
           $group: {
@@ -63,17 +54,15 @@ router.get("/", async (req, res) => {
             desc: { $first: "$desc" },
             variants: { $push: "$variants" },
             minPrice: { $min: "$priceToSort" },
-          }
+          },
         },
         { $sort: { minPrice: sortDirection } },
         { $skip: offset },
-        { $limit: Number(limit) }
+        { $limit: Number(limit) },
       ]);
       return res.json({ products: productsData, hasMore });
     }
-    const productsData = await Product.find(filter)
-      .skip(offset)
-      .limit(Number(limit));
+    const productsData = await Product.find(filter).skip(offset).limit(Number(limit));
     const products = search(productsData, query as string) as ProductType[];
     return res.json({ products, hasMore });
   } catch (error) {
@@ -90,8 +79,7 @@ router.post("/", authToken, async (req, res) => {
     const { email } = req.user;
 
     variants.map((variant) => {
-      variant.photos.length === 0;
-      variant.photos.push(process.env.DEFAULT_PRODUCT_PHOTO as string);
+      if (variant.photos.length === 0) variant.photos.push(process.env.DEFAULT_PRODUCT_PHOTO as string);
     });
     const user = await User.findOne({ email });
     if (!user?.isAdmin)
@@ -114,14 +102,14 @@ router.patch("/", authToken, async (req, res) => {
     const { email } = req.user;
     const { productId, product, photosDelete } = req.body;
     product.variants.map((variant: VariantType) => {
-      if (variant.photos.length === 0)
-        variant.photos.push(process.env.DEFAULT_PRODUCT_PHOTO as string);
+      if (variant.photos.length === 0) variant.photos.push(process.env.DEFAULT_PRODUCT_PHOTO as string);
     });
 
     const userData = await User.findOne({ email });
-    if (!userData || !userData.isAdmin)
-      return res.json({ error: true, message: "User not found" });
+    if (!userData || !userData.isAdmin) return res.json({ error: true, message: "User not found" });
+
     const productData = await Product.findByIdAndUpdate(productId, product);
+
     if (photosDelete) {
       await Promise.all(
         photosDelete.map(async (photo: string) => {
@@ -129,11 +117,11 @@ router.patch("/", authToken, async (req, res) => {
         })
       );
     }
-    if (!productData)
-      return res.json({ error: true, message: "Product not found" });
+    if (!productData) return res.json({ error: true, message: "Product not found" });
 
     return res.json({ message: "Product updated with success" });
   } catch (error) {
+    console.log(error);
     return res.json({
       error: true,
       message: "We had a problem trying to updated the product",
@@ -147,11 +135,9 @@ router.delete("/", authToken, async (req, res) => {
     const { productId } = req.query;
     const userData = await User.findOne({ email });
 
-    if (!userData || !userData.isAdmin)
-      return res.json({ error: true, message: "User not found." });
+    if (!userData || !userData.isAdmin) return res.json({ error: true, message: "User not found." });
 
-    if (!productId)
-      return res.json({ error: true, message: "Product id is required." });
+    if (!productId) return res.json({ error: true, message: "Product id is required." });
 
     const orders = await Order.find({
       products: {
@@ -191,9 +177,7 @@ router.get("/highlight", async (req, res) => {
     };
     const offset = Number(limit) * Number(page);
     const productsTotal = await Product.countDocuments(filter);
-    const products = await Product.find(filter)
-      .skip(offset)
-      .limit(Number(limit));
+    const products = await Product.find(filter).skip(offset).limit(Number(limit));
     const hasMore = offset + Number(limit) < productsTotal;
 
     return res.json({ products, hasMore });
