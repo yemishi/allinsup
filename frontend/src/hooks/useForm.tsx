@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 
 export interface FormField {
-  value: string | number;
+  value: string | number | string[];
   min?: number;
   max?: number;
   maxMessage?: string;
@@ -11,14 +11,14 @@ export interface FormField {
   validate?: (value: string | number) => string | null;
 }
 
-type FormFields = Record<string, FormField>;
+export type FormFields = Record<string, FormField>;
 
-export default function useForm(initialValues: FormFields) {
+export default function useForm<T>(initialValues: FormFields) {
   const [fields, setFields] = useState(initialValues);
   const [errors, setErrors] = useState<Record<string, string | null>>({});
   const values = Object.fromEntries(Object.entries(fields).map(([key, field]) => [key, field.value])) as {
     [K in keyof typeof fields]: (typeof fields)[K]["value"];
-  };
+  } as T;
 
   const handleError = (field: string, msg: string | null) => setErrors((e) => ({ ...e, [field]: msg }));
 
