@@ -2,12 +2,12 @@ import ProductGrid from "./Card/CardGrid";
 import { SwiperSlide, SwiperProps as SliderProps, Swiper } from "swiper/react";
 
 export { SwiperSlide as Slide, ProductGrid, Swiper };
-export { default as Form } from "./Form/Form";
+export { default as Form } from "./form/Form";
 
-export { default as SignInForm } from "./Form/User/SignInForm";
-export { default as SignUpForm } from "./Form/User/SignUpForm";
-export { default as Login } from "./Form/User/Login";
-export { default as UserAddressForm } from "./Form/User/UserAddressForm";
+export { default as SignInForm } from "./form/user/SignInForm";
+export { default as SignUpForm } from "./form/user/SignUpForm";
+export { default as Login } from "./form/user/Login";
+export { default as UserAddressForm } from "./form/user/UserAddressForm";
 
 export { default as Card } from "./Card/Card";
 export { default as CardSkeleton } from "./Card/CardSkeleton";
