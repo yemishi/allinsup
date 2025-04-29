@@ -4,7 +4,8 @@ import { OrderType } from "../../../types/response";
 
 import { parseLocalCurrency } from "../../../utils/formatting";
 import { toast } from "react-toastify";
-import { DivDraggable, Track } from "../../../ui";
+import { Button, Image, MotionDiv, Track } from "../../../ui";
+import { IoCloseSharp } from "react-icons/io5";
 
 interface PropsType {
   onClose: () => void;
@@ -24,50 +25,54 @@ export default function EditOrder({ order: { products, status, _id }, onClose, o
   };
   const stages = ["Pending", "Processing", "Shipped", "Out for delivery", "Delivered"];
   return (
-    <DivDraggable
-      maxMd
-      initialDirection="-100%"
-      className="w-full flex flex-col p-4 h-full md:rounded-lg"
-      closeParent={onClose}
-    >
+    <MotionDiv className="modal-container relative">
       <div className="flex flex-col gap-6 py-4 w-full md:items-center ">
-        <p className="font-bold text-lg md:text-xl font-anton text-sky-300">Products</p>
+        <button
+          type="button"
+          className="absolute right-5 top-5 hover:scale-105 hover:brightness-110 active:scale-95 transition-all"
+          onClick={onClose}
+        >
+          <IoCloseSharp className="h-8 w-8" />
+        </button>
 
-        <div className="flex md:grid flex-col gap-3">
-          {[...products, ...products].map((product, index) => {
+        <h2 className="font-bold text-lg md:text-2xl font-lato text-sky-300 mb-3">Delivery status</h2>
+
+        <Track status={(step !== undefined && stages[step]) || status} updateState={(i: number) => setStep(i)} />
+        <h2 className="font-bold text-lg md:text-2xl font-lato text-sky-300">Products</h2>
+        <div className="flex md:grid md:grid-cols-2 flex-col gap-3">
+          {[...products].map((product, index) => {
             const { coverPhoto, name, price, qtd } = product;
             return (
               <div
                 key={`${product}_${index}`}
-                className="flex md:p-4 md:border-t md:border-primary-200 relative bg-primary-500 w-full font-anton gap-4"
+                className="flex md:p-4 relative bg-primary-600 rounded-lg border border-primary-200 w-full gap-2"
               >
-                <span className="w-32 p-2 bg-white  rounded-l-md h-28">
-                  <img src={coverPhoto} className="object-contain w-full h-full" alt="" />
+                <span className="w-36 p-2 bg-white rounded-lg h-28">
+                  <Image src={coverPhoto} className="object-contain w-full h-full" />
                 </span>
                 <span className="flex p-2 justify-between w-full items-center self-start">
                   <p className="self-center">{name}</p>
                   <p className="text-secondary-200 font-bold self-start">{`${qtd}x`}</p>
                 </span>
-                <p className="bottom-0 right-0 absolute text-secondary-600 font-bold p-2 bg-primary rounded-tl-lg">
+                <p
+                  className="bottom-0 right-0 absolute text-secondary-600 font-bold p-2 bg-primary rounded-tl-lg rounded-br-lg
+                 border border-primary-200"
+                >
                   {parseLocalCurrency(Number(price))}
                 </p>
               </div>
             );
           })}
         </div>
-
-        <p className="font-bold text-lg md:text-xl font-anton text-sky-300">Delivery status</p>
-
-        <Track status={(step !== undefined && stages[step]) || status} updateState={(i: number) => setStep(i)} />
       </div>
-      <div className="w-full sticky z-20 bottom-0 flex gap md:self-center mt-auto gap-2">
-        <button onClick={onClose} className="p-2 flex-1 font-anton font-semibold bg-sky-600 ">
+      <div className="w-full bottom-0 flex gap md:self-center mt-auto gap-2">
+        <Button onClick={onClose} className="p-2 flex-1 bg-sky-600 ">
           Cancel
-        </button>
-        <button onClick={handleUpdate} className="p-2 flex-1 font-anton font-semibold bg-secondary-600 ">
+        </Button>
+        <Button onClick={handleUpdate} className="p-2 flex-1 bg-secondary-600 ">
           Update
-        </button>
+        </Button>
       </div>
-    </DivDraggable>
+    </MotionDiv>
   );
 }
