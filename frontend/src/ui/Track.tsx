@@ -1,18 +1,8 @@
 import { AiOutlineDeliveredProcedure } from "react-icons/ai";
-import {
-  MdOutlineLocalShipping,
-  MdOutlinePending,
-  MdOutlinePendingActions,
-} from "react-icons/md";
+import { MdOutlineLocalShipping, MdOutlinePending, MdOutlinePendingActions } from "react-icons/md";
 import { TbTruckDelivery } from "react-icons/tb";
 
-export default function Track({
-  status,
-  updateState,
-}: {
-  status: string;
-  updateState?: (index: number) => void;
-}) {
+export default function Track({ status, updateState }: { status: string; updateState?: (index: number) => void }) {
   const track = [
     { Icon: MdOutlinePendingActions, stage: "Pending" },
     { Icon: MdOutlinePending, stage: "Processing" },
@@ -27,24 +17,23 @@ export default function Track({
    after:border-secondary-200 after:border-dashed md:after:ml-5"
     >
       {track.map(({ Icon, stage }, index) => {
-        const findIndex = track.findIndex(
-          ({ stage }) =>
-            stage.toLocaleLowerCase() === status.toLocaleLowerCase()
-        );
+        const findIndex = track.findIndex(({ stage }) => stage.toLocaleLowerCase() === status.toLocaleLowerCase());
 
         return (
           <div key={`${stage}_${index}`} className="w-full flex lg:text-lg">
-            <div className="flex font-medium gap-2 items-center duration-300 w-full">
+            <div
+              onClick={() => (updateState ? updateState(index) : null)}
+              className={`flex font-medium gap-2 items-center duration-300 w-full group ${
+                updateState ? "cursor-pointer" : "pointer-events-none"
+              }`}
+            >
               <span
-                onClick={() => (updateState ? updateState(index) : null)}
-                className={`p-4 md:p-5 rounded-full duration-300 border-2 border-primary-400 z-10 ${
-                  findIndex >= index
-                    ? "bg-secondary-200 border-secondary-200 shadow-lightOn"
-                    : "bg-primary-600"
+                className={`p-4 md:p-5 rounded-full transition-all border-2 border-primary-400 group-hover:brightness-110 z-10 ${
+                  findIndex >= index ? "bg-secondary-200 border-secondary-200 shadow-lightOn" : "bg-primary-600"
                 } `}
               />
               <span
-                className={`self-center ${
+                className={`self-center  group-hover:brightness-110 ${
                   findIndex >= index ? "text-secondary-200" : "text-gray-400"
                 }`}
               >
