@@ -10,12 +10,11 @@ interface Props {
 
 export default function UserAddressForm({ userInfo, onClose, onSuccess }: Props) {
   const inputs: InputsType = {
-    name: { label: "Name", value: userInfo?.name || "", min: 3, inputProps: { autoFocus: true, autoComplete: "name" } },
-    address: {
+    name: {
       label: "Address",
-      value: userInfo?.address?.address || "",
-      min: 1,
-      inputProps: { type: "text", autoComplete: "address" },
+      value: userInfo?.address?.name || "",
+      min: 3,
+      inputProps: { autoFocus: true, type: "text", autoComplete: "address" },
     },
     cep: {
       label: "Cep",
