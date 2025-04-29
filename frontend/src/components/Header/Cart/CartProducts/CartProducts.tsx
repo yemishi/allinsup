@@ -44,7 +44,7 @@ export default function CartProducts() {
             </Link>
 
             <div className="flex flex-col text-sm pr-5 lg:text-lg w-full">
-              <span className="hover:text-secondary-500 duration-300 ">{name}</span>
+              <span className="hover:text-secondary-500 duration-300">{name}</span>
 
               <button onClick={() => remove(index)} className="absolute top-2 right-0 cursor-pointer self-start">
                 <IoIosClose className="h-7 w-7 md:w-9 md:h-9 text-red-500" />
