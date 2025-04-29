@@ -117,7 +117,7 @@ export default function CheckoutGrid({ onClose }: { onClose: () => void }) {
         refetch={refetch}
       >
         {isLoading ? (
-          <img src="loading.svg" className="self-center my-auto" />
+          <img src="/loading.svg" className="self-center my-auto" />
         ) : (
           <>
             <div className="flex flex-col gap-2 mb-5 w-full">
