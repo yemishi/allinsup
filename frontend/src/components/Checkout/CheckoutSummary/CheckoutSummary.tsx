@@ -7,7 +7,7 @@ export default function CheckoutSummary({ cart, method }: { cart: CartType[]; me
   const totalPrice = cart.reduce((prev, curr) => prev + curr.price * curr.amount, 0);
 
   return (
-    <MotionDiv reverse className="lg:min-w-[500px] max-w-2xl flex flex-col gap-3">
+    <MotionDiv className="lg:min-w-[500px] max-w-2xl flex flex-col gap-3">
       <div className="flex font-bold text-secondary-200 mt-3 md:self-center md:gap-10 md:text-lg lg:text-xl w-full justify-between">
         <div className="flex gap-1">
           <span className="text-white">Payment method:</span>
