@@ -5,7 +5,6 @@ const productRequest = (instance: AxiosInstance, baseUrl: string) => {
   return {
     single: (productId: string): Promise<ProductType | ErrorType> =>
       instance.get(`${baseUrl}/product?productId=${productId}`).then((res) => res.data),
-
     many: (
       page?: number,
       limit?: number,

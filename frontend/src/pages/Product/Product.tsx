@@ -96,8 +96,7 @@ export default function Product() {
   };
 
   const buyNow = () => {
-    const Component = () => <CheckoutGrid onClose={() => setIsModal(false)} />;
-    toCart(), setIsModal(<Component />), setCount(0);
+    toCart(), setIsModal(<CheckoutGrid onClose={() => setIsModal(false)} />), setCount(0);
   };
 
   const Title = ({ children }: { children: ReactNode }) => (
