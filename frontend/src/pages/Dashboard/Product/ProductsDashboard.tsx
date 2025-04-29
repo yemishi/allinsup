@@ -43,8 +43,8 @@ export default function ProductsDashboard() {
 
   const newProduct = () => {
     const fetchData = async (values: ProductType) => {
-      await updateVariantsPics(values);
-      const { error, message } = await axiosRequest.product.create(values as any);
+      const variants = await updateVariantsPics(values);
+      const { error, message } = await axiosRequest.product.create({ ...values, variants });
       if (error) {
         toast.error(message);
         return;
