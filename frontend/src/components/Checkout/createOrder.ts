@@ -21,16 +21,9 @@ export default async function createOrder(
     price: item.price,
     qtd: item.amount,
   }));
-
   const totalPrice = cart.reduce((prev, curr) => prev + curr.price * curr.amount, 0);
-  const methodMap = {
-    cashOnDelivery: "Cash on delivery",
-    card: "Card",
-    amazon_pay: "Amazon pay",
-    paypal: "PayPal",
-  };
-  const mappedMethod = methodMap[method as keyof typeof methodMap] || "";
-  const response = await axiosRequest.order.create(transformedCart, totalPrice, (method = mappedMethod));
+
+  const response = await axiosRequest.order.create(transformedCart, totalPrice, method);
 
   if (response.error) {
     if (response.isUpdate) {
