@@ -12,15 +12,16 @@ router.get("/", authToken, async (req, res) => {
     if (!userData) return res.json({ error: true, message: "User not found." });
 
     if (orderId) {
-      const order = await Order.findById(orderId);
-      if (String(order?.userId) !== String(userData._id))
-        return res.json({ error: true, message: "Order not found" });
+      const order = await Order.findOne({ orderId });
+      if (!order || String(order.user.userId) !== String(userData._id)) {
+        return res.json({ error: true, message: "Order not found." });
+      }
       return res.json(order);
     }
 
     const offset = Number(page) * Number(limit);
-    const count = await Order.countDocuments({ userId: userData.id });
-    const orders = await Order.find({ userId: userData.id })
+    const count = await Order.countDocuments({ "user.userId": String(userData.id) });
+    const orders = await Order.find({ "user.userId": String(userData.id) })
       .skip(offset)
       .limit(Number(limit));
     return res.json({ orders, hasMore: offset + Number(limit) < count });
@@ -38,8 +39,7 @@ router.get("/admin", authToken, async (req, res) => {
     const { email } = req.user;
 
     const userData = await User.findOne({ email });
-    if (!userData || !userData.isAdmin)
-      return res.json({ error: true, message: "User not found." });
+    if (!userData || !userData.isAdmin) return res.json({ error: true, message: "User not found." });
 
     const offset = Number(page) * Number(limit);
 
@@ -47,31 +47,18 @@ router.get("/admin", authToken, async (req, res) => {
       $or: [
         { status: { $regex: query, $options: "i" } },
         { method: { $regex: query, $options: "i" } },
+        { "user.name": { $regex: query, $options: "i" } },
+        { "user.email": { $regex: query, $options: "i" } },
+        { orderId: { $regex: query, $options: "i" } },
       ],
     };
+
     const count = await Order.countDocuments(filter);
     const orders = await Order.find(filter).skip(offset).limit(Number(limit));
 
-    const ordersUpdated = await Promise.all(
-      orders.map(async (order) => {
-        const userData = await User.findById(order.userId);
-        if (!userData) {
-          order.user = {
-            isDeleted: true,
-          };
-          return order;
-        }
-        order.user = {
-          name: userData.name,
-          email: userData.email,
-          isDeleted: false,
-        };
-        return order;
-      })
-    );
-
-    return res.json({ ordersUpdated, hasMore: offset + Number(limit) < count });
+    return res.json({ orders, hasMore: offset + Number(limit) < count });
   } catch (error) {
+    console.log(error);
     return res.json({
       error: true,
       message: "We had a problem trying to recover the product info.",
@@ -80,7 +67,6 @@ router.get("/admin", authToken, async (req, res) => {
 });
 
 router.post("/", authToken, async (req, res) => {
-  console.log("creating order...")
   try {
     const { products, totalPaid, method } = req.body as {
       products: {
@@ -95,7 +81,7 @@ router.post("/", authToken, async (req, res) => {
       totalPaid: number;
       method: string;
     };
-    const { email } = req.user;
+    const { email, name } = req.user;
     const userData = await User.findOne({ email });
 
     if (!userData) return res.json({ error: true, message: "User not found." });
@@ -109,38 +95,40 @@ router.post("/", authToken, async (req, res) => {
         message: "Some items in your cart have been updated.",
       });
 
-    const productPromises = products.map(
-      async ({ flavor, productId, qtd, size, price }) => {
-        const productData = await Product.findById(productId);
+    const productPromises = products.map(async ({ flavor, productId, qtd, size, price }) => {
+      const productData = await Product.findById(productId);
 
-        const variant = productData?.variants.find(
-          (v) => v.flavor.toLowerCase() === flavor.toLowerCase()
-        );
+      const variant = productData?.variants.find((v) => v.flavor.toLowerCase() === flavor.toLowerCase());
 
-        const sizeDetail = variant?.sizeDetails.find((sd) => sd.size === size);
-        if (!sizeDetail)
-          return res.json({
-            error: true,
-            message: "We had a error trying to complete the purchase.",
-          });
-
-        sizeDetail.stock -= qtd;
-        await Sell.create({
-          userId: userData.id,
-          productId,
-          productSize: sizeDetail?.size,
-          productFlavor: variant?.flavor,
-          totalPrice: price,
-          qtd,
+      const sizeDetail = variant?.sizeDetails.find((sd) => sd.size === size);
+      if (!sizeDetail)
+        return res.json({
+          error: true,
+          message: "We had a error trying to complete the purchase.",
         });
-        await productData?.save();
-      }
-    );
+
+      sizeDetail.stock -= qtd;
+      await Sell.create({
+        userId: userData.id,
+        productId,
+        productSize: sizeDetail?.size,
+        productFlavor: variant?.flavor,
+        totalPrice: price,
+        qtd,
+      });
+      await productData?.save();
+    });
     await Promise.all(productPromises);
+    const generateOrderId = () => {
+      const datePart = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+      const randomPart = Math.random().toString(36).substring(2, 7).toUpperCase();
+      return `${datePart}-${randomPart}`;
+    };
 
     await Order.create({
-      userId: userData.id,
+      user: { userId: userData.id, email, name },
       purchaseDate: new Date(),
+      orderId: generateOrderId(),
       address: userData.address,
       status: "pending",
       method,
