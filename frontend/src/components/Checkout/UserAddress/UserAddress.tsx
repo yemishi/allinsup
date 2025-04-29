@@ -21,7 +21,7 @@ export default function UserAddress({
             <ul className="font-lato flex flex-col lg:gap-2 lg:text-lg">
               <li>{name}</li>
               <li>
-                {address.city}, {address.address} N°
+                {address.city}, {address.name} N°
                 {address.houseNumber}
               </li>
               <li>
