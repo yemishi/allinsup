@@ -31,7 +31,7 @@ interface UserType {
   password: string;
   isAdmin?: boolean;
   address: {
-    address: string;
+    name: string;
     cep: string;
     state: string;
     city: string;
@@ -43,9 +43,9 @@ interface UserType {
 }
 interface OrderType {
   _id: string;
-  userId: string;
+  orderId: string;
   method: "Cash on Delivery" | "Credit Card" | "Debit Card" | "PayPal";
-  user?: { isDeleted: true } | { name: string; email: string; isDeleted: false };
+  user: { userId: string; name: string; email: string };
   products: {
     _id: string;
     qtd: number;
@@ -61,7 +61,7 @@ interface OrderType {
   purchaseDate: Date;
   receivedDate?: Date;
   address: {
-    address: string;
+    name: string;
     cep: string;
     state: string;
     city: string;
