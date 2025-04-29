@@ -3,13 +3,12 @@ import { useSearchParams } from "react-router-dom";
 import useScrollQuery from "../../../hooks/useInfiniteQuery";
 import { OrderType } from "../../../types/response";
 
-
 import EditOrder from "./EditOrder";
 
 import { parseLocalCurrency } from "../../../utils/formatting";
 
 import Modal from "../../../components/Modal/Modal";
-import { DivList, Image ,Button} from "../../../ui";
+import { DivList, Image, Button } from "../../../ui";
 
 export default function OrdersDashboard() {
   const [searchParams] = useSearchParams();
@@ -36,8 +35,8 @@ export default function OrdersDashboard() {
   return (
     <div className="flex flex-col items-center text-gray-200 p-4 gap-4 md:gap-7 lg:gap-10 w-full">
       {orders.map((order, i) => {
-        const { products, userId, address: userAddress, status, purchaseDate, receivedDate, user, totalPaid } = order;
-        const { cep, city, state, complement, houseNumber, address } = userAddress;
+        const { products, address: userAddress, status, purchaseDate, receivedDate, user, totalPaid, orderId } = order;
+        const { cep, city, state, complement, houseNumber, name } = userAddress;
         const date = new Date(purchaseDate);
         const receive = receivedDate && new Date(receivedDate);
         const purchaseFormatted = `${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`;
@@ -46,7 +45,7 @@ export default function OrdersDashboard() {
         return (
           <div
             className="w-full flex items-center lg:text-lg md:grid md:grid-cols-2 gap-5 bg-primary-600 border border-primary-200 flex-col p-3 rounded-md "
-            key={`${order._id}_${userId}_${i}`}
+            key={`${order._id}_${user.userId}_${orderId}_${i}`}
           >
             {isModal && (
               <Modal className="mx-auto my-auto" onClose={() => setIsModal(false)}>
@@ -55,17 +54,11 @@ export default function OrdersDashboard() {
             )}
             <div className="flex flex-col w-full gap-2 items-center">
               <h2 className="text-lg lg:text-xl font-montserrat font-semibold py-3 text-sky-300">User information</h2>
-              <DivList dt="Order id:" dd={order._id} />
-              {!user?.isDeleted ? (
-                <>
-                  <DivList dt="User name:" dd={user?.name as string} />
-                  <DivList dt="User email:" dd={user?.email as string} />
-                </>
-              ) : (
-                <DivList dt="User:" dd="Deleted" />
-              )}
+              <DivList dt="Order id:" dd={orderId} />
+              <DivList dt="User name:" dd={user.name as string} />
+              <DivList dt="User email:" dd={user.email as string} />
 
-              <DivList dt="Address:" dd={address} />
+              <DivList dt="Address:" dd={name} />
               <DivList dt="City:" dd={city} />
               <DivList dt="State:" dd={state} />
               <DivList dt="House number:" dd={String(houseNumber)} />
@@ -115,7 +108,7 @@ export default function OrdersDashboard() {
             </div>
             <Button
               onClick={() => edit(order)}
-              className="p-2 px-10  font-semibold font-lato mt-2 md:mt-10 col-span-2  ml-auto mr-auto"
+              className="p-2 px-10 bg-gray-200 text-black font-semibold font-lato mt-2 md:mt-10 col-span-2 mx-auto"
             >
               Edit
             </Button>
