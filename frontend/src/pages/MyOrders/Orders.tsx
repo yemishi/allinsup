@@ -44,7 +44,7 @@ export default function Orders() {
         ) : orders.length > 0 ? (
           <div className="flex flex-col md:grid md:grid-cols-2 w-full gap-6 ">
             {orders.map((order, index) => {
-              const { _id, purchaseDate, status, totalPaid, receivedDate } = order;
+              const { purchaseDate, status, totalPaid, receivedDate, orderId } = order;
               return (
                 <div
                   key={`${order}_${index}`}
@@ -52,14 +52,14 @@ export default function Orders() {
                    border-gray-600 lg:text-lg flex-col gap-4 rounded-xl"
                 >
                   <dl className="w-full flex flex-col gap-1 md:gap-4">
-                    <DivList dt="Order id:" dd={_id} />
+                    <DivList dt="Order id:" dd={orderId} />
                     <DivList dt="Purchase date" dd={parseToDate(purchaseDate)} />
                     {receivedDate && <DivList dt="Received date" dd={parseToDate(receivedDate)} />}
                     <DivList dt="Value paid" dd={parseLocalCurrency(Number(totalPaid))} />
                     <DivList dt="Status" dd={status} />
                   </dl>
-                  <Button className="self-center px-4 py-2 border border-secondary-">
-                    <Link to={`/order/${_id}`}>Details</Link>
+                  <Button className="self-center px-4 py-2 border border-secondary-200">
+                    <Link to={`/order/${orderId}`}>Details</Link>
                   </Button>
                 </div>
               );
