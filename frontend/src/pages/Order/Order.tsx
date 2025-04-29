@@ -11,15 +11,15 @@ import { blinkVariant } from "../../utils/helpers";
 import { DivList, Image } from "../../ui";
 
 export default function Order() {
-  const { orderId } = useParams();
+  const { orderId: orderIdParam } = useParams();
   const variant = {
     open: { y: 0, opacity: 1, height: "auto" },
     closed: { y: -200, opacity: 0, height: "0px" },
   };
-  const [allowProduct, setAllowProduct] = useState(true);
+  const [showProducts, setShowProducts] = useState(true);
   const { data, isLoading } = useQuery({
-    queryFn: () => axiosRequest.order.single(orderId as string),
-    queryKey: [orderId],
+    queryFn: () => axiosRequest.order.single(orderIdParam as string),
+    queryKey: [orderIdParam],
   });
   if (isLoading) return <Image src="/loading.svg" className="h-40 w-40 ml-auto mr-auto" />;
   if (!data || data.error) return <NotFoundPage />;
@@ -28,13 +28,12 @@ export default function Order() {
     products,
     purchaseDate,
     status,
-    _id,
+    orderId,
     totalPaid,
     method,
-    address: { address, houseNumber, cep },
+    address: { name, houseNumber, cep },
     receivedDate,
   } = data;
-
   return (
     <motion.div
       variants={blinkVariant}
@@ -53,9 +52,9 @@ export default function Order() {
           <DivList dt="Total paid:" dd={parseLocalCurrency(Number(totalPaid))} />
           {receivedDate && <DivList dt="Received at" dd={String(receivedDate)} />}
           <DivList dt="Status" dd={status} />
-          <DivList dt="Order id:" dd={_id} />
+          <DivList dt="Order id:" dd={orderId} />
           <DivList dt="Payment method" dd={method} />
-          <DivList dt="Delivery address" dd={`${cep}-${address}-${houseNumber}`} />
+          <DivList dt="Delivery address" dd={`${cep}-${name}-${houseNumber}`} />
         </dl>
       </div>
 
@@ -63,14 +62,14 @@ export default function Order() {
 
       <div className="flex flex-col gap-2 overflow-hidden self-center">
         <div
-          onClick={() => setAllowProduct(!allowProduct)}
+          onClick={() => setShowProducts(!showProducts)}
           className="z-20 cursor-pointer font-lato text-lg font-bold p-2 rounded-b-lg
                  bg-primary-600 hover:bg-primary-500 w-full flex duration-200 items-center"
         >
           <h2>Products</h2>
           <IoMdArrowDropup
             className={`w-8 h-8 md:w-10 md:h-10 ml-auto  duration-500 ${
-              allowProduct ? "rotate-180" : "fill-gray-600 stroke-gray-600 "
+              showProducts ? "rotate-180" : "fill-gray-600 stroke-gray-600 "
             }`}
           />
         </div>
@@ -78,12 +77,12 @@ export default function Order() {
         <motion.div
           transition={{ type: "just" }}
           variants={variant}
-          initial="closed"
-          animate={allowProduct ? "open" : "closed"}
+          initial={false}
+          animate={showProducts ? "open" : "closed"}
           className="flex flex-col gap-4 md:grid md:grid-cols-2"
         >
           {products.map((product, index) => {
-            const { coverPhoto, name, price, productId, qtd, _id } = product;
+            const { coverPhoto, name, price, productId, qtd } = product;
 
             return (
               <div
@@ -91,12 +90,15 @@ export default function Order() {
                 className="flex gap-7 lg:text-lg md:gap-3 pb-7 md:pb-2 border-b
                          border-primary-200 md:grid md:grid-cols-2 lg:gap-14"
               >
-                <Link to={`/product/${_id}`} className="w-2/6 h-28 md:w-auto md:h-36 lg:h-40">
-                  <Image src={coverPhoto} className="rounded-lg duration-300 object-contain p-1 bg-white" />
+                <Link to={`/product/${productId}`} className="w-2/6 h-28 md:w-auto md:h-36 lg:h-40">
+                  <Image
+                    src={coverPhoto}
+                    className="rounded-lg object-contain p-1 bg-white hover:brightness-110 transition-all"
+                  />
                 </Link>
 
                 <div className="flex w-3/5 flex-col font-anton md:w-auto">
-                  <dl className="flex flex-col gap-2  h-full ">
+                  <dl className="flex flex-col gap-2 h-full">
                     <span className="font-semibold text-center text-gray-200 md:text-xl">{name}</span>
                     <span className="mt-auto">
                       <DivList dt="Qtd:" dd={String(qtd)} />
