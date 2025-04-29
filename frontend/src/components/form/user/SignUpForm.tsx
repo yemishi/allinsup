@@ -9,7 +9,7 @@ export default function SignUpForm({ gotoSignIn }: Props) {
     name: { label: "Name", value: "", min: 3, max: 15 },
     email: { label: "Email", value: "", min: 1, isEmail: true },
     password: { label: "Password", value: "", min: 6, isPassword: true },
-    confirmPassword: { label: "Confirm Password", value: "", min: 6, compareField: "password" },
+    confirmPassword: { label: "Confirm Password", value: "", min: 6, compareField: "password", isPassword:true },
   };
   const onSubmit = async (values: { email: string; password: string; name: string }) => {
     const { error, message } = await axiosRequest.user.create(values.email, values.password, values.name);
