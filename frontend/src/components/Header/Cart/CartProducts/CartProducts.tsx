@@ -6,7 +6,6 @@ import { IoIosClose } from "react-icons/io";
 import { parseLocalCurrency } from "../../../../utils/formatting";
 import { Image } from "../../../../ui";
 
-
 export default function CartProducts() {
   const { cart, updateCart } = useCart();
 
