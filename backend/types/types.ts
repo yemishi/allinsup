@@ -26,7 +26,7 @@ interface UserType {
   password: string;
   isAdmin?: boolean;
   address: {
-    address: string;
+    name: string;
     cep: string;
     state: string;
     city: string;
@@ -35,11 +35,9 @@ interface UserType {
   };
 }
 interface OrderType {
-  userId: string;
+  orderId: string;
+  user: { name: string; userId: string; email: string };
   method: string;
-  user?:
-    | { isDeleted: true }
-    | { name: string; email: string; isDeleted: false };
   products: {
     qtd: number;
     name: string;
