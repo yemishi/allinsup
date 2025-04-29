@@ -47,6 +47,7 @@ export default function CheckoutGrid({ onClose }: { onClose: () => void }) {
       redirect("/");
       onClose();
     };
+
     createOrder(cart, method, setIsFetching, onFinally, updateCart);
   };
   const RenderStep = {
@@ -75,22 +76,22 @@ export default function CheckoutGrid({ onClose }: { onClose: () => void }) {
   const RenderTitle = {
     0: <></>,
     0.5: (
-      <MotionDiv key="delivery-form-title">
+      <MotionDiv reverse key="delivery-form-title">
         <h2>Set a new address</h2>
       </MotionDiv>
     ),
     1: (
-      <MotionDiv key="delivery-title">
+      <MotionDiv reverse key="delivery-title">
         <h2>Delivery address</h2>
       </MotionDiv>
     ),
     2: (
-      <MotionDiv key="payment-title">
+      <MotionDiv reverse key="payment-title">
         <h2>Payment Method</h2>
       </MotionDiv>
     ),
     3: (
-      <MotionDiv key="summary-title">
+      <MotionDiv reverse key="summary-title">
         <h2>Summary</h2>
       </MotionDiv>
     ),
@@ -108,10 +109,7 @@ export default function CheckoutGrid({ onClose }: { onClose: () => void }) {
       : "";
 
   return (
-    <div
-      className="w-screen h-screen bg-gradient-to-tl p-5 from-primary-500 to-primary overflow-x-hidden bg-primary-600 pb-8 flex flex-col items-center 
-       max-w-3xl md:h-[900px] md:border md:border-primary-200 md:rounded-lg "
-    >
+    <div className="modal-container">
       <ErrorWrapper
         className="my-auto shadow-none bg-none"
         error={!isLoading && (!data || data.error) && isError}
