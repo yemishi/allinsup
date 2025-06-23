@@ -1,7 +1,7 @@
 import CartPanel from "./CartPanel/CartPanel";
 import Modal from "../../Modal/Modal";
 
-import { useCart } from "../../../context/Provider"; 
+import { useCart } from "../../../context/Provider";
 import { LuShoppingCart } from "react-icons/lu";
 import { useState } from "react";
 

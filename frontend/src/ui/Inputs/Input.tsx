@@ -27,7 +27,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
       )}
     >
       <label
-        className={`lg:text-lg origin-left  absolute left-2 group-focus-within:text-secondary-400 duration-150 bottom-2 ${
+        className={`lg:text-lg origin-left absolute left-2 group-focus-within:text-secondary-400 duration-150 bottom-2 ${
           hasValue ? "-translate-y-[85%] -translate-x-2 scale-[.78] font-semibold" : ""
         } ${!error && hasValue ? "text-blue-300" : ""}`}
         htmlFor={id || rest.name}
