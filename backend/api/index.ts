@@ -1,8 +1,8 @@
 import express from "express";
-import routes from "./index";
+import routes from "./routes";
 import cors from "cors";
 import dotenv from "dotenv";
-import connectDB from "./connectMongoDB";
+import connectDB from "../connectMongoDB";
 
 dotenv.config();
 
