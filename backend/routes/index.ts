@@ -1,11 +1,11 @@
 import express from "express";
 const router = express();
-import orderRouter from "../routes/order";
-import productRouter from "../routes/product";
-import sellRouter from "../routes/sell";
-import userRouter from "../routes/users";
-import uploadImage from "../routes/uploadImage";
-import checkout from "../routes/checkout";
+import orderRouter from "./order";
+import productRouter from "./product";
+import sellRouter from "./sell";
+import userRouter from "./users";
+import uploadImage from "./uploadImage";
+import checkout from "./checkout";
 
 router.use("/user", userRouter);
 router.use("/product", productRouter);
